@@ -30,9 +30,10 @@ class CustomBirthdayPicker extends StatelessWidget {
           children: [
             Text(
               labelText,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w600,
+                color: Theme.of(context).textTheme.bodyLarge?.color,
               ),
             ),
             const SizedBox(height: 6),
@@ -48,9 +49,12 @@ class CustomBirthdayPicker extends StatelessWidget {
                   isEmpty: selectedDate == null,
                   decoration: InputDecoration(
                     filled: true,
-                    fillColor: Theme.of(context).primaryColorLight,
+                    fillColor: Theme.of(context).cardColor,
                     hintText: hintText,
-                    hintStyle: const TextStyle(color: Colors.grey, fontSize: 15),
+                    hintStyle: TextStyle(
+                      color: Theme.of(context).hintColor,
+                      fontSize: 15,
+                    ),
                     border: OutlineInputBorder(
                       borderSide: BorderSide.none,
                       borderRadius: BorderRadius.circular(12),
@@ -59,23 +63,22 @@ class CustomBirthdayPicker extends StatelessWidget {
                       horizontal: 16,
                       vertical: 14,
                     ),
-                    suffixIcon: const Icon(
+                    suffixIcon: Icon(
                       Icons.calendar_today_outlined,
-                      color: Colors.grey,
+                      color: Theme.of(context).hintColor,
                     ),
                     errorText: field.errorText,
                   ),
                   child: Text(
                     selectedDate != null ? formatter.format(selectedDate!) : "",
-                    style: const TextStyle(
-                      color: Colors.black87,
+                    style: TextStyle(
+                      color: Theme.of(context).textTheme.bodyLarge?.color,
                       fontSize: 15,
                     ),
                   ),
                 ),
               ),
             ),
-
           ],
         );
       },

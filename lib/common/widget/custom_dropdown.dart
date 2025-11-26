@@ -28,7 +28,7 @@ class CustomStyledDropdown extends StatelessWidget {
           style: TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.w600,
-            color: Colors.black87,
+            color: Theme.of(context).textTheme.bodyLarge?.color,
           ),
         ),
 
@@ -36,22 +36,34 @@ class CustomStyledDropdown extends StatelessWidget {
 
         Container(
           padding: EdgeInsets.symmetric(vertical: 2),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(14),
-          ),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(14)),
 
           child: DropdownButtonFormField<String>(
             initialValue: selectedValue,
             validator: validator,
-            dropdownColor: Colors.white,
+            dropdownColor: Theme.of(context).cardColor,
             decoration: InputDecoration(
               hintText: hintText,
-              hintStyle: TextStyle(color: Colors.grey, fontSize: 15),
+              hintStyle: TextStyle(
+                color: Theme.of(context).hintColor,
+                fontSize: 15,
+              ),
               filled: true,
-              fillColor: Colors.white,
-              border: OutlineInputBorder(
-                borderSide: BorderSide.none,
+              fillColor: Theme.of(context).cardColor,
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(14),
+                borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.primaryContainer,
+                  width: 0,
+                  style: BorderStyle.none
+                ),
+              ),
+              errorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.error,
+                  width: 2,
+                ),
               ),
 
               contentPadding: EdgeInsets.symmetric(
@@ -62,7 +74,7 @@ class CustomStyledDropdown extends StatelessWidget {
 
             icon: Icon(
               Icons.keyboard_arrow_down_sharp,
-              color: Colors.grey,
+              color: Theme.of(context).hintColor,
               size: 30,
             ),
 

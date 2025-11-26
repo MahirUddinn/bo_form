@@ -46,19 +46,24 @@ class TopStepperWidget extends StatelessWidget {
                     decoration: BoxDecoration(shape: BoxShape.circle),
                     child: Center(
                       child: isCompleted
-                          ? Icon(Icons.check, size: 16, color: Colors.white)
+                          ? Icon(
+                              Icons.check,
+                              size: 16,
+                              color: Theme.of(context).colorScheme.onPrimary,
+                            )
                           : Text(
                               "${index + 1}",
                               style: TextStyle(
                                 color: (isActive || isCompleted)
-                                    ? Colors.white
-                                    : Colors.grey.shade400,
+                                    ? Theme.of(context).colorScheme.onPrimary
+                                    : Theme.of(context).hintColor,
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
                     ),
                   ),
+
                 ),
                 SizedBox(width: 8),
                 Text(
@@ -66,7 +71,7 @@ class TopStepperWidget extends StatelessWidget {
                   style: TextStyle(
                     color: (isActive || isCompleted)
                         ? Theme.of(context).primaryColorDark
-                        : Colors.grey.shade400,
+                        : Theme.of(context).hintColor,
                     fontWeight: (isActive || isCompleted)
                         ? FontWeight.bold
                         : FontWeight.normal,
@@ -79,7 +84,7 @@ class TopStepperWidget extends StatelessWidget {
                     child: Icon(
                       Icons.arrow_forward_ios_rounded,
                       size: 20,
-                      color: Colors.grey.shade400,
+                      color: Theme.of(context).hintColor,
                     ),
                   ),
               ],

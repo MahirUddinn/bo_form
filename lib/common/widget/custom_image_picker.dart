@@ -9,13 +9,14 @@ class CustomImagePicker extends StatefulWidget {
   final File? initialImage;
   final String? Function(File?)? validator;
   final String title;
+  final String subtitle;
 
   const CustomImagePicker({
     super.key,
     required this.onImagePicked,
     this.initialImage,
     this.validator,
-    required this.title,
+    required this.title, required this.subtitle,
   });
 
   @override
@@ -66,13 +67,15 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            InkWell(
-              onTap: () => _pickImage(field),
+            GestureDetector(
+              onTap: () {
+                _pickImage(field);
+              },
               child: Container(
                 width: double.infinity,
                 padding: EdgeInsets.symmetric(vertical: 20),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: _selectedImage == null
@@ -82,23 +85,25 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
                           Icon(
                             Icons.cloud_upload_outlined,
                             size: 52,
-                            color: Colors.grey.shade500,
+                            color: Theme.of(context).hintColor,
                           ),
                           SizedBox(height: 8),
                           Text(
                             widget.title,
                             style: TextStyle(
                               fontSize: 15,
-                              color: Colors.grey.shade800,
+                              color: Theme.of(
+                                context,
+                              ).textTheme.bodyLarge?.color,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
                           SizedBox(height: 4),
                           Text(
-                            "(Max. Image size: 591x709 px)",
+                            widget.subtitle,
                             style: TextStyle(
                               fontSize: 12,
-                              color: Colors.grey.shade500,
+                              color: Theme.of(context).hintColor,
                             ),
                           ),
                         ],
@@ -123,7 +128,10 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
                 padding: const EdgeInsets.only(left: 12, top: 4),
                 child: Text(
                   field.errorText!,
-                  style: TextStyle(color: Colors.red[900], fontSize: 12),
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.error,
+                    fontSize: 12,
+                  ),
                 ),
               ),
 
@@ -135,7 +143,7 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
                     width: double.infinity,
                     padding: EdgeInsets.symmetric(horizontal: 12),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Theme.of(context).cardColor,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Row(
@@ -162,7 +170,9 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
                                 style: TextStyle(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 14,
-                                  color: Colors.black87,
+                                  color: Theme.of(
+                                    context,
+                                  ).textTheme.bodyLarge?.color,
                                 ),
                               ),
                               SizedBox(height: 2),
@@ -170,14 +180,18 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
                                 "$fileSize | $formattedDate",
                                 style: TextStyle(
                                   fontSize: 12,
-                                  color: Colors.grey.shade600,
+                                  color: Theme.of(context).hintColor,
                                 ),
                               ),
                             ],
                           ),
                         ),
 
-                        Icon(Icons.check_circle, color: Color(0xFF01D3B8), size: 20),
+                        Icon(
+                          Icons.check_circle,
+                          color: Color(0xFF01D3B8),
+                          size: 20,
+                        ),
 
                         SizedBox(width: 10),
 
@@ -189,7 +203,7 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
                           },
                           child: Icon(
                             Icons.delete_outline,
-                            color: Colors.grey.shade600,
+                            color: Theme.of(context).hintColor,
                             size: 22,
                           ),
                         ),

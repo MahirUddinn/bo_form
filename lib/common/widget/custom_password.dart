@@ -33,7 +33,7 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
           style: TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.w600,
-            color: Colors.black87,
+            color: Theme.of(context).textTheme.bodyLarge?.color,
           ),
         ),
 
@@ -49,10 +49,13 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
             onSaved: widget.onSaved,
             decoration: InputDecoration(
               hintText: widget.hintText,
-              hintStyle: TextStyle(color: Colors.grey, fontSize: 15),
+              hintStyle: TextStyle(
+                color: Theme.of(context).hintColor,
+                fontSize: 15,
+              ),
 
               filled: true,
-              fillColor: Colors.white,
+              fillColor: Theme.of(context).cardColor,
 
               border: OutlineInputBorder(
                 borderSide: BorderSide.none,
@@ -72,7 +75,7 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
                 },
                 child: Icon(
                   _isObscure ? Icons.visibility_off : Icons.visibility,
-                  color: Colors.grey,
+                  color: Theme.of(context).hintColor,
                 ),
               ),
             ),

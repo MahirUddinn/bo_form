@@ -27,21 +27,18 @@ class CustomTextField extends StatelessWidget {
       children: [
         Text(
           label,
-          style:  TextStyle(
+          style: TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.w600,
-            color: Colors.black87,
+            color: Theme.of(context).textTheme.bodyLarge?.color,
           ),
         ),
 
-         SizedBox(height: 6),
+        SizedBox(height: 6),
 
         Container(
-          padding:  EdgeInsets.symmetric(vertical: 2),
-          decoration: BoxDecoration(
-            color:  Color(0xFFF1F1F1),
-            borderRadius: BorderRadius.circular(14),
-          ),
+          padding: EdgeInsets.symmetric(vertical: 2),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(14)),
 
           child: TextFormField(
             controller: controller,
@@ -51,15 +48,18 @@ class CustomTextField extends StatelessWidget {
             onSaved: onSaved,
             decoration: InputDecoration(
               hintText: hintText,
-              hintStyle:  TextStyle(color: Colors.grey, fontSize: 15),
+              hintStyle: TextStyle(
+                color: Theme.of(context).hintColor,
+                fontSize: 15,
+              ),
               filled: true,
-              fillColor: Colors.white,
+              fillColor: Theme.of(context).cardColor,
               border: OutlineInputBorder(
                 borderSide: BorderSide.none,
                 borderRadius: BorderRadius.circular(12),
               ),
 
-              contentPadding:  EdgeInsets.symmetric(
+              contentPadding: EdgeInsets.symmetric(
                 horizontal: 16,
                 vertical: 14,
               ),
