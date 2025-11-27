@@ -5,13 +5,15 @@ class CustomSliderToggle extends StatelessWidget {
   final bool? selectedValue;
   final Function(bool?) onChanged;
   final String? Function(bool?)? validator;
+  final bool isRequired;
+
 
   const CustomSliderToggle({
     super.key,
-    required this.label,
+     this.label = "",
     required this.selectedValue,
     required this.onChanged,
-    this.validator,
+    this.validator,this.isRequired = false,
   });
 
   @override
@@ -22,16 +24,27 @@ class CustomSliderToggle extends StatelessWidget {
       validator: validator,
       builder: (state) {
         return Column(
+
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
-                color: textColor,
+            label != ""?
+            RichText(
+              text: TextSpan(
+                text: label,
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  color: Theme.of(context).textTheme.bodyLarge?.color,
+                ),
+                children: [
+                  isRequired?
+                  TextSpan(
+                    text: " *",
+                    style: TextStyle(color: Colors.red),
+                  ):TextSpan(),
+                ],
               ),
-            ),
+            ): Container(),
             const SizedBox(height: 8),
             Row(
               children: [

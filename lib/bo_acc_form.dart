@@ -38,6 +38,7 @@ class BOAccForm extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
           ),
           focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: _primaryColor),
             borderRadius: BorderRadius.circular(12),
           ),
         ),

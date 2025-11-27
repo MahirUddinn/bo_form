@@ -6,14 +6,16 @@ class CustomPasswordField extends StatefulWidget {
   final TextEditingController? controller;
   final String? Function(String?)? validator;
   final void Function(String?)? onSaved;
+  final bool isRequired;
+
 
   const CustomPasswordField({
     super.key,
-    required this.label,
+    this.label = "",
     required this.hintText,
     this.controller,
     this.validator,
-    this.onSaved,
+    this.onSaved, this.isRequired = false,
   });
 
   @override
@@ -28,14 +30,24 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          widget.label,
-          style: TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w600,
-            color: Theme.of(context).textTheme.bodyLarge?.color,
+        widget.label != ""?
+        RichText(
+          text: TextSpan(
+            text: widget.label,
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w600,
+              color: Theme.of(context).textTheme.bodyLarge?.color,
+            ),
+            children: [
+              widget.isRequired?
+              TextSpan(
+                text: " *",
+                style: TextStyle(color: Colors.red),
+              ):TextSpan(),
+            ],
           ),
-        ),
+        ): Container(),
 
         SizedBox(height: 6),
         Container(

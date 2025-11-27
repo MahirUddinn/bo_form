@@ -8,15 +8,17 @@ class CustomBirthdayPicker extends StatelessWidget {
   final DateFormat formatter;
   final void Function()? onTap;
   final String? Function(Object?)? validator;
+  final bool isRequired;
 
   const CustomBirthdayPicker({
     super.key,
-    required this.labelText,
+    this.labelText = "",
     required this.selectedDate,
     required this.formatter,
     required this.onTap,
     required this.validator,
     required this.hintText,
+    this.isRequired = false,
   });
 
   @override
@@ -28,14 +30,25 @@ class CustomBirthdayPicker extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              labelText,
-              style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
-                color: Theme.of(context).textTheme.bodyLarge?.color,
-              ),
-            ),
+            labelText != ""
+                ? RichText(
+                    text: TextSpan(
+                      text: labelText,
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        color: Theme.of(context).textTheme.bodyLarge?.color,
+                      ),
+                      children: [
+                        isRequired?
+                        TextSpan(
+                          text: " *",
+                          style: TextStyle(color: Colors.red),
+                        ):TextSpan(),
+                      ],
+                    ),
+                  )
+                : Container(),
             const SizedBox(height: 6),
             Container(
               padding: const EdgeInsets.symmetric(vertical: 2),

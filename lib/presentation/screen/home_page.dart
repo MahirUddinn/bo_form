@@ -66,11 +66,12 @@ class _StepperPageState extends State<StepperPage> {
       ),
 
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
+                horizontal: 8.0,
                 vertical: 8.0,
               ),
               child: _stepWidgets[_currentStep],

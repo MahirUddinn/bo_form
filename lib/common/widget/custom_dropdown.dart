@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
 
-class CustomStyledDropdown extends StatelessWidget {
+class CustomDropdown extends StatelessWidget {
   final String labelText;
   final String hintText;
   final List<String> values;
   final String? selectedValue;
   final void Function(String?) onChanged;
   final String? Function(String?)? validator;
+  final bool isRequired;
 
-  const CustomStyledDropdown({
+
+  const CustomDropdown({
     super.key,
-    required this.labelText,
+    this.labelText = "",
     required this.hintText,
     required this.values,
     required this.onChanged,
     this.selectedValue,
-    this.validator,
+    this.validator, this.isRequired = false,
+
   });
 
   @override
@@ -23,14 +26,24 @@ class CustomStyledDropdown extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          labelText,
-          style: TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w600,
-            color: Theme.of(context).textTheme.bodyLarge?.color,
+        labelText != ""?
+        RichText(
+          text: TextSpan(
+            text: labelText,
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w600,
+              color: Theme.of(context).textTheme.bodyLarge?.color,
+            ),
+            children: [
+              isRequired?
+              TextSpan(
+                text: " *",
+                style: TextStyle(color: Colors.red),
+              ):TextSpan(),
+            ],
           ),
-        ),
+        ):Container(),
 
         SizedBox(height: 6),
 
@@ -55,7 +68,7 @@ class CustomStyledDropdown extends StatelessWidget {
                 borderSide: BorderSide(
                   color: Theme.of(context).colorScheme.primaryContainer,
                   width: 0,
-                  style: BorderStyle.none
+                  style: BorderStyle.none,
                 ),
               ),
               errorBorder: OutlineInputBorder(

@@ -7,15 +7,17 @@ class CustomCheckSelector extends StatelessWidget {
   final Function(String?) onChanged;
   final String? Function(String?)? validator;
   final bool isRect;
+  final bool isRequired;
+
 
   const CustomCheckSelector({
     super.key,
-    required this.label,
+    this.label = "",
     required this.listOfValues,
     required this.selectedValue,
     required this.onChanged,
     this.validator,
-    this.isRect = false,
+    this.isRect = false, this.isRequired = false,
   });
 
   @override
@@ -29,14 +31,24 @@ class CustomCheckSelector extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
-                color: textColor,
+            label != ""?
+            RichText(
+              text: TextSpan(
+                text: label,
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  color: Theme.of(context).textTheme.bodyLarge?.color,
+                ),
+                children: [
+                  isRequired?
+                  TextSpan(
+                    text: " *",
+                    style: TextStyle(color: Colors.red),
+                  ):TextSpan(),
+                ],
               ),
-            ),
+            ): Container(),
 
             SizedBox(height: 6),
 

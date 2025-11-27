@@ -8,16 +8,18 @@ class CustomTextField extends StatelessWidget {
   final String? Function(String?)? validator;
   final void Function(String?)? onSaved;
   final TextEditingController? controller;
+  final bool isRequired;
+
 
   const CustomTextField({
     super.key,
-    required this.label,
+    this.label = "",
     required this.hintText,
     this.isObscure = false,
     this.keyboardType = TextInputType.text,
     this.validator,
     this.onSaved,
-    this.controller,
+    this.controller, this.isRequired = false,
   });
 
   @override
@@ -25,14 +27,25 @@ class CustomTextField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w600,
-            color: Theme.of(context).textTheme.bodyLarge?.color,
+        label != ""
+            ? RichText(
+          text: TextSpan(
+            text: label,
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w600,
+              color: Theme.of(context).textTheme.bodyLarge?.color,
+            ),
+            children: [
+              isRequired?
+              TextSpan(
+                text: " *",
+                style: TextStyle(color: Colors.red),
+              ):TextSpan(),
+            ],
           ),
-        ),
+        )
+            : Container(),
 
         SizedBox(height: 6),
 
