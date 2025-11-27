@@ -20,10 +20,10 @@ class AccountHolderView extends StatefulWidget {
 class _AccountHolderViewState extends State<AccountHolderView> {
   DateTime? _dob;
 
-  String? _selectedBoType = "New BO";
+  String? _selectedBoType;
   final TextEditingController _boIdController = TextEditingController();
   String? _selectedReferral;
-  String? _selectedClientType = "Individual";
+  String? _selectedClientType;
   String? _selectedCourtesyTitle;
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
@@ -47,8 +47,8 @@ class _AccountHolderViewState extends State<AccountHolderView> {
   final TextEditingController _nidController = TextEditingController();
   final TextEditingController _tinController = TextEditingController();
   String? _selectedBrokerOffice;
-  String? _selectedResidentialStatus = "Resident";
-  String? _selectedGender = "Male";
+  String? _selectedResidentialStatus;
+  String? _selectedGender;
   bool? isOfficerOrDirectorOrAuthorizedRepresentative = false;
 
   @override
@@ -61,7 +61,6 @@ class _AccountHolderViewState extends State<AccountHolderView> {
     final cubit = context.read<FormDataCubit>();
     final entity = cubit.state.accountHolderEntity;
 
-    // Initialize dropdown values
     _selectedBoType = entity.boType.isNotEmpty ? entity.boType : "New BO";
     _selectedReferral = entity.referral.isNotEmpty ? entity.referral : null;
     _selectedClientType = entity.clientType.isNotEmpty
@@ -79,7 +78,6 @@ class _AccountHolderViewState extends State<AccountHolderView> {
         : "Resident";
     _selectedGender = entity.gender.isNotEmpty ? entity.gender : "Male";
 
-    // Initialize text controllers
     _firstNameController.text = entity.firstName;
     _lastNameController.text = entity.lastName;
     _occupationController.text = entity.occupation;
@@ -99,7 +97,6 @@ class _AccountHolderViewState extends State<AccountHolderView> {
     _nidController.text = entity.nid;
     _tinController.text = entity.tin;
 
-    // Initialize date of birth
     if (entity.dateOfBirth.isNotEmpty) {
       try {
         _dob = DateFormat('yyyy-MM-dd').parse(entity.dateOfBirth);
@@ -110,7 +107,6 @@ class _AccountHolderViewState extends State<AccountHolderView> {
       }
     }
 
-    // Initialize boolean value
     isOfficerOrDirectorOrAuthorizedRepresentative =
         entity.isOfficerOrDirectorOrAuthorizedRepresentative;
   }
@@ -413,6 +409,7 @@ class _AccountHolderViewState extends State<AccountHolderView> {
           CustomDropdown(
             labelText: "Broker Branch",
             hintText: "Select an option",
+            selectedValue: _selectedBrokerOffice,
             isRequired: true,
             values: ["HEAD OFFICE", "SYLHET", "BOGURA", "BMSL", "TANGAIL"],
             onChanged: (value) {
@@ -497,6 +494,7 @@ class _AccountHolderViewState extends State<AccountHolderView> {
           ),
           CustomDropdown(
             hintText: "Select an option",
+            selectedValue: _selectedReferral,
             values: [
               "Social Media",
               "Offline Event",

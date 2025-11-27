@@ -5,50 +5,84 @@ part 'form_data_state.dart';
 
 class FormDataCubit extends Cubit<FormDataState> {
   FormDataCubit()
-    : super(
-        FormDataState(
-          accountHolderEntity: AccountHolderEntity(
-            boType: "",
-            boID: "",
-            referral: "",
-            clientType: "",
-            courtesyTitle: "",
-            firstName: "",
-            lastName: "",
-            occupation: "",
-            dateOfBirth: "",
-            fatherName: "",
-            motherName: "",
-            addressLine1: "",
-            addressLine2: "",
-            addressLine3: "",
-            city: "",
-            postCode: "",
-            district: "",
-            country: "",
-            mobileNumber: "",
-            email: "",
-            telephone: "",
-            fax: "",
-            nationality: "",
-            nid: "",
-            tin: "",
-            brokerOffice: "",
-            residentialStatus: "",
-            gender: "",
-            isOfficerOrDirectorOrAuthorizedRepresentative: false,
-          ),
+      : super(
+    FormDataState(
+        accountHolderEntity: AccountHolderEntity(
+          boType: "",
+          boID: "",
+          referral: "",
+          clientType: "",
+          courtesyTitle: "",
+          firstName: "",
+          lastName: "",
+          occupation: "",
+          dateOfBirth: "",
+          fatherName: "",
+          motherName: "",
+          addressLine1: "",
+          addressLine2: "",
+          addressLine3: "",
+          city: "",
+          postCode: "",
+          district: "",
+          country: "",
+          mobileNumber: "",
+          email: "",
+          telephone: "",
+          fax: "",
+          nationality: "",
+          nid: "",
+          tin: "",
+          brokerOffice: "",
+          residentialStatus: "",
+          gender: "",
+          isOfficerOrDirectorOrAuthorizedRepresentative: false,
         ),
-      );
+        accountFormCompleted: false
+    ),
+  );
+
+  void _checkFormCompletion() {
+    final entity = state.accountHolderEntity;
+    final isFormCompleted =
+        entity.boType.isNotEmpty &&
+            (entity.boType != "Link BO" || entity.boID.isNotEmpty) &&
+            entity.clientType.isNotEmpty &&
+            entity.courtesyTitle.isNotEmpty &&
+            entity.firstName.isNotEmpty &&
+            entity.lastName.isNotEmpty &&
+            entity.occupation.isNotEmpty &&
+            entity.dateOfBirth.isNotEmpty &&
+            entity.fatherName.isNotEmpty &&
+            entity.motherName.isNotEmpty &&
+            entity.addressLine1.isNotEmpty &&
+            entity.city.isNotEmpty &&
+            entity.postCode.isNotEmpty &&
+            entity.district.isNotEmpty &&
+            entity.country.isNotEmpty &&
+            entity.mobileNumber.isNotEmpty &&
+            entity.email.isNotEmpty &&
+            entity.nationality.isNotEmpty &&
+            entity.nid.isNotEmpty &&
+            entity.brokerOffice.isNotEmpty &&
+            entity.residentialStatus.isNotEmpty &&
+            entity.gender.isNotEmpty;
+
+    if (state.accountFormCompleted != isFormCompleted) {
+      emit(state.copyWith(accountFormCompleted: isFormCompleted));
+    }
+  }
 
   void accountHolderUpdateBoType(String boType) {
     final updatedEntity = state.accountHolderEntity.copyWith(boType: boType);
     emit(state.copyWith(accountHolderEntity: updatedEntity));
+    _checkFormCompletion();
   }
 
   void accountHolderUpdateBoID(String boID) {
     final updatedEntity = state.accountHolderEntity.copyWith(boID: boID);
     emit(state.copyWith(accountHolderEntity: updatedEntity));
+    _checkFormCompletion();
   }
 
   void accountHolderUpdateReferral(String referral) {
@@ -56,6 +90,7 @@ class FormDataCubit extends Cubit<FormDataState> {
       referral: referral,
     );
     emit(state.copyWith(accountHolderEntity: updatedEntity));
+    _checkFormCompletion();
   }
 
   void accountHolderUpdateClientType(String clientType) {
@@ -63,6 +98,7 @@ class FormDataCubit extends Cubit<FormDataState> {
       clientType: clientType,
     );
     emit(state.copyWith(accountHolderEntity: updatedEntity));
+    _checkFormCompletion();
   }
 
   void accountHolderUpdateCourtesyTitle(String courtesyTitle) {
@@ -70,6 +106,7 @@ class FormDataCubit extends Cubit<FormDataState> {
       courtesyTitle: courtesyTitle,
     );
     emit(state.copyWith(accountHolderEntity: updatedEntity));
+    _checkFormCompletion();
   }
 
   void accountHolderUpdateFirstName(String firstName) {
@@ -77,6 +114,7 @@ class FormDataCubit extends Cubit<FormDataState> {
       firstName: firstName,
     );
     emit(state.copyWith(accountHolderEntity: updatedEntity));
+    _checkFormCompletion();
   }
 
   void accountHolderUpdateLastName(String lastName) {
@@ -84,6 +122,7 @@ class FormDataCubit extends Cubit<FormDataState> {
       lastName: lastName,
     );
     emit(state.copyWith(accountHolderEntity: updatedEntity));
+    _checkFormCompletion();
   }
 
   void accountHolderUpdateOccupation(String occupation) {
@@ -91,6 +130,7 @@ class FormDataCubit extends Cubit<FormDataState> {
       occupation: occupation,
     );
     emit(state.copyWith(accountHolderEntity: updatedEntity));
+    _checkFormCompletion();
   }
 
   void accountHolderUpdateDateOfBirth(String dateOfBirth) {
@@ -98,6 +138,7 @@ class FormDataCubit extends Cubit<FormDataState> {
       dateOfBirth: dateOfBirth,
     );
     emit(state.copyWith(accountHolderEntity: updatedEntity));
+    _checkFormCompletion();
   }
 
   void accountHolderUpdateFatherName(String fatherName) {
@@ -105,6 +146,7 @@ class FormDataCubit extends Cubit<FormDataState> {
       fatherName: fatherName,
     );
     emit(state.copyWith(accountHolderEntity: updatedEntity));
+    _checkFormCompletion();
   }
 
   void accountHolderUpdateMotherName(String motherName) {
@@ -112,6 +154,7 @@ class FormDataCubit extends Cubit<FormDataState> {
       motherName: motherName,
     );
     emit(state.copyWith(accountHolderEntity: updatedEntity));
+    _checkFormCompletion();
   }
 
   void accountHolderUpdateAddressLine1(String addressLine1) {
@@ -119,6 +162,7 @@ class FormDataCubit extends Cubit<FormDataState> {
       addressLine1: addressLine1,
     );
     emit(state.copyWith(accountHolderEntity: updatedEntity));
+    _checkFormCompletion();
   }
 
   void accountHolderUpdateAddressLine2(String addressLine2) {
@@ -126,6 +170,7 @@ class FormDataCubit extends Cubit<FormDataState> {
       addressLine2: addressLine2,
     );
     emit(state.copyWith(accountHolderEntity: updatedEntity));
+    _checkFormCompletion();
   }
 
   void accountHolderUpdateAddressLine3(String addressLine3) {
@@ -133,11 +178,13 @@ class FormDataCubit extends Cubit<FormDataState> {
       addressLine3: addressLine3,
     );
     emit(state.copyWith(accountHolderEntity: updatedEntity));
+    _checkFormCompletion();
   }
 
   void accountHolderUpdateCity(String city) {
     final updatedEntity = state.accountHolderEntity.copyWith(city: city);
     emit(state.copyWith(accountHolderEntity: updatedEntity));
+    _checkFormCompletion();
   }
 
   void accountHolderUpdatePostCode(String postCode) {
@@ -145,6 +192,7 @@ class FormDataCubit extends Cubit<FormDataState> {
       postCode: postCode,
     );
     emit(state.copyWith(accountHolderEntity: updatedEntity));
+    _checkFormCompletion();
   }
 
   void accountHolderUpdateDistrict(String district) {
@@ -152,11 +200,13 @@ class FormDataCubit extends Cubit<FormDataState> {
       district: district,
     );
     emit(state.copyWith(accountHolderEntity: updatedEntity));
+    _checkFormCompletion();
   }
 
   void accountHolderUpdateCountry(String country) {
     final updatedEntity = state.accountHolderEntity.copyWith(country: country);
     emit(state.copyWith(accountHolderEntity: updatedEntity));
+    _checkFormCompletion();
   }
 
   void accountHolderUpdateMobileNumber(String mobileNumber) {
@@ -164,11 +214,13 @@ class FormDataCubit extends Cubit<FormDataState> {
       mobileNumber: mobileNumber,
     );
     emit(state.copyWith(accountHolderEntity: updatedEntity));
+    _checkFormCompletion();
   }
 
   void accountHolderUpdateEmail(String email) {
     final updatedEntity = state.accountHolderEntity.copyWith(email: email);
     emit(state.copyWith(accountHolderEntity: updatedEntity));
+    _checkFormCompletion();
   }
 
   void accountHolderUpdateTelephone(String telephone) {
@@ -176,11 +228,13 @@ class FormDataCubit extends Cubit<FormDataState> {
       telephone: telephone,
     );
     emit(state.copyWith(accountHolderEntity: updatedEntity));
+    _checkFormCompletion();
   }
 
   void accountHolderUpdateFax(String fax) {
     final updatedEntity = state.accountHolderEntity.copyWith(fax: fax);
     emit(state.copyWith(accountHolderEntity: updatedEntity));
+    _checkFormCompletion();
   }
 
   void accountHolderUpdateNationality(String nationality) {
@@ -188,16 +242,19 @@ class FormDataCubit extends Cubit<FormDataState> {
       nationality: nationality,
     );
     emit(state.copyWith(accountHolderEntity: updatedEntity));
+    _checkFormCompletion();
   }
 
   void accountHolderUpdateNid(String nid) {
     final updatedEntity = state.accountHolderEntity.copyWith(nid: nid);
     emit(state.copyWith(accountHolderEntity: updatedEntity));
+    _checkFormCompletion();
   }
 
   void accountHolderUpdateTin(String tin) {
     final updatedEntity = state.accountHolderEntity.copyWith(tin: tin);
     emit(state.copyWith(accountHolderEntity: updatedEntity));
+    _checkFormCompletion();
   }
 
   void accountHolderUpdateBrokerOffice(String brokerOffice) {
@@ -205,6 +262,7 @@ class FormDataCubit extends Cubit<FormDataState> {
       brokerOffice: brokerOffice,
     );
     emit(state.copyWith(accountHolderEntity: updatedEntity));
+    _checkFormCompletion();
   }
 
   void accountHolderUpdateResidentialStatus(String residentialStatus) {
@@ -212,20 +270,23 @@ class FormDataCubit extends Cubit<FormDataState> {
       residentialStatus: residentialStatus,
     );
     emit(state.copyWith(accountHolderEntity: updatedEntity));
+    _checkFormCompletion();
   }
 
   void accountHolderUpdateGender(String gender) {
     final updatedEntity = state.accountHolderEntity.copyWith(gender: gender);
     emit(state.copyWith(accountHolderEntity: updatedEntity));
+    _checkFormCompletion();
   }
 
   void accountHolderUpdateIsOfficerOrDirectorOrAuthorizedRepresentative(
-    bool value,
-  ) {
+      bool value,
+      ) {
     final updatedEntity = state.accountHolderEntity.copyWith(
       isOfficerOrDirectorOrAuthorizedRepresentative: value,
     );
     emit(state.copyWith(accountHolderEntity: updatedEntity));
+    _checkFormCompletion();
   }
 
   void onSubmit() {
@@ -263,6 +324,7 @@ class FormDataCubit extends Cubit<FormDataState> {
     print(
       'Is Officer/Director/Authorized Representative: ${entity.isOfficerOrDirectorOrAuthorizedRepresentative}',
     );
+    print('Account Form Completed: ${state.accountFormCompleted}');
     print('===================================');
   }
 }

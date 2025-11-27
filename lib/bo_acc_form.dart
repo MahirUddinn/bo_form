@@ -51,6 +51,7 @@ class BOAccForm extends StatelessWidget {
       ),
       darkTheme: ThemeData(
         primaryColorDark: Colors.white,
+
         brightness: Brightness.dark,
         primaryColor: _primaryColor,
         scaffoldBackgroundColor: Color(0xFF121212),
