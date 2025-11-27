@@ -9,7 +9,7 @@ class CustomTextField extends StatelessWidget {
   final void Function(String?)? onSaved;
   final TextEditingController? controller;
   final bool isRequired;
-
+  final void Function(String)? onChanged;
 
   const CustomTextField({
     super.key,
@@ -19,7 +19,9 @@ class CustomTextField extends StatelessWidget {
     this.keyboardType = TextInputType.text,
     this.validator,
     this.onSaved,
-    this.controller, this.isRequired = false,
+    this.controller,
+    this.isRequired = false,
+    this.onChanged,
   });
 
   @override
@@ -27,24 +29,26 @@ class CustomTextField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        SizedBox(height: 6),
         label != ""
             ? RichText(
-          text: TextSpan(
-            text: label,
-            style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w600,
-              color: Theme.of(context).textTheme.bodyLarge?.color,
-            ),
-            children: [
-              isRequired?
-              TextSpan(
-                text: " *",
-                style: TextStyle(color: Colors.red),
-              ):TextSpan(),
-            ],
-          ),
-        )
+                text: TextSpan(
+                  text: label,
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: Theme.of(context).textTheme.bodyLarge?.color,
+                  ),
+                  children: [
+                    isRequired
+                        ? TextSpan(
+                            text: " *",
+                            style: TextStyle(color: Colors.red),
+                          )
+                        : TextSpan(),
+                  ],
+                ),
+              )
             : Container(),
 
         SizedBox(height: 6),
@@ -59,6 +63,7 @@ class CustomTextField extends StatelessWidget {
             keyboardType: keyboardType,
             validator: validator,
             onSaved: onSaved,
+            onChanged: onChanged,
             decoration: InputDecoration(
               hintText: hintText,
               hintStyle: TextStyle(

@@ -30,6 +30,7 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        SizedBox(height: 6,),
         widget.label != ""?
         RichText(
           text: TextSpan(

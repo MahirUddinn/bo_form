@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
 class SectionBox extends StatelessWidget {
-  const SectionBox({super.key, required this.child, required this.title});
+  const SectionBox({super.key, required this.title, required this.child});
 
-  final Widget? child;
   final String title;
+  final Widget? child;
+
 
   @override
   Widget build(BuildContext context) {

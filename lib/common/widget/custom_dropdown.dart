@@ -26,6 +26,7 @@ class CustomDropdown extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        SizedBox(height: 6,),
         labelText != ""?
         RichText(
           text: TextSpan(

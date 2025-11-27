@@ -31,6 +31,7 @@ class CustomCheckSelector extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SizedBox(height: 6,),
             label != ""?
             RichText(
               text: TextSpan(
@@ -50,7 +51,7 @@ class CustomCheckSelector extends StatelessWidget {
               ),
             ): Container(),
 
-            SizedBox(height: 6),
+            SizedBox(height: 12),
 
             Wrap(
               spacing: 14,
@@ -106,6 +107,8 @@ class CustomCheckSelector extends StatelessWidget {
                   style: TextStyle(color: Colors.red, fontSize: 12),
                 ),
               ),
+            SizedBox(height: 6,),
+
           ],
         );
       },

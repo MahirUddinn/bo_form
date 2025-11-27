@@ -1,5 +1,7 @@
+import 'package:bo_acc_form/presentation/bloc/stepper_cubit.dart';
 import 'package:bo_acc_form/presentation/screen/home_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 class BOAccForm extends StatelessWidget {
   BOAccForm({super.key});
 
@@ -87,7 +89,9 @@ class BOAccForm extends StatelessWidget {
         hintColor: Colors.grey,
       ),
 
-      home: StepperPage(),
+      home: MultiBlocProvider(providers: [
+        BlocProvider(create: (context) => StepperCubit(),)
+      ], child: HomePage()),
     );
   }
 }

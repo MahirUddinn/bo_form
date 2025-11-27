@@ -7,13 +7,13 @@ class CustomSliderToggle extends StatelessWidget {
   final String? Function(bool?)? validator;
   final bool isRequired;
 
-
   const CustomSliderToggle({
     super.key,
-     this.label = "",
+    this.label = "",
     required this.selectedValue,
     required this.onChanged,
-    this.validator,this.isRequired = false,
+    this.validator,
+    this.isRequired = false,
   });
 
   @override
@@ -23,65 +23,73 @@ class CustomSliderToggle extends StatelessWidget {
       initialValue: selectedValue,
       validator: validator,
       builder: (state) {
-        return Column(
-
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            label != ""?
-            RichText(
-              text: TextSpan(
-                text: label,
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                  color: Theme.of(context).textTheme.bodyLarge?.color,
-                ),
+        return Container(
+          padding: EdgeInsets.all(12),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(14),
+              color: Theme.of(context).disabledColor),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 6),
+              label != ""
+                  ? RichText(
+                      text: TextSpan(
+                        text: label,
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                          color: Theme.of(context).textTheme.bodyLarge?.color,
+                        ),
+                        children: [
+                          isRequired
+                              ? TextSpan(
+                                  text: " *",
+                                  style: TextStyle(color: Colors.red),
+                                )
+                              : TextSpan(),
+                        ],
+                      ),
+                    )
+                  : Container(),
+              const SizedBox(height: 8),
+              Row(
                 children: [
-                  isRequired?
-                  TextSpan(
-                    text: " *",
-                    style: TextStyle(color: Colors.red),
-                  ):TextSpan(),
+                  Switch(
+                    value: state.value ?? false,
+                    onChanged: (value) {
+                      state.didChange(value);
+                      onChanged(value);
+                    },
+
+                    activeThumbColor: Theme.of(context).primaryColor,
+                    inactiveThumbColor: Colors.grey,
+                    activeTrackColor: Colors.transparent,
+                    inactiveTrackColor: Colors.transparent,
+
+                    trackOutlineColor: WidgetStateProperty.resolveWith<Color?>((
+                      Set<WidgetState> states,
+                    ) {
+                      if (states.contains(WidgetState.selected)) {
+                        return Theme.of(context).primaryColor;
+                      }
+                      return Colors.black;
+                    }),
+
+                    trackOutlineWidth: WidgetStateProperty.all(1),
+                  ),
                 ],
               ),
-            ): Container(),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                Switch(
-                  value: state.value ?? false,
-                  onChanged: (value) {
-                    state.didChange(value);
-                    onChanged(value);
-                  },
-
-                  activeThumbColor: Theme.of(context).primaryColor,
-                  inactiveThumbColor: Theme.of(context).disabledColor,
-                  activeTrackColor: Colors.transparent,
-                  inactiveTrackColor: Colors.transparent,
-
-                  trackOutlineColor: WidgetStateProperty.resolveWith<Color?>((
-                    Set<WidgetState> states,
-                  ) {
-                    if (states.contains(WidgetState.selected)) {
-                      return Theme.of(context).primaryColor;
-                    }
-                    return Theme.of(context).disabledColor;
-                  }),
-
-                  trackOutlineWidth: WidgetStateProperty.all(1.5),
+              if (state.hasError)
+                Padding(
+                  padding: const EdgeInsets.only(top: 6),
+                  child: Text(
+                    state.errorText!,
+                    style: const TextStyle(color: Colors.red, fontSize: 12),
+                  ),
                 ),
-              ],
-            ),
-            if (state.hasError)
-              Padding(
-                padding: const EdgeInsets.only(top: 6),
-                child: Text(
-                  state.errorText!,
-                  style: const TextStyle(color: Colors.red, fontSize: 12),
-                ),
-              ),
-          ],
+            ],
+          ),
         );
       },
     );

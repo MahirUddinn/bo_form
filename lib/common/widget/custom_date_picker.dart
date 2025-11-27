@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class CustomBirthdayPicker extends StatelessWidget {
+class CustomDatePicker extends StatelessWidget {
   final String hintText;
   final String labelText;
   final DateTime? selectedDate;
@@ -10,13 +10,13 @@ class CustomBirthdayPicker extends StatelessWidget {
   final String? Function(Object?)? validator;
   final bool isRequired;
 
-  const CustomBirthdayPicker({
+  const CustomDatePicker({
     super.key,
     this.labelText = "",
     required this.selectedDate,
     required this.formatter,
     required this.onTap,
-    required this.validator,
+    this.validator,
     required this.hintText,
     this.isRequired = false,
   });
@@ -30,6 +30,7 @@ class CustomBirthdayPicker extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SizedBox(height: 6,),
             labelText != ""
                 ? RichText(
                     text: TextSpan(
@@ -40,11 +41,12 @@ class CustomBirthdayPicker extends StatelessWidget {
                         color: Theme.of(context).textTheme.bodyLarge?.color,
                       ),
                       children: [
-                        isRequired?
-                        TextSpan(
-                          text: " *",
-                          style: TextStyle(color: Colors.red),
-                        ):TextSpan(),
+                        isRequired
+                            ? TextSpan(
+                                text: " *",
+                                style: TextStyle(color: Colors.red),
+                              )
+                            : TextSpan(),
                       ],
                     ),
                   )
