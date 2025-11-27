@@ -51,6 +51,8 @@ class _AuthorizeViewState extends State<AuthorizeView> {
     final cubit = context.read<FormDataCubit>();
     final entity = cubit.state.accountHolderEntity;
     //make the cubits work for bank and auth// or juss make nominee and documents section and then make everything work
+    //app performance seems ass, cubit is too complex cuz im a dumb fuck, only check the form for completion when the next button is pressed
+    look here dipshit
 
     _selectedCourtesyTitle = entity.courtesyTitle.isNotEmpty
         ? entity.courtesyTitle
