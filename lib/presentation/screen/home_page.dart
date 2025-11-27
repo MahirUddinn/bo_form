@@ -1,7 +1,6 @@
 import 'package:bo_acc_form/common/widget/custom_button.dart';
 import 'package:bo_acc_form/common/widget/custom_stepper_widget.dart';
 import 'package:flutter/material.dart';
-// Import your views here
 import 'package:bo_acc_form/presentation/widget/account_holder_view.dart';
 import 'package:bo_acc_form/presentation/widget/authorize_view.dart';
 import 'package:bo_acc_form/presentation/widget/bank_info_view.dart';
