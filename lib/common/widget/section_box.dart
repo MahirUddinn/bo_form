@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class SectionBox extends StatelessWidget {
   const SectionBox({super.key, required this.title, required this.child});
 
-  final String title;
+  final Widget? title;
   final Widget? child;
 
 
@@ -24,10 +24,7 @@ class SectionBox extends StatelessWidget {
             color: Theme.of(context).disabledColor,
             child: Container(
               margin: EdgeInsets.all(8),
-              child: Text(
-                title,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-              ),
+              child: title,
             ),
           ),
 

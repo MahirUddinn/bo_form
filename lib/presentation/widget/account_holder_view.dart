@@ -144,12 +144,18 @@ class _AccountHolderViewState extends State<AccountHolderView> {
           child: Column(
             children: [
               SectionBox(
-                title: "Account Holder",
+                title: Text(
+                  "Account Holder",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ),
                 child: Column(
                   children: [
                     _buildAccountHolder(state),
                     SectionBox(
-                      title: "First A/C Holder",
+                      title: Text(
+                        "First A/C Holder",
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
                       child: _buildFirstACHolder(state),
                     ),
                   ],
