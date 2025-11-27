@@ -1,6 +1,6 @@
 part of 'stepper_cubit.dart';
 
-class StepperState {
+class StepperState{
   final int currentStep;
   StepperState({required this.currentStep});
 
@@ -8,3 +8,4 @@ class StepperState {
     return StepperState(currentStep: currentStep ?? this.currentStep);
   }
 }
+

@@ -1,12 +1,13 @@
 import 'package:bo_acc_form/common/widget/custom_date_picker.dart';
 import 'package:bo_acc_form/common/widget/custom_check_selector.dart';
 import 'package:bo_acc_form/common/widget/custom_dropdown.dart';
-import 'package:bo_acc_form/common/widget/custom_image_picker.dart';
-import 'package:bo_acc_form/common/widget/custom_password.dart';
+
 import 'package:bo_acc_form/common/widget/custom_slider_toggle.dart';
 import 'package:bo_acc_form/common/widget/custom_text_field.dart';
 import 'package:bo_acc_form/common/widget/section_box.dart';
+import 'package:bo_acc_form/presentation/bloc/form_data/form_data_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 class AccountHolderView extends StatefulWidget {
@@ -17,15 +18,17 @@ class AccountHolderView extends StatefulWidget {
 }
 
 class _AccountHolderViewState extends State<AccountHolderView> {
-  //make an account_holder_entity.dart that contains these fields, the TextEditingControllers are going to pass the TextEditingController.text to make em strings. it should also have a copyWith function.
+  DateTime? _dob;
+
   String? _selectedBoType = "New BO";
+  final TextEditingController _boIdController = TextEditingController();
   String? _selectedReferral;
   String? _selectedClientType = "Individual";
   String? _selectedCourtesyTitle;
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _occupationController = TextEditingController();
-  DateTime? _dob;
+  String? _dateOfBirth;
   final TextEditingController _fatherNameController = TextEditingController();
   final TextEditingController _motherNameController = TextEditingController();
   final TextEditingController _addressLine1Controller = TextEditingController();
@@ -47,6 +50,70 @@ class _AccountHolderViewState extends State<AccountHolderView> {
   String? _selectedResidentialStatus = "Resident";
   String? _selectedGender = "Male";
   bool? isOfficerOrDirectorOrAuthorizedRepresentative = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeFromCubit();
+  }
+
+  void _initializeFromCubit() {
+    final cubit = context.read<FormDataCubit>();
+    final entity = cubit.state.accountHolderEntity;
+
+    // Initialize dropdown values
+    _selectedBoType = entity.boType.isNotEmpty ? entity.boType : "New BO";
+    _selectedReferral = entity.referral.isNotEmpty ? entity.referral : null;
+    _selectedClientType = entity.clientType.isNotEmpty
+        ? entity.clientType
+        : "Individual";
+    _selectedCourtesyTitle = entity.courtesyTitle.isNotEmpty
+        ? entity.courtesyTitle
+        : null;
+    _selectedCountry = entity.country.isNotEmpty ? entity.country : null;
+    _selectedBrokerOffice = entity.brokerOffice.isNotEmpty
+        ? entity.brokerOffice
+        : null;
+    _selectedResidentialStatus = entity.residentialStatus.isNotEmpty
+        ? entity.residentialStatus
+        : "Resident";
+    _selectedGender = entity.gender.isNotEmpty ? entity.gender : "Male";
+
+    // Initialize text controllers
+    _firstNameController.text = entity.firstName;
+    _lastNameController.text = entity.lastName;
+    _occupationController.text = entity.occupation;
+    _fatherNameController.text = entity.fatherName;
+    _motherNameController.text = entity.motherName;
+    _addressLine1Controller.text = entity.addressLine1;
+    _addressLine2Controller.text = entity.addressLine2;
+    _addressLine3Controller.text = entity.addressLine3;
+    _cityNameController.text = entity.city;
+    _postCodeController.text = entity.postCode;
+    _districtNameController.text = entity.district;
+    _mobileNumberController.text = entity.mobileNumber;
+    _emailAddressController.text = entity.email;
+    _telephoneNumberController.text = entity.telephone;
+    _faxNumberController.text = entity.fax;
+    _nationalityController.text = entity.nationality;
+    _nidController.text = entity.nid;
+    _tinController.text = entity.tin;
+
+    // Initialize date of birth
+    if (entity.dateOfBirth.isNotEmpty) {
+      try {
+        _dob = DateFormat('yyyy-MM-dd').parse(entity.dateOfBirth);
+        _dateOfBirth = entity.dateOfBirth;
+      } catch (e) {
+        _dob = null;
+        _dateOfBirth = null;
+      }
+    }
+
+    // Initialize boolean value
+    isOfficerOrDirectorOrAuthorizedRepresentative =
+        entity.isOfficerOrDirectorOrAuthorizedRepresentative;
+  }
 
   @override
   void dispose() {
@@ -71,27 +138,31 @@ class _AccountHolderViewState extends State<AccountHolderView> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          SectionBox(
-            title: "Account Holder",
-            child: Column(
-              children: [
-                _buildAccountHolder(),
-                SectionBox(
-                  title: "First A/C Holder",
-                  child: _buildFirstACHolder(),
+    return BlocBuilder<FormDataCubit, FormDataState>(
+      builder: (context, state) {
+        return SingleChildScrollView(
+          child: Column(
+            children: [
+              SectionBox(
+                title: "Account Holder",
+                child: Column(
+                  children: [
+                    _buildAccountHolder(state),
+                    SectionBox(
+                      title: "First A/C Holder",
+                      child: _buildFirstACHolder(state),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
-  Widget _buildFirstACHolder() {
+  Widget _buildFirstACHolder(FormDataState state) {
     return Container(
       margin: EdgeInsets.all(16),
       child: Column(
@@ -104,14 +175,21 @@ class _AccountHolderViewState extends State<AccountHolderView> {
             selectedValue: _selectedClientType,
             onChanged: (value) {
               _selectedClientType = value;
+              context.read<FormDataCubit>().accountHolderUpdateClientType(
+                value!,
+              );
             },
           ),
           CustomDropdown(
             labelText: "Courtesy Title",
             hintText: "Select an option",
             values: ["Mr", "Mrs", "Ms", "Dr"],
+            selectedValue: _selectedCourtesyTitle,
             onChanged: (value) {
               _selectedCourtesyTitle = value;
+              context.read<FormDataCubit>().accountHolderUpdateCourtesyTitle(
+                value!,
+              );
             },
           ),
           CustomTextField(
@@ -119,18 +197,29 @@ class _AccountHolderViewState extends State<AccountHolderView> {
             isRequired: true,
             label: "First Name",
             controller: _firstNameController,
+            onChanged: (value) {
+              context.read<FormDataCubit>().accountHolderUpdateFirstName(value);
+            },
           ),
           CustomTextField(
             hintText: "Enter Last Name",
             isRequired: true,
             label: "Last Name",
             controller: _lastNameController,
+            onChanged: (value) {
+              context.read<FormDataCubit>().accountHolderUpdateLastName(value);
+            },
           ),
           CustomTextField(
             hintText: "Enter Occupation",
             isRequired: true,
             label: "Occupation",
             controller: _occupationController,
+            onChanged: (value) {
+              context.read<FormDataCubit>().accountHolderUpdateOccupation(
+                value,
+              );
+            },
           ),
           CustomDatePicker(
             isRequired: true,
@@ -145,8 +234,12 @@ class _AccountHolderViewState extends State<AccountHolderView> {
               );
               if (picked != null) {
                 setState(() {
+                  _dateOfBirth = DateFormat('yyyy-MM-dd').format(picked);
                   _dob = picked;
                 });
+                context.read<FormDataCubit>().accountHolderUpdateDateOfBirth(
+                  _dateOfBirth!,
+                );
               }
             },
             hintText: "YYYY-MM-DD",
@@ -156,56 +249,92 @@ class _AccountHolderViewState extends State<AccountHolderView> {
             isRequired: true,
             label: "Father's Name",
             controller: _fatherNameController,
+            onChanged: (value) {
+              context.read<FormDataCubit>().accountHolderUpdateFatherName(
+                value,
+              );
+            },
           ),
           CustomTextField(
             hintText: "Enter Mother Name",
             isRequired: true,
             label: "Mother's Name",
             controller: _motherNameController,
+            onChanged: (value) {
+              context.read<FormDataCubit>().accountHolderUpdateMotherName(
+                value,
+              );
+            },
           ),
           CustomTextField(
             hintText: "Enter Address Line 1",
             isRequired: true,
             label: "Address Line 1",
             controller: _addressLine1Controller,
+            onChanged: (value) {
+              context.read<FormDataCubit>().accountHolderUpdateAddressLine1(
+                value,
+              );
+            },
           ),
           CustomTextField(
             hintText: "Enter Address Line 2",
             isRequired: false,
             label: "Address Line 2",
             controller: _addressLine2Controller,
+            onChanged: (value) {
+              context.read<FormDataCubit>().accountHolderUpdateAddressLine2(
+                value,
+              );
+            },
           ),
           CustomTextField(
-            hintText: "Enter Address Line 2",
+            hintText: "Enter Address Line 3",
             isRequired: false,
-            label: "Address Line 2",
+            label: "Address Line 3",
             controller: _addressLine3Controller,
+            onChanged: (value) {
+              context.read<FormDataCubit>().accountHolderUpdateAddressLine3(
+                value,
+              );
+            },
           ),
           CustomTextField(
             hintText: "Enter City",
             isRequired: true,
             label: "City",
             controller: _cityNameController,
+            onChanged: (value) {
+              context.read<FormDataCubit>().accountHolderUpdateCity(value);
+            },
           ),
           CustomTextField(
             hintText: "Enter Post Code",
             isRequired: true,
             label: "Post Code",
             controller: _postCodeController,
+            onChanged: (value) {
+              context.read<FormDataCubit>().accountHolderUpdatePostCode(value);
+            },
           ),
           CustomTextField(
             hintText: "Enter District",
             isRequired: true,
             label: "District",
             controller: _districtNameController,
+            onChanged: (value) {
+              context.read<FormDataCubit>().accountHolderUpdateDistrict(value);
+            },
           ),
           CustomDropdown(
             labelText: "Country",
             hintText: "Select an option",
+            selectedValue: _selectedCountry,
             isRequired: true,
             values: ["USA", "Canada", "India", "UK", "Bangladesh"],
             onChanged: (value) {
               _selectedCountry = value;
+              context.read<FormDataCubit>().accountHolderUpdateCountry(value!);
             },
           ),
           CustomTextField(
@@ -213,42 +342,67 @@ class _AccountHolderViewState extends State<AccountHolderView> {
             isRequired: true,
             label: "Mobile",
             controller: _mobileNumberController,
+            onChanged: (value) {
+              context.read<FormDataCubit>().accountHolderUpdateMobileNumber(
+                value,
+              );
+            },
           ),
           CustomTextField(
             hintText: "Enter Email Address",
             isRequired: true,
             label: "Email",
             controller: _emailAddressController,
+            onChanged: (value) {
+              context.read<FormDataCubit>().accountHolderUpdateEmail(value);
+            },
           ),
           CustomTextField(
             hintText: "Enter Telephone Number",
             isRequired: false,
             label: "Telephone",
             controller: _telephoneNumberController,
+            onChanged: (value) {
+              context.read<FormDataCubit>().accountHolderUpdateTelephone(value);
+            },
           ),
           CustomTextField(
             hintText: "Enter FAX Number",
             isRequired: false,
             label: "FAX",
             controller: _faxNumberController,
+            onChanged: (value) {
+              context.read<FormDataCubit>().accountHolderUpdateFax(value);
+            },
           ),
           CustomTextField(
             hintText: "Enter Nationality",
             isRequired: true,
             label: "Nationality",
             controller: _nationalityController,
+            onChanged: (value) {
+              context.read<FormDataCubit>().accountHolderUpdateNationality(
+                value,
+              );
+            },
           ),
           CustomTextField(
             hintText: "Enter National Identity Card Number",
             isRequired: true,
             label: "National ID",
             controller: _nidController,
+            onChanged: (value) {
+              context.read<FormDataCubit>().accountHolderUpdateNid(value);
+            },
           ),
           CustomTextField(
             hintText: "Enter Tax Identification Number (TIN)",
             isRequired: false,
             label: "Tax Identification Number (TIN)",
             controller: _tinController,
+            onChanged: (value) {
+              context.read<FormDataCubit>().accountHolderUpdateTin(value);
+            },
           ),
           CustomDropdown(
             labelText: "Broker Branch",
@@ -257,6 +411,9 @@ class _AccountHolderViewState extends State<AccountHolderView> {
             values: ["HEAD OFFICE", "SYLHET", "BOGURA", "BMSL", "TANGAIL"],
             onChanged: (value) {
               _selectedBrokerOffice = value;
+              context.read<FormDataCubit>().accountHolderUpdateBrokerOffice(
+                value!,
+              );
             },
           ),
           CustomCheckSelector(
@@ -266,6 +423,9 @@ class _AccountHolderViewState extends State<AccountHolderView> {
             selectedValue: _selectedResidentialStatus,
             onChanged: (value) {
               _selectedResidentialStatus = value;
+              context
+                  .read<FormDataCubit>()
+                  .accountHolderUpdateResidentialStatus(value!);
             },
           ),
           CustomCheckSelector(
@@ -275,6 +435,7 @@ class _AccountHolderViewState extends State<AccountHolderView> {
             selectedValue: _selectedGender,
             onChanged: (value) {
               _selectedGender = value;
+              context.read<FormDataCubit>().accountHolderUpdateGender(value!);
             },
           ),
           CustomSliderToggle(
@@ -283,6 +444,11 @@ class _AccountHolderViewState extends State<AccountHolderView> {
             selectedValue: isOfficerOrDirectorOrAuthorizedRepresentative,
             onChanged: (value) {
               isOfficerOrDirectorOrAuthorizedRepresentative = value;
+              context
+                  .read<FormDataCubit>()
+                  .accountHolderUpdateIsOfficerOrDirectorOrAuthorizedRepresentative(
+                    value!,
+                  );
             },
           ),
         ],
@@ -290,7 +456,7 @@ class _AccountHolderViewState extends State<AccountHolderView> {
     );
   }
 
-  Widget _buildAccountHolder() {
+  Widget _buildAccountHolder(FormDataState state) {
     return Container(
       margin: EdgeInsets.all(16),
       child: Column(
@@ -305,10 +471,19 @@ class _AccountHolderViewState extends State<AccountHolderView> {
               setState(() {
                 _selectedBoType = value;
               });
+              context.read<FormDataCubit>().accountHolderUpdateBoType(value!);
             },
           ),
           _selectedBoType == "Link BO"
-              ? CustomTextField(hintText: "Enter BOID")
+              ? CustomTextField(
+                  hintText: "Enter BOID",
+                  controller: _boIdController,
+                  onChanged: (value) {
+                    context.read<FormDataCubit>().accountHolderUpdateBoID(
+                      value,
+                    );
+                  },
+                )
               : Container(),
           SizedBox(height: 8),
           Text(
@@ -327,6 +502,9 @@ class _AccountHolderViewState extends State<AccountHolderView> {
               setState(() {
                 _selectedReferral = referral;
               });
+              context.read<FormDataCubit>().accountHolderUpdateReferral(
+                referral!,
+              );
             },
           ),
         ],
@@ -334,100 +512,3 @@ class _AccountHolderViewState extends State<AccountHolderView> {
     );
   }
 }
-
-// Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           CustomTextField(label: "Name", hintText: "Enter thou name"),
-//           CustomStyledDropdown(
-//             labelText: "City",
-//             hintText: "Select Country",
-//             selectedValue: _selectedCountry,
-//             values: ["USA", "Canada", "India", "UK", "Bangladesh"],
-//             onChanged: (value) {
-//               setState(() {
-//                 _selectedCountry = value;
-//               });
-//             },
-//           ),
-//           SizedBox(height: 8,),
-//           CustomPasswordField(
-//             label: "Password",
-//             hintText: "Enter your password",
-//           ),
-//           CustomBirthdayPicker(
-//             hintText: "DD - MM - YYYY",
-//             labelText: "Date of Birth",
-//             selectedDate: _dob,
-//             formatter: formatter,
-//             validator: (value) =>
-//                 _dob == null ? "Please select your date of birth" : null,
-//             onTap: () async {
-//               DateTime? picked = await showDatePicker(
-//                 context: context,
-//                 firstDate: DateTime(1900),
-//                 lastDate: DateTime.now(),
-//                 initialDate: DateTime(2000),
-//               );
-//               if (picked != null) {
-//                 setState(() => _dob = picked);
-//               }
-//             },
-//           ),
-//           SizedBox(height: 8),
-//           CustomImagePicker(
-//             title: "First Applicant (1st Holder) Photo",
-//             subtitle: "(Max. Image size: 591x709 px)",
-//             initialImage: null,
-//             onImagePicked: (file) {},
-//             validator: (file) {
-//               if (file == null) return "Please select an image";
-//               return null;
-//             },
-//           ),
-//
-//           SizedBox(height: 8),
-//
-//           CustomCheckSelector(
-//             label: "BO Type",
-//             listOfValues: ["New BO", "Link BO", "Matha"],
-//             selectedValue: selectedBoType,
-//             validator: (val) {
-//               if (val == null) return "Please select BO Type";
-//               return null;
-//             },
-//             onChanged: (value) {
-//               setState(() {
-//                 selectedBoType = value;
-//               });
-//             },
-//           ),
-//           SizedBox(height: 8),
-//           CustomCheckSelector(
-//             label: "BO Type",
-//             listOfValues: ["New BO", "Link BO", "Matha"],
-//             isRect: true,
-//             selectedValue: selectedBoType,
-//             validator: (val) {
-//               if (val == null) return "Please select BO Type";
-//               return null;
-//             },
-//             onChanged: (value) {
-//               setState(() {
-//                 selectedBoType = value;
-//               });
-//             },
-//           ),
-//           SizedBox(height: 8),
-//           CustomSliderToggle(
-//             label:
-//                 "Do you want to add Nominee 1 Guardian (If Nominee is A Minor) ?",
-//             selectedValue: isMinorGuardian,
-//             onChanged: (val) => setState(() => isMinorGuardian = val!),
-//             validator: (value) {
-//               if (value == null) return "Required";
-//               return null;
-//             },
-//           ),
-//         ],
-//       )

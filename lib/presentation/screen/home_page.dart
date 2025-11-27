@@ -1,6 +1,7 @@
 import 'package:bo_acc_form/common/widget/custom_button.dart';
 import 'package:bo_acc_form/common/widget/custom_stepper_widget.dart';
-import 'package:bo_acc_form/presentation/bloc/stepper_cubit.dart';
+import 'package:bo_acc_form/presentation/bloc/form_data/form_data_cubit.dart';
+import 'package:bo_acc_form/presentation/bloc/stepper_cubit/stepper_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:bo_acc_form/presentation/widget/account_holder_view.dart';
 import 'package:bo_acc_form/presentation/widget/authorize_view.dart';
@@ -129,6 +130,7 @@ class _HomePageState extends State<HomePage> {
                             if (state.currentStep < _stepTitles.length - 1) {
                               context.read<StepperCubit>().onStepForward();
                             } else {
+                              context.read<FormDataCubit>().onSubmit();
                               print("Submit");
                             }
                           },

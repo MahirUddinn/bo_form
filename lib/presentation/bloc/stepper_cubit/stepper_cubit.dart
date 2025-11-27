@@ -1,6 +1,4 @@
-import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 part 'stepper_state.dart';
 
 class StepperCubit extends Cubit<StepperState> {
@@ -14,5 +12,5 @@ class StepperCubit extends Cubit<StepperState> {
   void onStepTapped(index){
     emit(state.copyWith(currentStep: index));
   }
-  
+
 }

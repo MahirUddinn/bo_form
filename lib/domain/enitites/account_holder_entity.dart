@@ -1,12 +1,13 @@
 class AccountHolderEntity {
   final String boType;
+  final String boID;
   final String referral;
   final String clientType;
   final String courtesyTitle;
   final String firstName;
   final String lastName;
   final String occupation;
-  final DateTime dob;
+  final String dateOfBirth;
   final String fatherName;
   final String motherName;
   final String addressLine1;
@@ -30,13 +31,14 @@ class AccountHolderEntity {
 
   const AccountHolderEntity({
     required this.boType,
+    this.boID = "",
     required this.referral,
     required this.clientType,
     required this.courtesyTitle,
     required this.firstName,
     required this.lastName,
     required this.occupation,
-    required this.dob,
+    required this.dateOfBirth,
     required this.fatherName,
     required this.motherName,
     required this.addressLine1,
@@ -61,13 +63,14 @@ class AccountHolderEntity {
 
   AccountHolderEntity copyWith({
     String? boType,
+    String? boID,
     String? referral,
     String? clientType,
     String? courtesyTitle,
     String? firstName,
     String? lastName,
     String? occupation,
-    DateTime? dob,
+    String? dateOfBirth,
     String? fatherName,
     String? motherName,
     String? addressLine1,
@@ -91,13 +94,14 @@ class AccountHolderEntity {
   }) {
     return AccountHolderEntity(
       boType: boType ?? this.boType,
+      boID: boID ?? this.boID,
       referral: referral ?? this.referral,
       clientType: clientType ?? this.clientType,
       courtesyTitle: courtesyTitle ?? this.courtesyTitle,
       firstName: firstName ?? this.firstName,
       lastName: lastName ?? this.lastName,
       occupation: occupation ?? this.occupation,
-      dob: dob ?? this.dob,
+      dateOfBirth: dateOfBirth ?? this.dateOfBirth,
       fatherName: fatherName ?? this.fatherName,
       motherName: motherName ?? this.motherName,
       addressLine1: addressLine1 ?? this.addressLine1,
@@ -118,13 +122,13 @@ class AccountHolderEntity {
       residentialStatus: residentialStatus ?? this.residentialStatus,
       gender: gender ?? this.gender,
       isOfficerOrDirectorOrAuthorizedRepresentative:
-      isOfficerOrDirectorOrAuthorizedRepresentative ??
+          isOfficerOrDirectorOrAuthorizedRepresentative ??
           this.isOfficerOrDirectorOrAuthorizedRepresentative,
     );
   }
 
   @override
   String toString() {
-    return 'AccountHolderEntity(boType: $boType, referral: $referral, clientType: $clientType, courtesyTitle: $courtesyTitle, firstName: $firstName, lastName: $lastName, occupation: $occupation, dob: $dob, fatherName: $fatherName, motherName: $motherName, addressLine1: $addressLine1, addressLine2: $addressLine2, addressLine3: $addressLine3, city: $city, postCode: $postCode, district: $district, country: $country, mobileNumber: $mobileNumber, email: $email, telephone: $telephone, fax: $fax, nationality: $nationality, nid: $nid, tin: $tin, brokerOffice: $brokerOffice, residentialStatus: $residentialStatus, gender: $gender, isOfficerOrDirectorOrAuthorizedRepresentative: $isOfficerOrDirectorOrAuthorizedRepresentative)';
+    return 'AccountHolderEntity(boType: $boType, referral: $referral, clientType: $clientType, courtesyTitle: $courtesyTitle, firstName: $firstName, lastName: $lastName, occupation: $occupation, dob: $dateOfBirth, fatherName: $fatherName, motherName: $motherName, addressLine1: $addressLine1, addressLine2: $addressLine2, addressLine3: $addressLine3, city: $city, postCode: $postCode, district: $district, country: $country, mobileNumber: $mobileNumber, email: $email, telephone: $telephone, fax: $fax, nationality: $nationality, nid: $nid, tin: $tin, brokerOffice: $brokerOffice, residentialStatus: $residentialStatus, gender: $gender, isOfficerOrDirectorOrAuthorizedRepresentative: $isOfficerOrDirectorOrAuthorizedRepresentative)';
   }
 }
