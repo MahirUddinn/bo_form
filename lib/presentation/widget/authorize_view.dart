@@ -51,8 +51,7 @@ class _AuthorizeViewState extends State<AuthorizeView> {
     final cubit = context.read<FormDataCubit>();
     final entity = cubit.state.accountHolderEntity;
     //make the cubits work for bank and auth// or juss make nominee and documents section and then make everything work
-    //app performance seems ass, cubit is too complex cuz im a dumb fuck, only check the form for completion when the next button is pressed
-    look here dipshit
+    // app performance seems ass, cubit is too complex cuz im a dumb fuck, only check the form for completion when the next button is pressed
 
     _selectedCourtesyTitle = entity.courtesyTitle.isNotEmpty
         ? entity.courtesyTitle
@@ -119,7 +118,6 @@ class _AuthorizeViewState extends State<AuthorizeView> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          _formIncompleteError(),
           BlocBuilder<FormDataCubit, FormDataState>(
             builder: (context, state) {
               return _buildFirstACHolder(state);
@@ -193,6 +191,7 @@ class _AuthorizeViewState extends State<AuthorizeView> {
                   _dateOfBirth = DateFormat('yyyy-MM-dd').format(picked);
                   _dob = picked;
                 });
+                if (!mounted) return;
                 context.read<FormDataCubit>().accountHolderUpdateDateOfBirth(
                   _dateOfBirth!,
                 );
@@ -342,21 +341,6 @@ class _AuthorizeViewState extends State<AuthorizeView> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _formIncompleteError() {
-    return BlocBuilder<FormDataCubit, FormDataState>(
-      builder: (context, state) => !state.accountFormCompleted
-          ? Container(
-              width: double.infinity,
-              padding: EdgeInsets.all(8),
-              decoration: BoxDecoration(color: Colors.redAccent),
-              child: Center(
-                child: Text("Please fill the account holder information first"),
-              ),
-            )
-          : Container(),
     );
   }
 }

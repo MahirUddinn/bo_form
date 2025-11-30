@@ -7,7 +7,7 @@ class CustomDatePicker extends StatelessWidget {
   final DateTime? selectedDate;
   final DateFormat formatter;
   final void Function()? onTap;
-  final String? Function(Object?)? validator;
+  final String? Function(DateTime?)? validator;
   final bool isRequired;
 
   const CustomDatePicker({
@@ -51,9 +51,9 @@ class CustomDatePicker extends StatelessWidget {
                     ),
                   )
                 : Container(),
-            const SizedBox(height: 6),
+             SizedBox(height: 6),
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 2),
+              padding:  EdgeInsets.symmetric(vertical: 2),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(14),
               ),
@@ -74,7 +74,7 @@ class CustomDatePicker extends StatelessWidget {
                       borderSide: BorderSide.none,
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    contentPadding: const EdgeInsets.symmetric(
+                    contentPadding:  EdgeInsets.symmetric(
                       horizontal: 16,
                       vertical: 14,
                     ),

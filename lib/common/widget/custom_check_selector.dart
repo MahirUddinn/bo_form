@@ -104,7 +104,7 @@ class CustomCheckSelector extends StatelessWidget {
                 padding: EdgeInsets.only(top: 6),
                 child: Text(
                   state.errorText!,
-                  style: TextStyle(color: Colors.red, fontSize: 12),
+                  style: TextStyle(color: Colors.red[900], fontSize: 12),
                 ),
               ),
             SizedBox(height: 6,),

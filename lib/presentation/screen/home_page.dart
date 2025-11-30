@@ -127,11 +127,17 @@ class _HomePageState extends State<HomePage> {
                       Expanded(
                         child: CustomButton(
                           onSubmit: () {
-                            if (state.currentStep < _stepTitles.length - 1) {
+                            if (state.currentStep == 0) {
+                              // if (context
+                              //     .read<FormDataCubit>()
+                              //     .validateAccountHolderForm()) {
+                                context.read<StepperCubit>().onStepForward();
+                              // }
+                            } else if (state.currentStep <
+                                _stepTitles.length - 1) {
                               context.read<StepperCubit>().onStepForward();
                             } else {
                               context.read<FormDataCubit>().onSubmit();
-                              print("Submit");
                             }
                           },
                           color: customTheme.primaryColor,

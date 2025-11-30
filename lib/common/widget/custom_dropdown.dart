@@ -9,7 +9,6 @@ class CustomDropdown extends StatelessWidget {
   final String? Function(String?)? validator;
   final bool isRequired;
 
-
   const CustomDropdown({
     super.key,
     this.labelText = "",
@@ -17,8 +16,8 @@ class CustomDropdown extends StatelessWidget {
     required this.values,
     required this.onChanged,
     this.selectedValue,
-    this.validator, this.isRequired = false,
-
+    this.validator,
+    this.isRequired = false,
   });
 
   @override
@@ -26,25 +25,27 @@ class CustomDropdown extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: 6,),
-        labelText != ""?
-        RichText(
-          text: TextSpan(
-            text: labelText,
-            style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w600,
-              color: Theme.of(context).textTheme.bodyLarge?.color,
-            ),
-            children: [
-              isRequired?
-              TextSpan(
-                text: " *",
-                style: TextStyle(color: Colors.red),
-              ):TextSpan(),
-            ],
-          ),
-        ):Container(),
+        SizedBox(height: 6),
+        labelText != ""
+            ? RichText(
+                text: TextSpan(
+                  text: labelText,
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: Theme.of(context).textTheme.bodyLarge?.color,
+                  ),
+                  children: [
+                    isRequired
+                        ? TextSpan(
+                            text: " *",
+                            style: TextStyle(color: Colors.red),
+                          )
+                        : TextSpan(),
+                  ],
+                ),
+              )
+            : Container(),
 
         SizedBox(height: 6),
 
@@ -76,7 +77,15 @@ class CustomDropdown extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide(
                   color: Theme.of(context).colorScheme.error,
-                  width: 2,
+                  width: 1,
+                ),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(14),
+                borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.error,
+                  width: 0,
+                  style: BorderStyle.none,
                 ),
               ),
 

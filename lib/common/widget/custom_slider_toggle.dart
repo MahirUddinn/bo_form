@@ -18,7 +18,6 @@ class CustomSliderToggle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textColor = Theme.of(context).textTheme.bodyLarge?.color;
     return FormField<bool>(
       initialValue: selectedValue,
       validator: validator,
@@ -52,7 +51,7 @@ class CustomSliderToggle extends StatelessWidget {
                       ),
                     )
                   : Container(),
-              const SizedBox(height: 8),
+               SizedBox(height: 8),
               Row(
                 children: [
                   Switch(
@@ -82,10 +81,10 @@ class CustomSliderToggle extends StatelessWidget {
               ),
               if (state.hasError)
                 Padding(
-                  padding: const EdgeInsets.only(top: 6),
+                  padding:  EdgeInsets.only(top: 6),
                   child: Text(
                     state.errorText!,
-                    style: const TextStyle(color: Colors.red, fontSize: 12),
+                    style: TextStyle(color: Colors.red[900], fontSize: 12),
                   ),
                 ),
             ],

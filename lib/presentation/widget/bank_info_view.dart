@@ -1,9 +1,7 @@
 import 'package:bo_acc_form/common/widget/custom_dropdown.dart';
 import 'package:bo_acc_form/common/widget/custom_text_field.dart';
 import 'package:bo_acc_form/common/widget/section_box.dart';
-import 'package:bo_acc_form/presentation/bloc/form_data/form_data_cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BankInfoView extends StatefulWidget {
   const BankInfoView({super.key});
@@ -34,7 +32,6 @@ class _BankInfoViewState extends State<BankInfoView> {
             title: _buildBankFormTitle(),
             child: Column(
               children: [
-                _formIncompleteError(),
                 Container(
                   padding: EdgeInsets.all(16),
                   child: Column(
@@ -97,21 +94,6 @@ class _BankInfoViewState extends State<BankInfoView> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _formIncompleteError() {
-    return BlocBuilder<FormDataCubit, FormDataState>(
-      builder: (context, state) => !state.accountFormCompleted
-          ? Container(
-              width: double.infinity,
-              padding: EdgeInsets.all(8),
-              decoration: BoxDecoration(color: Colors.redAccent),
-              child: Center(
-                child: Text("Please fill the account holder information first"),
-              ),
-            )
-          : Container(),
     );
   }
 

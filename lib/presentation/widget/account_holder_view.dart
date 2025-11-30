@@ -18,6 +18,7 @@ class AccountHolderView extends StatefulWidget {
 }
 
 class _AccountHolderViewState extends State<AccountHolderView> {
+  final _formKey = GlobalKey<FormState>();
   DateTime? _dob;
 
   String? _selectedBoType;
@@ -55,17 +56,18 @@ class _AccountHolderViewState extends State<AccountHolderView> {
   void initState() {
     super.initState();
     _initializeFromCubit();
+    context.read<FormDataCubit>().formKey = _formKey;
   }
 
   void _initializeFromCubit() {
     final cubit = context.read<FormDataCubit>();
     final entity = cubit.state.accountHolderEntity;
 
-    _selectedBoType = entity.boType.isNotEmpty ? entity.boType : "New BO";
+    _selectedBoType = entity.boType.isNotEmpty ? entity.boType : null;
     _selectedReferral = entity.referral.isNotEmpty ? entity.referral : null;
     _selectedClientType = entity.clientType.isNotEmpty
         ? entity.clientType
-        : "Individual";
+        : null;
     _selectedCourtesyTitle = entity.courtesyTitle.isNotEmpty
         ? entity.courtesyTitle
         : null;
@@ -75,8 +77,8 @@ class _AccountHolderViewState extends State<AccountHolderView> {
         : null;
     _selectedResidentialStatus = entity.residentialStatus.isNotEmpty
         ? entity.residentialStatus
-        : "Resident";
-    _selectedGender = entity.gender.isNotEmpty ? entity.gender : "Male";
+        : null;
+    _selectedGender = entity.gender.isNotEmpty ? entity.gender : null;
 
     _firstNameController.text = entity.firstName;
     _lastNameController.text = entity.lastName;
@@ -137,27 +139,31 @@ class _AccountHolderViewState extends State<AccountHolderView> {
     return BlocBuilder<FormDataCubit, FormDataState>(
       builder: (context, state) {
         return SingleChildScrollView(
-          child: Column(
-            children: [
-              SectionBox(
-                title: Text(
-                  "Account Holder",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                ),
-                child: Column(
-                  children: [
-                    _buildAccountHolder(state),
-                    SectionBox(
-                      title: Text(
-                        "First A/C Holder",
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                SectionBox(
+                  title: Text(
+                    "Account Holder",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                  child: Column(
+                    children: [
+                      _buildAccountHolder(state),
+                      SectionBox(
+                        title: Text(
+                          "First A/C Holder",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                        child: _buildFirstACHolder(state),
                       ),
-                      child: _buildFirstACHolder(state),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },
@@ -181,6 +187,12 @@ class _AccountHolderViewState extends State<AccountHolderView> {
                 value!,
               );
             },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please select a client type.';
+              }
+              return null;
+            },
           ),
           CustomDropdown(
             labelText: "Courtesy Title",
@@ -193,6 +205,12 @@ class _AccountHolderViewState extends State<AccountHolderView> {
                 value!,
               );
             },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please select a courtesy title.';
+              }
+              return null;
+            },
           ),
           CustomTextField(
             hintText: "Enter First Name",
@@ -202,6 +220,12 @@ class _AccountHolderViewState extends State<AccountHolderView> {
             onChanged: (value) {
               context.read<FormDataCubit>().accountHolderUpdateFirstName(value);
             },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter a first name.';
+              }
+              return null;
+            },
           ),
           CustomTextField(
             hintText: "Enter Last Name",
@@ -210,6 +234,12 @@ class _AccountHolderViewState extends State<AccountHolderView> {
             controller: _lastNameController,
             onChanged: (value) {
               context.read<FormDataCubit>().accountHolderUpdateLastName(value);
+            },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter a last name.';
+              }
+              return null;
             },
           ),
           CustomTextField(
@@ -221,6 +251,12 @@ class _AccountHolderViewState extends State<AccountHolderView> {
               context.read<FormDataCubit>().accountHolderUpdateOccupation(
                 value,
               );
+            },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter an occupation.';
+              }
+              return null;
             },
           ),
           CustomDatePicker(
@@ -239,12 +275,19 @@ class _AccountHolderViewState extends State<AccountHolderView> {
                   _dateOfBirth = DateFormat('yyyy-MM-dd').format(picked);
                   _dob = picked;
                 });
+                if (!mounted) return;
                 context.read<FormDataCubit>().accountHolderUpdateDateOfBirth(
                   _dateOfBirth!,
                 );
               }
             },
             hintText: "YYYY-MM-DD",
+            validator: (value) {
+              if (value == null) {
+                return 'Please select a date of birth.';
+              }
+              return null;
+            },
           ),
           CustomTextField(
             hintText: "Enter Father Name",
@@ -255,6 +298,12 @@ class _AccountHolderViewState extends State<AccountHolderView> {
               context.read<FormDataCubit>().accountHolderUpdateFatherName(
                 value,
               );
+            },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return "Please enter a father's name.";
+              }
+              return null;
             },
           ),
           CustomTextField(
@@ -267,6 +316,12 @@ class _AccountHolderViewState extends State<AccountHolderView> {
                 value,
               );
             },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return "Please enter a mother's name.";
+              }
+              return null;
+            },
           ),
           CustomTextField(
             hintText: "Enter Address Line 1",
@@ -277,6 +332,12 @@ class _AccountHolderViewState extends State<AccountHolderView> {
               context.read<FormDataCubit>().accountHolderUpdateAddressLine1(
                 value,
               );
+            },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter an address.';
+              }
+              return null;
             },
           ),
           CustomTextField(
@@ -309,6 +370,12 @@ class _AccountHolderViewState extends State<AccountHolderView> {
             onChanged: (value) {
               context.read<FormDataCubit>().accountHolderUpdateCity(value);
             },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter a city.';
+              }
+              return null;
+            },
           ),
           CustomTextField(
             hintText: "Enter Post Code",
@@ -318,6 +385,12 @@ class _AccountHolderViewState extends State<AccountHolderView> {
             onChanged: (value) {
               context.read<FormDataCubit>().accountHolderUpdatePostCode(value);
             },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter a post code.';
+              }
+              return null;
+            },
           ),
           CustomTextField(
             hintText: "Enter District",
@@ -326,6 +399,12 @@ class _AccountHolderViewState extends State<AccountHolderView> {
             controller: _districtNameController,
             onChanged: (value) {
               context.read<FormDataCubit>().accountHolderUpdateDistrict(value);
+            },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter a district.';
+              }
+              return null;
             },
           ),
           CustomDropdown(
@@ -338,6 +417,12 @@ class _AccountHolderViewState extends State<AccountHolderView> {
               _selectedCountry = value;
               context.read<FormDataCubit>().accountHolderUpdateCountry(value!);
             },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please select a country.';
+              }
+              return null;
+            },
           ),
           CustomTextField(
             hintText: "Enter Mobile",
@@ -349,6 +434,12 @@ class _AccountHolderViewState extends State<AccountHolderView> {
                 value,
               );
             },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter a mobile number.';
+              }
+              return null;
+            },
           ),
           CustomTextField(
             hintText: "Enter Email Address",
@@ -357,6 +448,15 @@ class _AccountHolderViewState extends State<AccountHolderView> {
             controller: _emailAddressController,
             onChanged: (value) {
               context.read<FormDataCubit>().accountHolderUpdateEmail(value);
+            },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter an email address.';
+              }
+              if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                return 'Please enter a valid email address.';
+              }
+              return null;
             },
           ),
           CustomTextField(
@@ -387,6 +487,12 @@ class _AccountHolderViewState extends State<AccountHolderView> {
                 value,
               );
             },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter a nationality.';
+              }
+              return null;
+            },
           ),
           CustomTextField(
             hintText: "Enter National Identity Card Number",
@@ -395,6 +501,12 @@ class _AccountHolderViewState extends State<AccountHolderView> {
             controller: _nidController,
             onChanged: (value) {
               context.read<FormDataCubit>().accountHolderUpdateNid(value);
+            },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter a national ID.';
+              }
+              return null;
             },
           ),
           CustomTextField(
@@ -418,6 +530,12 @@ class _AccountHolderViewState extends State<AccountHolderView> {
                 value!,
               );
             },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please select a broker branch.';
+              }
+              return null;
+            },
           ),
           CustomCheckSelector(
             label: "Residential Status",
@@ -430,6 +548,12 @@ class _AccountHolderViewState extends State<AccountHolderView> {
                   .read<FormDataCubit>()
                   .accountHolderUpdateResidentialStatus(value!);
             },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please select a residential status.';
+              }
+              return null;
+            },
           ),
           CustomCheckSelector(
             label: "Gender",
@@ -439,6 +563,12 @@ class _AccountHolderViewState extends State<AccountHolderView> {
             onChanged: (value) {
               _selectedGender = value;
               context.read<FormDataCubit>().accountHolderUpdateGender(value!);
+            },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please select a gender.';
+              }
+              return null;
             },
           ),
           CustomSliderToggle(
@@ -476,6 +606,12 @@ class _AccountHolderViewState extends State<AccountHolderView> {
               });
               context.read<FormDataCubit>().accountHolderUpdateBoType(value!);
             },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please select a BO type.';
+              }
+              return null;
+            },
           ),
           _selectedBoType == "Link BO"
               ? CustomTextField(
@@ -485,6 +621,13 @@ class _AccountHolderViewState extends State<AccountHolderView> {
                     context.read<FormDataCubit>().accountHolderUpdateBoID(
                       value,
                     );
+                  },
+                  validator: (value) {
+                    if (_selectedBoType == "Link BO" &&
+                        (value == null || value.isEmpty)) {
+                      return 'Please enter a BOID.';
+                    }
+                    return null;
                   },
                 )
               : Container(),
@@ -510,6 +653,7 @@ class _AccountHolderViewState extends State<AccountHolderView> {
                 referral!,
               );
             },
+
           ),
         ],
       ),
