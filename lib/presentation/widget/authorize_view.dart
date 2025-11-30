@@ -1,3 +1,4 @@
+import 'package:bo_acc_form/common/widget/section_box.dart';
 import 'package:bo_acc_form/presentation/bloc/form_data/form_data_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -92,6 +93,9 @@ class _AuthorizeViewState extends State<AuthorizeView> {
     _addressLine1Controller.dispose();
     _addressLine2Controller.dispose();
     _addressLine3Controller.dispose();
+    _cityNameController.dispose();
+    _divisionNameController.dispose();
+    _postCodeController.dispose();
     _mobileNumberController.dispose();
     _emailAddressController.dispose();
     _telephoneNumberController.dispose();
@@ -107,12 +111,15 @@ class _AuthorizeViewState extends State<AuthorizeView> {
     return BlocBuilder<FormDataCubit, FormDataState>(
       builder: (context, state) {
         return SingleChildScrollView(
-          child: Form(
-            key: widget.formKey,
-            child: Column(
-              children: [
-                _buildFirstACHolder(state),
-              ],
+          child: SectionBox(
+            title: Text("Authorize", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+            child: Form(
+              key: widget.formKey,
+              child: Column(
+                children: [
+                  _buildFirstACHolder(state),
+                ],
+              ),
             ),
           ),
         );

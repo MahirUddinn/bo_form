@@ -9,7 +9,6 @@ class BankInfoView extends StatefulWidget {
   const BankInfoView({super.key, required this.formKey});
   final GlobalKey<FormState> formKey;
 
-
   @override
   State<BankInfoView> createState() => _BankInfoViewState();
 }
@@ -27,14 +26,15 @@ class _BankInfoViewState extends State<BankInfoView> {
     _initiateFormCubit();
   }
 
-
   void _initiateFormCubit() {
     final cubit = context.read<FormDataCubit>();
     final entity = cubit.state.bankInfoEntity;
 
     setState(() {
       _selectedBankName = entity.bankName.isNotEmpty ? entity.bankName : null;
-      _selectedBankBranch = entity.bankBranch.isNotEmpty ? entity.bankBranch : null;
+      _selectedBankBranch = entity.bankBranch.isNotEmpty
+          ? entity.bankBranch
+          : null;
       _bankDistrictName.text = entity.bankDistrict;
       _bankACNumber.text = entity.bankAccountNumber;
     });
@@ -80,7 +80,9 @@ class _BankInfoViewState extends State<BankInfoView> {
                                 setState(() {
                                   _selectedBankName = value;
                                 });
-                                context.read<FormDataCubit>().bankInfoUpdateBankName(value!);
+                                context
+                                    .read<FormDataCubit>()
+                                    .bankInfoUpdateBankName(value!);
                               },
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
@@ -104,7 +106,9 @@ class _BankInfoViewState extends State<BankInfoView> {
                                 setState(() {
                                   _selectedBankBranch = value;
                                 });
-                                context.read<FormDataCubit>().bankInfoUpdateBankBranch(value!);
+                                context
+                                    .read<FormDataCubit>()
+                                    .bankInfoUpdateBankBranch(value!);
                               },
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
@@ -119,7 +123,9 @@ class _BankInfoViewState extends State<BankInfoView> {
                               label: "Bank District",
                               controller: _bankDistrictName,
                               onChanged: (value) {
-                                context.read<FormDataCubit>().bankInfoUpdateBankDistrict(value);
+                                context
+                                    .read<FormDataCubit>()
+                                    .bankInfoUpdateBankDistrict(value);
                               },
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
@@ -134,7 +140,9 @@ class _BankInfoViewState extends State<BankInfoView> {
                               label: "Bank A/C Number",
                               controller: _bankACNumber,
                               onChanged: (value) {
-                                context.read<FormDataCubit>().bankInfoUpdateBankAccountNumber(value);
+                                context
+                                    .read<FormDataCubit>()
+                                    .bankInfoUpdateBankAccountNumber(value);
                               },
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
@@ -185,7 +193,7 @@ class _BankInfoViewState extends State<BankInfoView> {
               _showAccountNumberInfoDialog();
             },
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              padding: EdgeInsets.all(12),
               child: Row(
                 children: [
                   Icon(Icons.info, color: Colors.white, size: 16),
@@ -225,10 +233,12 @@ class _BankInfoViewState extends State<BankInfoView> {
                 style: TextStyle(fontWeight: FontWeight.w500),
               ),
               SizedBox(height: 12),
-              _buildInfoStep("1. Check your bank statement or passbook"),
-              _buildInfoStep("2. Look at the bottom of your cheque leaf"),
-              _buildInfoStep("3. The account number is usually printed after the transit/routing number"),
-              _buildInfoStep("4. Ensure it contains exactly 13 digits"),
+              Text("1. Check your bank statement or passbook"),
+              Text("2. Look at the bottom of your cheque leaf"),
+              Text(
+                "3. The account number is usually printed after the transit/routing number",
+              ),
+              Text("4. Ensure it contains exactly 13 digits"),
               SizedBox(height: 16),
               Container(
                 padding: EdgeInsets.all(12),
@@ -270,19 +280,6 @@ class _BankInfoViewState extends State<BankInfoView> {
             },
             child: Text("Close"),
           ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildInfoStep(String text) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text("• ", style: TextStyle(fontWeight: FontWeight.bold)),
-          Expanded(child: Text(text)),
         ],
       ),
     );

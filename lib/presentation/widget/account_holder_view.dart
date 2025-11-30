@@ -30,7 +30,7 @@ class _AccountHolderViewState extends State<AccountHolderView> {
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _occupationController = TextEditingController();
-  String? _dateOfBirth;
+  String? _formattedDateOfBirth;
   final TextEditingController _fatherNameController = TextEditingController();
   final TextEditingController _motherNameController = TextEditingController();
   final TextEditingController _addressLine1Controller = TextEditingController();
@@ -103,10 +103,10 @@ class _AccountHolderViewState extends State<AccountHolderView> {
     if (entity.dateOfBirth.isNotEmpty) {
       try {
         _dob = DateFormat('yyyy-MM-dd').parse(entity.dateOfBirth);
-        _dateOfBirth = entity.dateOfBirth;
+        _formattedDateOfBirth = entity.dateOfBirth;
       } catch (e) {
         _dob = null;
-        _dateOfBirth = null;
+        _formattedDateOfBirth = null;
       }
     }
 
@@ -124,6 +124,9 @@ class _AccountHolderViewState extends State<AccountHolderView> {
     _addressLine1Controller.dispose();
     _addressLine2Controller.dispose();
     _addressLine3Controller.dispose();
+    _cityNameController.dispose();
+    _districtNameController.dispose();
+    _postCodeController.dispose();
     _mobileNumberController.dispose();
     _emailAddressController.dispose();
     _telephoneNumberController.dispose();
@@ -273,12 +276,12 @@ class _AccountHolderViewState extends State<AccountHolderView> {
               );
               if (picked != null) {
                 setState(() {
-                  _dateOfBirth = DateFormat('yyyy-MM-dd').format(picked);
+                  _formattedDateOfBirth = DateFormat('yyyy-MM-dd').format(picked);
                   _dob = picked;
                 });
                 if (!mounted) return;
                 context.read<FormDataCubit>().accountHolderUpdateDateOfBirth(
-                  _dateOfBirth!,
+                  _formattedDateOfBirth!,
                 );
               }
             },

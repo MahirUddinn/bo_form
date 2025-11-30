@@ -23,6 +23,7 @@ class CustomSliderToggle extends StatelessWidget {
       validator: validator,
       builder: (state) {
         return Container(
+          margin: EdgeInsets.only(top: 6),
           padding: EdgeInsets.all(12),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(14),

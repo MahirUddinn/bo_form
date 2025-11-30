@@ -11,7 +11,7 @@ import 'package:bo_acc_form/presentation/widget/nominee_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+   const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -21,7 +21,6 @@ class _HomePageState extends State<HomePage> {
   final ScrollController scrollController = ScrollController();
   final double stepItemWidth = 120;
 
-  // Form keys for each step
   final GlobalKey<FormState> _accountHolderFormKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _bankInfoFormKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _authorizeFormKey = GlobalKey<FormState>();
@@ -45,7 +44,7 @@ class _HomePageState extends State<HomePage> {
 
     scrollController.animateTo(
       offset,
-      duration: const Duration(milliseconds: 300),
+      duration:  Duration(milliseconds: 300),
       curve: Curves.easeInOut,
     );
   }
@@ -58,7 +57,6 @@ class _HomePageState extends State<HomePage> {
     'Document',
   ];
 
-  // Get the form key for the current step
   GlobalKey<FormState> _getCurrentFormKey(int currentStep) {
     switch (currentStep) {
       case 0:
@@ -76,7 +74,6 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  // Validate the current form step
   bool _validateCurrentForm(int currentStep) {
     final formKey = _getCurrentFormKey(currentStep);
     if (formKey.currentState != null) {
@@ -85,7 +82,6 @@ class _HomePageState extends State<HomePage> {
     return false;
   }
 
-  // Get the appropriate widget with form key for each step
   Widget _getStepWidget(int step) {
     switch (step) {
       case 0:
@@ -142,7 +138,7 @@ class _HomePageState extends State<HomePage> {
               children: [
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
+                    padding:  EdgeInsets.symmetric(
                       horizontal: 8.0,
                       vertical: 8.0,
                     ),
@@ -150,7 +146,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.all(16),
+                  padding:  EdgeInsets.all(16),
                   child: Row(
                     children: [
                       if (state.currentStep > 0)
@@ -160,13 +156,13 @@ class _HomePageState extends State<HomePage> {
                               context.read<StepperCubit>().onStepBackwards();
                             },
                             color: customTheme.disabledColor,
-                            child: const Text(
+                            child:  Text(
                               "< Prev",
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                           ),
                         ),
-                      if (state.currentStep > 0) const SizedBox(width: 16),
+                      if (state.currentStep > 0)  SizedBox(width: 16),
                       Expanded(
                         child: CustomButton(
                           onSubmit: () async {
@@ -191,7 +187,7 @@ class _HomePageState extends State<HomePage> {
                             state.currentStep == _stepTitles.length - 1
                                 ? "Submit"
                                 : "Next >",
-                            style: const TextStyle(
+                            style:  TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                             ),
