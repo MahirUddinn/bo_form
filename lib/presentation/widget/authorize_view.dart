@@ -7,13 +7,16 @@ import 'package:bo_acc_form/common/widget/custom_text_field.dart';
 import 'package:intl/intl.dart';
 
 class AuthorizeView extends StatefulWidget {
-  const AuthorizeView({super.key});
+  const AuthorizeView({super.key, required this.formKey});
+  final GlobalKey<FormState> formKey;
+
 
   @override
   State<AuthorizeView> createState() => _AuthorizeViewState();
 }
 
 class _AuthorizeViewState extends State<AuthorizeView> {
+
   DateTime? _dob;
 
   String? _selectedCourtesyTitle;
@@ -33,29 +36,22 @@ class _AuthorizeViewState extends State<AuthorizeView> {
   final TextEditingController _mobileNumberController = TextEditingController();
   final TextEditingController _emailAddressController = TextEditingController();
   final TextEditingController _telephoneNumberController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _faxNumberController = TextEditingController();
-  final TextEditingController _nationalityController = TextEditingController();
   final TextEditingController _nidController = TextEditingController();
-  final TextEditingController _tinController = TextEditingController();
-
-  bool? isOfficerOrDirectorOrAuthorizedRepresentative = false;
 
   @override
   void initState() {
     super.initState();
     _initializeFromCubit();
+    context.read<FormDataCubit>().formKey = widget.formKey;
   }
 
   void _initializeFromCubit() {
     final cubit = context.read<FormDataCubit>();
-    final entity = cubit.state.accountHolderEntity;
-    //make the cubits work for bank and auth// or juss make nominee and documents section and then make everything work
-    // app performance seems ass, cubit is too complex cuz im a dumb fuck, only check the form for completion when the next button is pressed
+    final entity = cubit.state.authorizeEntity;
 
-    _selectedCourtesyTitle = entity.courtesyTitle.isNotEmpty
-        ? entity.courtesyTitle
-        : null;
+    _selectedCourtesyTitle = entity.courtesyTitle.isNotEmpty ? entity.courtesyTitle : null;
     _selectedCountry = entity.country.isNotEmpty ? entity.country : null;
 
     _firstNameController.text = entity.firstName;
@@ -68,14 +64,12 @@ class _AuthorizeViewState extends State<AuthorizeView> {
     _addressLine3Controller.text = entity.addressLine3;
     _cityNameController.text = entity.city;
     _postCodeController.text = entity.postCode;
-    _divisionNameController.text = entity.district;
+    _divisionNameController.text = entity.division;
     _mobileNumberController.text = entity.mobileNumber;
     _emailAddressController.text = entity.email;
     _telephoneNumberController.text = entity.telephone;
     _faxNumberController.text = entity.fax;
-    _nationalityController.text = entity.nationality;
     _nidController.text = entity.nid;
-    _tinController.text = entity.tin;
 
     if (entity.dateOfBirth.isNotEmpty) {
       try {
@@ -86,9 +80,6 @@ class _AuthorizeViewState extends State<AuthorizeView> {
         _dateOfBirth = null;
       }
     }
-
-    isOfficerOrDirectorOrAuthorizedRepresentative =
-        entity.isOfficerOrDirectorOrAuthorizedRepresentative;
   }
 
   @override
@@ -105,9 +96,7 @@ class _AuthorizeViewState extends State<AuthorizeView> {
     _emailAddressController.dispose();
     _telephoneNumberController.dispose();
     _faxNumberController.dispose();
-    _nationalityController.dispose();
     _nidController.dispose();
-    _tinController.dispose();
     _divisionNameController.dispose();
 
     super.dispose();
@@ -115,16 +104,19 @@ class _AuthorizeViewState extends State<AuthorizeView> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          BlocBuilder<FormDataCubit, FormDataState>(
-            builder: (context, state) {
-              return _buildFirstACHolder(state);
-            },
+    return BlocBuilder<FormDataCubit, FormDataState>(
+      builder: (context, state) {
+        return SingleChildScrollView(
+          child: Form(
+            key: widget.formKey,
+            child: Column(
+              children: [
+                _buildFirstACHolder(state),
+              ],
+            ),
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -139,11 +131,18 @@ class _AuthorizeViewState extends State<AuthorizeView> {
             hintText: "Select an option",
             values: ["Mr", "Mrs", "Ms", "Dr"],
             selectedValue: _selectedCourtesyTitle,
+            isRequired: true,
             onChanged: (value) {
-              _selectedCourtesyTitle = value;
-              context.read<FormDataCubit>().accountHolderUpdateCourtesyTitle(
-                value!,
-              );
+              setState(() {
+                _selectedCourtesyTitle = value;
+              });
+              context.read<FormDataCubit>().authorizeUpdateCourtesyTitle(value!);
+            },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please select a courtesy title.';
+              }
+              return null;
             },
           ),
           CustomTextField(
@@ -152,7 +151,13 @@ class _AuthorizeViewState extends State<AuthorizeView> {
             label: "First Name",
             controller: _firstNameController,
             onChanged: (value) {
-              context.read<FormDataCubit>().accountHolderUpdateFirstName(value);
+              context.read<FormDataCubit>().authorizeUpdateFirstName(value);
+            },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter a first name.';
+              }
+              return null;
             },
           ),
           CustomTextField(
@@ -161,7 +166,13 @@ class _AuthorizeViewState extends State<AuthorizeView> {
             label: "Last Name",
             controller: _lastNameController,
             onChanged: (value) {
-              context.read<FormDataCubit>().accountHolderUpdateLastName(value);
+              context.read<FormDataCubit>().authorizeUpdateLastName(value);
+            },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter a last name.';
+              }
+              return null;
             },
           ),
           CustomTextField(
@@ -170,9 +181,13 @@ class _AuthorizeViewState extends State<AuthorizeView> {
             label: "Occupation",
             controller: _occupationController,
             onChanged: (value) {
-              context.read<FormDataCubit>().accountHolderUpdateOccupation(
-                value,
-              );
+              context.read<FormDataCubit>().authorizeUpdateOccupation(value);
+            },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter an occupation.';
+              }
+              return null;
             },
           ),
           CustomDatePicker(
@@ -192,12 +207,16 @@ class _AuthorizeViewState extends State<AuthorizeView> {
                   _dob = picked;
                 });
                 if (!mounted) return;
-                context.read<FormDataCubit>().accountHolderUpdateDateOfBirth(
-                  _dateOfBirth!,
-                );
+                context.read<FormDataCubit>().authorizeUpdateDateOfBirth(_dateOfBirth!);
               }
             },
             hintText: "YYYY-MM-DD",
+            validator: (value) {
+              if (value == null) {
+                return 'Please select a date of birth.';
+              }
+              return null;
+            },
           ),
           CustomTextField(
             hintText: "Enter National Identity Card Number",
@@ -205,7 +224,13 @@ class _AuthorizeViewState extends State<AuthorizeView> {
             label: "National ID",
             controller: _nidController,
             onChanged: (value) {
-              context.read<FormDataCubit>().accountHolderUpdateNid(value);
+              context.read<FormDataCubit>().authorizeUpdateNid(value);
+            },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter a national ID.';
+              }
+              return null;
             },
           ),
           CustomTextField(
@@ -214,9 +239,13 @@ class _AuthorizeViewState extends State<AuthorizeView> {
             label: "Father's Name",
             controller: _fatherNameController,
             onChanged: (value) {
-              context.read<FormDataCubit>().accountHolderUpdateFatherName(
-                value,
-              );
+              context.read<FormDataCubit>().authorizeUpdateFatherName(value);
+            },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return "Please enter a father's name.";
+              }
+              return null;
             },
           ),
           CustomTextField(
@@ -225,9 +254,13 @@ class _AuthorizeViewState extends State<AuthorizeView> {
             label: "Mother's Name",
             controller: _motherNameController,
             onChanged: (value) {
-              context.read<FormDataCubit>().accountHolderUpdateMotherName(
-                value,
-              );
+              context.read<FormDataCubit>().authorizeUpdateMotherName(value);
+            },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return "Please enter a mother's name.";
+              }
+              return null;
             },
           ),
           CustomTextField(
@@ -236,9 +269,13 @@ class _AuthorizeViewState extends State<AuthorizeView> {
             label: "Address Line 1",
             controller: _addressLine1Controller,
             onChanged: (value) {
-              context.read<FormDataCubit>().accountHolderUpdateAddressLine1(
-                value,
-              );
+              context.read<FormDataCubit>().authorizeUpdateAddressLine1(value);
+            },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter an address.';
+              }
+              return null;
             },
           ),
           CustomTextField(
@@ -247,9 +284,7 @@ class _AuthorizeViewState extends State<AuthorizeView> {
             label: "Address Line 2",
             controller: _addressLine2Controller,
             onChanged: (value) {
-              context.read<FormDataCubit>().accountHolderUpdateAddressLine2(
-                value,
-              );
+              context.read<FormDataCubit>().authorizeUpdateAddressLine2(value);
             },
           ),
           CustomTextField(
@@ -258,9 +293,7 @@ class _AuthorizeViewState extends State<AuthorizeView> {
             label: "Address Line 3",
             controller: _addressLine3Controller,
             onChanged: (value) {
-              context.read<FormDataCubit>().accountHolderUpdateAddressLine3(
-                value,
-              );
+              context.read<FormDataCubit>().authorizeUpdateAddressLine3(value);
             },
           ),
           CustomTextField(
@@ -269,7 +302,13 @@ class _AuthorizeViewState extends State<AuthorizeView> {
             label: "City",
             controller: _cityNameController,
             onChanged: (value) {
-              context.read<FormDataCubit>().accountHolderUpdateCity(value);
+              context.read<FormDataCubit>().authorizeUpdateCity(value);
+            },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter a city.';
+              }
+              return null;
             },
           ),
           CustomTextField(
@@ -278,7 +317,13 @@ class _AuthorizeViewState extends State<AuthorizeView> {
             label: "Post Code",
             controller: _postCodeController,
             onChanged: (value) {
-              context.read<FormDataCubit>().accountHolderUpdatePostCode(value);
+              context.read<FormDataCubit>().authorizeUpdatePostCode(value);
+            },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter a post code.';
+              }
+              return null;
             },
           ),
           CustomTextField(
@@ -287,7 +332,13 @@ class _AuthorizeViewState extends State<AuthorizeView> {
             label: "Division",
             controller: _divisionNameController,
             onChanged: (value) {
-              context.read<FormDataCubit>().accountHolderUpdateDistrict(value);
+              context.read<FormDataCubit>().authorizeUpdateDivision(value);
+            },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter a division.';
+              }
+              return null;
             },
           ),
           CustomDropdown(
@@ -297,8 +348,16 @@ class _AuthorizeViewState extends State<AuthorizeView> {
             isRequired: true,
             values: ["USA", "Canada", "India", "UK", "Bangladesh"],
             onChanged: (value) {
-              _selectedCountry = value;
-              context.read<FormDataCubit>().accountHolderUpdateCountry(value!);
+              setState(() {
+                _selectedCountry = value;
+              });
+              context.read<FormDataCubit>().authorizeUpdateCountry(value!);
+            },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please select a country.';
+              }
+              return null;
             },
           ),
           CustomTextField(
@@ -307,9 +366,13 @@ class _AuthorizeViewState extends State<AuthorizeView> {
             label: "Mobile",
             controller: _mobileNumberController,
             onChanged: (value) {
-              context.read<FormDataCubit>().accountHolderUpdateMobileNumber(
-                value,
-              );
+              context.read<FormDataCubit>().authorizeUpdateMobileNumber(value);
+            },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter a mobile number.';
+              }
+              return null;
             },
           ),
           CustomTextField(
@@ -318,7 +381,13 @@ class _AuthorizeViewState extends State<AuthorizeView> {
             label: "Email",
             controller: _emailAddressController,
             onChanged: (value) {
-              context.read<FormDataCubit>().accountHolderUpdateEmail(value);
+              context.read<FormDataCubit>().authorizeUpdateEmail(value);
+            },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter an email address.';
+              }
+              return null;
             },
           ),
           CustomTextField(
@@ -327,7 +396,7 @@ class _AuthorizeViewState extends State<AuthorizeView> {
             label: "Telephone",
             controller: _telephoneNumberController,
             onChanged: (value) {
-              context.read<FormDataCubit>().accountHolderUpdateTelephone(value);
+              context.read<FormDataCubit>().authorizeUpdateTelephone(value);
             },
           ),
           CustomTextField(
@@ -336,7 +405,7 @@ class _AuthorizeViewState extends State<AuthorizeView> {
             label: "FAX",
             controller: _faxNumberController,
             onChanged: (value) {
-              context.read<FormDataCubit>().accountHolderUpdateFax(value);
+              context.read<FormDataCubit>().authorizeUpdateFax(value);
             },
           ),
         ],

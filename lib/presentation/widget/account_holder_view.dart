@@ -11,14 +11,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 class AccountHolderView extends StatefulWidget {
-  const AccountHolderView({super.key});
+  const AccountHolderView({super.key, required this.formKey});
+  final GlobalKey<FormState> formKey;
+
 
   @override
   State<AccountHolderView> createState() => _AccountHolderViewState();
 }
 
 class _AccountHolderViewState extends State<AccountHolderView> {
-  final _formKey = GlobalKey<FormState>();
   DateTime? _dob;
 
   String? _selectedBoType;
@@ -55,11 +56,11 @@ class _AccountHolderViewState extends State<AccountHolderView> {
   @override
   void initState() {
     super.initState();
-    _initializeFromCubit();
-    context.read<FormDataCubit>().formKey = _formKey;
+    _initiateFromCubit();
+    context.read<FormDataCubit>().formKey = widget.formKey;
   }
 
-  void _initializeFromCubit() {
+  void _initiateFromCubit() {
     final cubit = context.read<FormDataCubit>();
     final entity = cubit.state.accountHolderEntity;
 
@@ -140,7 +141,7 @@ class _AccountHolderViewState extends State<AccountHolderView> {
       builder: (context, state) {
         return SingleChildScrollView(
           child: Form(
-            key: _formKey,
+            key: widget.formKey,
             child: Column(
               children: [
                 SectionBox(
@@ -452,9 +453,6 @@ class _AccountHolderViewState extends State<AccountHolderView> {
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please enter an email address.';
-              }
-              if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                return 'Please enter a valid email address.';
               }
               return null;
             },

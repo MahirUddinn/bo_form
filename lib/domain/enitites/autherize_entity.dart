@@ -1,8 +1,4 @@
-class AccountHolderEntity {
-  final String boType;
-  final String boID;
-  final String referral;
-  final String clientType;
+class AuthorizeEntity {
   final String courtesyTitle;
   final String firstName;
   final String lastName;
@@ -15,25 +11,15 @@ class AccountHolderEntity {
   final String addressLine3;
   final String city;
   final String postCode;
-  final String district;
+  final String division;
   final String country;
   final String mobileNumber;
   final String email;
   final String telephone;
   final String fax;
-  final String nationality;
   final String nid;
-  final String tin;
-  final String brokerOffice;
-  final String residentialStatus;
-  final String gender;
-  final bool isOfficerOrDirectorOrAuthorizedRepresentative;
 
-  const AccountHolderEntity({
-    required this.boType,
-    this.boID = "",
-    required this.referral,
-    required this.clientType,
+  const AuthorizeEntity({
     required this.courtesyTitle,
     required this.firstName,
     required this.lastName,
@@ -46,26 +32,16 @@ class AccountHolderEntity {
     required this.addressLine3,
     required this.city,
     required this.postCode,
-    required this.district,
+    required this.division,
     required this.country,
     required this.mobileNumber,
     required this.email,
     required this.telephone,
     required this.fax,
-    required this.nationality,
     required this.nid,
-    required this.tin,
-    required this.brokerOffice,
-    required this.residentialStatus,
-    required this.gender,
-    required this.isOfficerOrDirectorOrAuthorizedRepresentative,
   });
 
-  AccountHolderEntity copyWith({
-    String? boType,
-    String? boID,
-    String? referral,
-    String? clientType,
+  AuthorizeEntity copyWith({
     String? courtesyTitle,
     String? firstName,
     String? lastName,
@@ -78,25 +54,15 @@ class AccountHolderEntity {
     String? addressLine3,
     String? city,
     String? postCode,
-    String? district,
+    String? division,
     String? country,
     String? mobileNumber,
     String? email,
     String? telephone,
     String? fax,
-    String? nationality,
     String? nid,
-    String? tin,
-    String? brokerOffice,
-    String? residentialStatus,
-    String? gender,
-    bool? isOfficerOrDirectorOrAuthorizedRepresentative,
   }) {
-    return AccountHolderEntity(
-      boType: boType ?? this.boType,
-      boID: boID ?? this.boID,
-      referral: referral ?? this.referral,
-      clientType: clientType ?? this.clientType,
+    return AuthorizeEntity(
       courtesyTitle: courtesyTitle ?? this.courtesyTitle,
       firstName: firstName ?? this.firstName,
       lastName: lastName ?? this.lastName,
@@ -109,21 +75,13 @@ class AccountHolderEntity {
       addressLine3: addressLine3 ?? this.addressLine3,
       city: city ?? this.city,
       postCode: postCode ?? this.postCode,
-      district: district ?? this.district,
+      division: division ?? this.division,
       country: country ?? this.country,
       mobileNumber: mobileNumber ?? this.mobileNumber,
       email: email ?? this.email,
       telephone: telephone ?? this.telephone,
       fax: fax ?? this.fax,
-      nationality: nationality ?? this.nationality,
       nid: nid ?? this.nid,
-      tin: tin ?? this.tin,
-      brokerOffice: brokerOffice ?? this.brokerOffice,
-      residentialStatus: residentialStatus ?? this.residentialStatus,
-      gender: gender ?? this.gender,
-      isOfficerOrDirectorOrAuthorizedRepresentative:
-          isOfficerOrDirectorOrAuthorizedRepresentative ??
-          this.isOfficerOrDirectorOrAuthorizedRepresentative,
     );
   }
 }

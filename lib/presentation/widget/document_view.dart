@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class DocumentView extends StatefulWidget {
-  const DocumentView({super.key});
+  const DocumentView({super.key, required this.formKey});
+  final GlobalKey<FormState> formKey;
+
 
   @override
   State<DocumentView> createState() => _DocumentViewState();

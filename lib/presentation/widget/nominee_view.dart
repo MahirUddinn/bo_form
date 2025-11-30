@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class NomineeView extends StatefulWidget {
-  const NomineeView({super.key});
+  const NomineeView({super.key, required this.formKey});
+  final GlobalKey<FormState> formKey;
 
   @override
   State<NomineeView> createState() => _NomineeViewState();

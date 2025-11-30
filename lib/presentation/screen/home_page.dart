@@ -21,6 +21,13 @@ class _HomePageState extends State<HomePage> {
   final ScrollController scrollController = ScrollController();
   final double stepItemWidth = 120;
 
+  // Form keys for each step
+  final GlobalKey<FormState> _accountHolderFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _bankInfoFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _authorizeFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _nomineeFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _documentFormKey = GlobalKey<FormState>();
+
   void _scrollToStep(int index) {
     if (!scrollController.hasClients) return;
 
@@ -51,13 +58,50 @@ class _HomePageState extends State<HomePage> {
     'Document',
   ];
 
-  final List<Widget> _stepWidgets = const [
-    AccountHolderView(),
-    BankInfoView(),
-    AuthorizeView(),
-    NomineeView(),
-    DocumentView(),
-  ];
+  // Get the form key for the current step
+  GlobalKey<FormState> _getCurrentFormKey(int currentStep) {
+    switch (currentStep) {
+      case 0:
+        return _accountHolderFormKey;
+      case 1:
+        return _bankInfoFormKey;
+      case 2:
+        return _authorizeFormKey;
+      case 3:
+        return _nomineeFormKey;
+      case 4:
+        return _documentFormKey;
+      default:
+        return _accountHolderFormKey;
+    }
+  }
+
+  // Validate the current form step
+  bool _validateCurrentForm(int currentStep) {
+    final formKey = _getCurrentFormKey(currentStep);
+    if (formKey.currentState != null) {
+      return formKey.currentState!.validate();
+    }
+    return false;
+  }
+
+  // Get the appropriate widget with form key for each step
+  Widget _getStepWidget(int step) {
+    switch (step) {
+      case 0:
+        return AccountHolderView(formKey: _accountHolderFormKey);
+      case 1:
+        return BankInfoView(formKey: _bankInfoFormKey);
+      case 2:
+        return AuthorizeView(formKey: _authorizeFormKey);
+      case 3:
+        return NomineeView(formKey: _nomineeFormKey);
+      case 4:
+        return DocumentView(formKey: _documentFormKey);
+      default:
+        return AccountHolderView(formKey: _accountHolderFormKey);
+    }
+  }
 
   @override
   void dispose() {
@@ -102,7 +146,7 @@ class _HomePageState extends State<HomePage> {
                       horizontal: 8.0,
                       vertical: 8.0,
                     ),
-                    child: _stepWidgets[state.currentStep],
+                    child: _getStepWidget(state.currentStep),
                   ),
                 ),
                 Container(
@@ -123,21 +167,23 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                       if (state.currentStep > 0) const SizedBox(width: 16),
-
                       Expanded(
                         child: CustomButton(
-                          onSubmit: () {
-                            if (state.currentStep == 0) {
-                              // if (context
-                              //     .read<FormDataCubit>()
-                              //     .validateAccountHolderForm()) {
+                          onSubmit: () async {
+                            if (state.currentStep < _stepTitles.length - 1) {
+                              // if (_validateCurrentForm(state.currentStep)) {
                                 context.read<StepperCubit>().onStepForward();
                               // }
-                            } else if (state.currentStep <
-                                _stepTitles.length - 1) {
-                              context.read<StepperCubit>().onStepForward();
                             } else {
-                              context.read<FormDataCubit>().onSubmit();
+                              if (_validateCurrentForm(state.currentStep)) {
+                                context.read<FormDataCubit>().onSubmit();
+                                context.read<StepperCubit>().onStepTapped(0);
+                              } else {
+                                context.read<FormDataCubit>().onSubmit();
+                                // context.read<StepperCubit>().onStepTapped(0);
+
+
+                              }
                             }
                           },
                           color: customTheme.primaryColor,
@@ -145,7 +191,10 @@ class _HomePageState extends State<HomePage> {
                             state.currentStep == _stepTitles.length - 1
                                 ? "Submit"
                                 : "Next >",
-                            style: const TextStyle(color: Colors.white),
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
@@ -159,4 +208,5 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
 }
