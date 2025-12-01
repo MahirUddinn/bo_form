@@ -41,6 +41,30 @@ class AuthorizeEntity {
     required this.nid,
   });
 
+  factory AuthorizeEntity.empty() {
+    return const AuthorizeEntity(
+      courtesyTitle: "",
+      firstName: "",
+      lastName: "",
+      occupation: "",
+      dateOfBirth: "",
+      fatherName: "",
+      motherName: "",
+      addressLine1: "",
+      addressLine2: "",
+      addressLine3: "",
+      city: "",
+      postCode: "",
+      division: "",
+      country: "",
+      mobileNumber: "",
+      email: "",
+      telephone: "",
+      fax: "",
+      nid: "",
+    );
+  }
+
   AuthorizeEntity copyWith({
     String? courtesyTitle,
     String? firstName,

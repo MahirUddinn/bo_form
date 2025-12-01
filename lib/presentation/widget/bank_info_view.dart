@@ -29,14 +29,13 @@ class _BankInfoViewState extends State<BankInfoView> {
     final cubit = context.read<FormDataCubit>();
     final entity = cubit.state.bankInfoEntity;
 
-    setState(() {
-      _selectedBankName = entity.bankName.isNotEmpty ? entity.bankName : null;
-      _selectedBankBranch = entity.bankBranch.isNotEmpty
-          ? entity.bankBranch
-          : null;
-      _bankDistrictName.text = entity.bankDistrict;
-      _bankACNumber.text = entity.bankAccountNumber;
-    });
+    _selectedBankName = entity.bankName.isNotEmpty ? entity.bankName : null;
+    _selectedBankBranch = entity.bankBranch.isNotEmpty
+        ? entity.bankBranch
+        : null;
+    _bankDistrictName.text = entity.bankDistrict;
+    _bankACNumber.text = entity.bankAccountNumber;
+    ;
   }
 
   @override

@@ -10,6 +10,7 @@ class SectionBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.only(top: 6),
       width: double.infinity,
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(

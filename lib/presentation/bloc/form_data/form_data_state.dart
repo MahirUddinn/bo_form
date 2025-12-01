@@ -4,26 +4,31 @@ class FormDataState {
   final AccountHolderEntity accountHolderEntity;
   final BankInfoEntity bankInfoEntity;
   final AuthorizeEntity authorizeEntity;
-  final List<NomineeEntity> nomineeEntities;
+  final List<NomineeEntity> nominees;
+  final bool isSecondNomineeAvailable;
 
   const FormDataState({
     required this.accountHolderEntity,
     required this.bankInfoEntity,
     required this.authorizeEntity,
-    required this.nomineeEntities
+    required this.nominees,
+    this.isSecondNomineeAvailable = false,
   });
 
   FormDataState copyWith({
     AccountHolderEntity? accountHolderEntity,
     BankInfoEntity? bankInfoEntity,
     AuthorizeEntity? authorizeEntity,
-    List<NomineeEntity>? nomineeEntities,
+    List<NomineeEntity>? nominees,
+    bool? isSecondNomineeAvailable,
   }) {
     return FormDataState(
       accountHolderEntity: accountHolderEntity ?? this.accountHolderEntity,
       bankInfoEntity: bankInfoEntity ?? this.bankInfoEntity,
       authorizeEntity: authorizeEntity ?? this.authorizeEntity,
-      nomineeEntities: nomineeEntities ?? this.nomineeEntities
+      nominees: nominees ?? this.nominees,
+      isSecondNomineeAvailable:
+          isSecondNomineeAvailable ?? this.isSecondNomineeAvailable,
     );
   }
 }

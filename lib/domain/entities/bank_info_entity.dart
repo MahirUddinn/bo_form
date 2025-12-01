@@ -11,6 +11,15 @@ class BankInfoEntity {
     required this.bankAccountNumber,
   });
 
+  factory BankInfoEntity.empty() {
+    return const BankInfoEntity(
+      bankName: "",
+      bankBranch: "",
+      bankDistrict: "",
+      bankAccountNumber: "",
+    );
+  }
+
   BankInfoEntity copyWith({
     String? bankName,
     String? bankBranch,

@@ -14,7 +14,6 @@ class AccountHolderView extends StatefulWidget {
   const AccountHolderView({super.key, required this.formKey});
   final GlobalKey<FormState> formKey;
 
-
   @override
   State<AccountHolderView> createState() => _AccountHolderViewState();
 }
@@ -158,7 +157,9 @@ class _AccountHolderViewState extends State<AccountHolderView> {
                         title: Text(
                           "First A/C Holder",
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
                         ),
                         child: _buildFirstACHolder(state),
                       ),
@@ -275,7 +276,9 @@ class _AccountHolderViewState extends State<AccountHolderView> {
               );
               if (picked != null) {
                 setState(() {
-                  _formattedDateOfBirth = DateFormat('yyyy-MM-dd').format(picked);
+                  _formattedDateOfBirth = DateFormat(
+                    'yyyy-MM-dd',
+                  ).format(picked);
                   _dob = picked;
                 });
                 if (!mounted) return;
@@ -601,9 +604,7 @@ class _AccountHolderViewState extends State<AccountHolderView> {
             listOfValues: ["New BO", "Link BO"],
             selectedValue: _selectedBoType,
             onChanged: (value) {
-              setState(() {
-                _selectedBoType = value;
-              });
+              _selectedBoType = value;
               context.read<FormDataCubit>().accountHolderUpdateBoType(value!);
             },
             validator: (value) {
@@ -646,14 +647,11 @@ class _AccountHolderViewState extends State<AccountHolderView> {
               "Friend Recommendation",
             ],
             onChanged: (referral) {
-              setState(() {
-                _selectedReferral = referral;
-              });
+              _selectedReferral = referral;
               context.read<FormDataCubit>().accountHolderUpdateReferral(
                 referral!,
               );
             },
-
           ),
         ],
       ),

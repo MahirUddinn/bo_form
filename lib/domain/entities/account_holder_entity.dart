@@ -61,6 +61,40 @@ class AccountHolderEntity {
     required this.isOfficerOrDirectorOrAuthorizedRepresentative,
   });
 
+  factory AccountHolderEntity.empty() {
+    return const AccountHolderEntity(
+      boType: "",
+      boID: "",
+      referral: "",
+      clientType: "",
+      courtesyTitle: "",
+      firstName: "",
+      lastName: "",
+      occupation: "",
+      dateOfBirth: "",
+      fatherName: "",
+      motherName: "",
+      addressLine1: "",
+      addressLine2: "",
+      addressLine3: "",
+      city: "",
+      postCode: "",
+      district: "",
+      country: "",
+      mobileNumber: "",
+      email: "",
+      telephone: "",
+      fax: "",
+      nationality: "",
+      nid: "",
+      tin: "",
+      brokerOffice: "",
+      residentialStatus: "",
+      gender: "",
+      isOfficerOrDirectorOrAuthorizedRepresentative: false,
+    );
+  }
+
   AccountHolderEntity copyWith({
     String? boType,
     String? boID,

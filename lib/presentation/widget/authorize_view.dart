@@ -215,12 +215,12 @@ class _AuthorizeViewState extends State<AuthorizeView> {
               }
             },
             hintText: "YYYY-MM-DD",
-            validator: (value) {
-              if (value == null) {
-                return 'Please select a date of birth.';
-              }
-              return null;
-            },
+            // validator: (value) {
+            //   if (value == null) {
+            //     return 'Please select a date of birth.';
+            //   }
+            //   return null;
+            // },
           ),
           CustomTextField(
             hintText: "Enter National Identity Card Number",
