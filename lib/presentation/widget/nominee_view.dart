@@ -22,8 +22,7 @@ class NomineeView extends StatelessWidget {
                   index: 0,
                   mode: 'primary',
                 ),
-                if (state.isSecondNomineeAvailable &&
-                    state.nominees.length > 1)
+                if (state.isSecondNomineeAvailable)
                   NomineeForm(
                     key: const ValueKey('nominee_form_1'),
                     index: 1,

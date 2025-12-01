@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:bo_acc_form/domain/entities/autherize_entity.dart';
 import 'package:bo_acc_form/domain/entities/bank_info_entity.dart';
+import 'package:bo_acc_form/domain/entities/document_enitity.dart';
 import 'package:bo_acc_form/domain/entities/nominee_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,6 +20,7 @@ class FormDataCubit extends Cubit<FormDataState> {
           bankInfoEntity: BankInfoEntity.empty(),
           authorizeEntity: AuthorizeEntity.empty(),
           nominees: [NomineeEntity.empty()],
+          documentEntity: DocumentEntity.empty()
         ),
       );
 
@@ -646,11 +650,57 @@ class FormDataCubit extends Cubit<FormDataState> {
     });
   }
 
+  //docs
+
+  void documentUpdateFirstApplicantPhoto(File? file) {
+    final updatedEntity = state.documentEntity.copyWith(
+      firstApplicantPhoto: file,
+    );
+    emit(state.copyWith(documentEntity: updatedEntity));
+  }
+
+  void documentUpdateFirstApplicantNidFront(File? file) {
+    final updatedEntity = state.documentEntity.copyWith(
+      firstApplicantNidFront: file,
+    );
+    emit(state.copyWith(documentEntity: updatedEntity));
+  }
+
+  void documentUpdateFirstApplicantNidBack(File? file) {
+    final updatedEntity = state.documentEntity.copyWith(
+      firstApplicantNidBack: file,
+    );
+    emit(state.copyWith(documentEntity: updatedEntity));
+  }
+
+  void documentUpdateFirstApplicantSignature(File? file) {
+    final updatedEntity = state.documentEntity.copyWith(
+      firstApplicantSignature: file,
+    );
+    emit(state.copyWith(documentEntity: updatedEntity));
+  }
+
+  void documentUpdateFirstApplicantTinCertificate(File? file) {
+    final updatedEntity = state.documentEntity.copyWith(
+      firstApplicantTinCertificate: file,
+    );
+    emit(state.copyWith(documentEntity: updatedEntity));
+  }
+
+  void documentUpdateFirstApplicantBankStatement(File? file) {
+    final updatedEntity = state.documentEntity.copyWith(
+      firstApplicantBankStatement: file,
+    );
+    emit(state.copyWith(documentEntity: updatedEntity));
+  }
+
   void onSubmit() {
     final accountHolder = state.accountHolderEntity;
     final bankInfo = state.bankInfoEntity;
     final authorize = state.authorizeEntity;
     final nominees = state.nominees;
+    final documents = state.documentEntity;
+
 
     print('\n=== FORM SUBMISSION DATA ===');
     print('Submission Time: ${DateTime.now()}');
@@ -769,6 +819,13 @@ class FormDataCubit extends Cubit<FormDataState> {
         print('    Guardian Fax: ${nominee.guardianFax}');
       }
     }
+    print('\n=== DOCUMENTS INFORMATION ===');
+    print('First Applicant Photo: ${documents.firstApplicantPhoto?.path ?? "Not uploaded"}');
+    print('First Applicant NID Front: ${documents.firstApplicantNidFront?.path ?? "Not uploaded"}');
+    print('First Applicant NID Back: ${documents.firstApplicantNidBack?.path ?? "Not uploaded"}');
+    print('First Applicant Signature: ${documents.firstApplicantSignature?.path ?? "Not uploaded"}');
+    print('First Applicant TIN Certificate: ${documents.firstApplicantTinCertificate?.path ?? "Not uploaded"}');
+    print('First Applicant Bank Statement: ${documents.firstApplicantBankStatement?.path ?? "Not uploaded"}');
 
     print('\n=== FORM SUBMITTED SUCCESSFULLY ===');
   }

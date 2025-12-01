@@ -10,13 +10,16 @@ class CustomImagePicker extends StatefulWidget {
   final String? Function(File?)? validator;
   final String title;
   final String subtitle;
+  final bool isRect;
 
   const CustomImagePicker({
     super.key,
     required this.onImagePicked,
     this.initialImage,
     this.validator,
-    required this.title, required this.subtitle,
+    this.title = "",
+    this.subtitle = "",
+    this.isRect = false
   });
 
   @override
@@ -73,7 +76,7 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
               },
               child: Container(
                 width: double.infinity,
-                padding: EdgeInsets.symmetric(vertical: 20),
+                padding: EdgeInsets.all(20),
                 decoration: BoxDecoration(
                   color: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.circular(12),
@@ -90,6 +93,7 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
                           SizedBox(height: 8),
                           Text(
                             widget.title,
+                            textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 15,
                               color: Theme.of(
@@ -109,7 +113,20 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
                         ],
                       )
                     : Center(
-                        child: SizedBox(
+                        child:
+                        widget.isRect?
+                        SizedBox(
+                          height: 120,
+                          width: 220,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(5),
+                            child: Image.file(
+                              _selectedImage!,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ):
+                        SizedBox(
                           height: 120,
                           width: 120,
                           child: ClipRRect(
@@ -211,6 +228,7 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
                     ),
                   )
                 : Container(),
+            SizedBox(height: 8,)
           ],
         );
       },
