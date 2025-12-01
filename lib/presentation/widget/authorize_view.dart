@@ -45,7 +45,6 @@ class _AuthorizeViewState extends State<AuthorizeView> {
   void initState() {
     super.initState();
     _initializeFromCubit();
-    context.read<FormDataCubit>().formKey = widget.formKey;
   }
 
   void _initializeFromCubit() {
@@ -101,8 +100,6 @@ class _AuthorizeViewState extends State<AuthorizeView> {
     _telephoneNumberController.dispose();
     _faxNumberController.dispose();
     _nidController.dispose();
-    _divisionNameController.dispose();
-
     super.dispose();
   }
 

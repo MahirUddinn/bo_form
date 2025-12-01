@@ -57,7 +57,6 @@ class _AccountHolderViewState extends State<AccountHolderView> {
   void initState() {
     super.initState();
     _initiateFromCubit();
-    context.read<FormDataCubit>().formKey = widget.formKey;
   }
 
   void _initiateFromCubit() {

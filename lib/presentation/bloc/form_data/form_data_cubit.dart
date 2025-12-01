@@ -1,5 +1,6 @@
 import 'package:bo_acc_form/domain/enitites/autherize_entity.dart';
 import 'package:bo_acc_form/domain/enitites/bank_info_entity.dart';
+import 'package:bo_acc_form/domain/enitites/nominee_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bo_acc_form/domain/enitites/account_holder_entity.dart';
@@ -70,6 +71,7 @@ class FormDataCubit extends Cubit<FormDataState> {
             fax: "",
             nid: "",
           ),
+          nomineeEntities: []
         ),
       );
 

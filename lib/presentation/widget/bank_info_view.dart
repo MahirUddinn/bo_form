@@ -22,7 +22,6 @@ class _BankInfoViewState extends State<BankInfoView> {
   @override
   void initState() {
     super.initState();
-    context.read<FormDataCubit>().formKey = widget.formKey;
     _initiateFormCubit();
   }
 
