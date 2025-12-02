@@ -14,162 +14,44 @@ class BankInfoView extends StatefulWidget {
 }
 
 class _BankInfoViewState extends State<BankInfoView> {
-  String? _selectedBankName;
-  String? _selectedBankBranch;
-  final TextEditingController _bankDistrictName = TextEditingController();
-  final TextEditingController _bankACNumber = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    _initiateFormCubit();
-  }
-
-  void _initiateFormCubit() {
-    final cubit = context.read<FormDataCubit>();
-    final entity = cubit.state.bankInfoEntity;
-
-    _selectedBankName = entity.bankName.isNotEmpty ? entity.bankName : null;
-    _selectedBankBranch = entity.bankBranch.isNotEmpty
-        ? entity.bankBranch
-        : null;
-    _bankDistrictName.text = entity.bankDistrict;
-    _bankACNumber.text = entity.bankAccountNumber;
-    ;
-  }
-
-  @override
-  void dispose() {
-    _bankDistrictName.dispose();
-    _bankACNumber.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FormDataCubit, FormDataState>(
-      builder: (context, state) {
-        return SingleChildScrollView(
-          child: Form(
-            key: widget.formKey,
-            child: Column(
-              children: [
-                SectionBox(
-                  title: _buildBankFormTitle(),
-                  child: Column(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            CustomDropdown(
-                              labelText: "Bank Name",
-                              hintText: "Select Bank Name",
-                              isRequired: true,
-                              values: [
-                                "Bangladesh Commerce Bank",
-                                "Pubali Bank",
-                                "Prime Bank",
-                                "Matha Bank",
-                              ],
-                              selectedValue: _selectedBankName,
-                              onChanged: (value) {
-                                setState(() {
-                                  _selectedBankName = value;
-                                });
-                                context
-                                    .read<FormDataCubit>()
-                                    .bankInfoUpdateBankName(value!);
-                              },
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please select a bank name.';
-                                }
-                                return null;
-                              },
-                            ),
-                            CustomDropdown(
-                              labelText: "Bank Branch",
-                              hintText: "Select an option",
-                              isRequired: true,
-                              values: [
-                                "Bank branch 1",
-                                "Bank branch 2",
-                                "Bank branch 3",
-                                "Bank branch 4",
-                              ],
-                              selectedValue: _selectedBankBranch,
-                              onChanged: (value) {
-                                setState(() {
-                                  _selectedBankBranch = value;
-                                });
-                                context
-                                    .read<FormDataCubit>()
-                                    .bankInfoUpdateBankBranch(value!);
-                              },
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please select a bank branch.';
-                                }
-                                return null;
-                              },
-                            ),
-                            CustomTextField(
-                              hintText: "Enter Bank District Name",
-                              isRequired: true,
-                              label: "Bank District",
-                              controller: _bankDistrictName,
-                              onChanged: (value) {
-                                context
-                                    .read<FormDataCubit>()
-                                    .bankInfoUpdateBankDistrict(value);
-                              },
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter the bank district name.';
-                                }
-                                return null;
-                              },
-                            ),
-                            CustomTextField(
-                              hintText: "Enter Bank Account Number",
-                              isRequired: true,
-                              label: "Bank A/C Number",
-                              controller: _bankACNumber,
-                              onChanged: (value) {
-                                context
-                                    .read<FormDataCubit>()
-                                    .bankInfoUpdateBankAccountNumber(value);
-                              },
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter the A/C number.';
-                                }
-
-                                return null;
-                              },
-                            ),
-                            SizedBox(height: 8),
-                            Text(
-                              "**Bank AC must be 13 digits",
-                              style: TextStyle(
-                                fontStyle: FontStyle.italic,
-                                color: Colors.grey[600],
-                                fontSize: 12,
-                              ),
-                            ),
-                          ],
+    return SingleChildScrollView(
+      child: Form(
+        key: widget.formKey,
+        child: Column(
+          children: [
+            SectionBox(
+              title: _buildBankFormTitle(),
+              child: Column(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        BankNameDropdown(),
+                        BankBranchDropdown(),
+                        BankDistrictTextField(),
+                        BankAccountNumberTextField(),
+                        const SizedBox(height: 8),
+                        Text(
+                          "**Bank AC must be 13 digits",
+                          style: TextStyle(
+                            fontStyle: FontStyle.italic,
+                            color: Colors.grey[600],
+                            fontSize: 12,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        );
-      },
+          ],
+        ),
+      ),
     );
   }
 
@@ -177,7 +59,7 @@ class _BankInfoViewState extends State<BankInfoView> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
+        const Text(
           "Bank Information",
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
         ),
@@ -190,7 +72,7 @@ class _BankInfoViewState extends State<BankInfoView> {
             onTap: () {
               _showAccountNumberInfoDialog();
             },
-            child: Padding(
+            child: const Padding(
               padding: EdgeInsets.all(12),
               child: Row(
                 children: [
@@ -217,7 +99,7 @@ class _BankInfoViewState extends State<BankInfoView> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(
+        title: const Text(
           "How To Get 13-Digit Bank Account Number",
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
@@ -226,25 +108,25 @@ class _BankInfoViewState extends State<BankInfoView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
+              const Text(
                 "To find your 13-digit bank account number:",
                 style: TextStyle(fontWeight: FontWeight.w500),
               ),
-              SizedBox(height: 12),
-              Text("1. Check your bank statement or passbook"),
-              Text("2. Look at the bottom of your cheque leaf"),
-              Text(
+              const SizedBox(height: 12),
+              const Text("1. Check your bank statement or passbook"),
+              const Text("2. Look at the bottom of your cheque leaf"),
+              const Text(
                 "3. The account number is usually printed after the transit/routing number",
               ),
-              Text("4. Ensure it contains exactly 13 digits"),
-              SizedBox(height: 16),
+              const Text("4. Ensure it contains exactly 13 digits"),
+              const SizedBox(height: 16),
               Container(
-                padding: EdgeInsets.all(12),
+                padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   color: Colors.grey[100],
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: Column(
+                child: const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
@@ -276,10 +158,187 @@ class _BankInfoViewState extends State<BankInfoView> {
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: Text("Close"),
+            child: const Text("Close"),
           ),
         ],
       ),
+    );
+  }
+}
+
+// Individual widget components for BankInfoView
+
+class BankNameDropdown extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<FormDataCubit, FormDataState>(
+      buildWhen: (previous, current) =>
+      previous.bankInfoEntity.bankName != current.bankInfoEntity.bankName,
+      builder: (context, state) {
+        return CustomDropdown(
+          labelText: "Bank Name",
+          hintText: "Select Bank Name",
+          isRequired: true,
+          values: const [
+            "Bangladesh Commerce Bank",
+            "Pubali Bank",
+            "Prime Bank",
+            "Matha Bank",
+          ],
+          selectedValue: state.bankInfoEntity.bankName.isNotEmpty
+              ? state.bankInfoEntity.bankName
+              : null,
+          onChanged: (value) {
+            context.read<FormDataCubit>().bankInfoUpdateBankName(value!);
+          },
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please select a bank name.';
+            }
+            return null;
+          },
+        );
+      },
+    );
+  }
+}
+
+class BankBranchDropdown extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<FormDataCubit, FormDataState>(
+      buildWhen: (previous, current) =>
+      previous.bankInfoEntity.bankBranch !=
+          current.bankInfoEntity.bankBranch,
+      builder: (context, state) {
+        return CustomDropdown(
+          labelText: "Bank Branch",
+          hintText: "Select an option",
+          isRequired: true,
+          values: const [
+            "Bank branch 1",
+            "Bank branch 2",
+            "Bank branch 3",
+            "Bank branch 4",
+          ],
+          selectedValue: state.bankInfoEntity.bankBranch.isNotEmpty
+              ? state.bankInfoEntity.bankBranch
+              : null,
+          onChanged: (value) {
+            context.read<FormDataCubit>().bankInfoUpdateBankBranch(value!);
+          },
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please select a bank branch.';
+            }
+            return null;
+          },
+        );
+      },
+    );
+  }
+}
+
+class BankDistrictTextField extends StatefulWidget {
+  @override
+  State<BankDistrictTextField> createState() => _BankDistrictTextFieldState();
+}
+
+class _BankDistrictTextFieldState extends State<BankDistrictTextField> {
+  late TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<FormDataCubit, FormDataState>(
+      buildWhen: (previous, current) =>
+      previous.bankInfoEntity.bankDistrict !=
+          current.bankInfoEntity.bankDistrict,
+      builder: (context, state) {
+        if (_controller.text != state.bankInfoEntity.bankDistrict) {
+          _controller.text = state.bankInfoEntity.bankDistrict;
+        }
+        return CustomTextField(
+          hintText: "Enter Bank District Name",
+          isRequired: true,
+          label: "Bank District",
+          controller: _controller,
+          onChanged: (value) {
+            context.read<FormDataCubit>().bankInfoUpdateBankDistrict(value);
+          },
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter the bank district name.';
+            }
+            return null;
+          },
+        );
+      },
+    );
+  }
+}
+
+class BankAccountNumberTextField extends StatefulWidget {
+  @override
+  State<BankAccountNumberTextField> createState() =>
+      _BankAccountNumberTextFieldState();
+}
+
+class _BankAccountNumberTextFieldState
+    extends State<BankAccountNumberTextField> {
+  late TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<FormDataCubit, FormDataState>(
+      buildWhen: (previous, current) =>
+      previous.bankInfoEntity.bankAccountNumber !=
+          current.bankInfoEntity.bankAccountNumber,
+      builder: (context, state) {
+        if (_controller.text != state.bankInfoEntity.bankAccountNumber) {
+          _controller.text = state.bankInfoEntity.bankAccountNumber;
+        }
+        return CustomTextField(
+          hintText: "Enter Bank Account Number",
+          isRequired: true,
+          label: "Bank A/C Number",
+          controller: _controller,
+          onChanged: (value) {
+            context
+                .read<FormDataCubit>()
+                .bankInfoUpdateBankAccountNumber(value);
+          },
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter the A/C number.';
+            }
+            return null;
+          },
+        );
+      },
     );
   }
 }

@@ -142,7 +142,9 @@ class _HomePageState extends State<HomePage> {
                       horizontal: 8.0,
                       vertical: 8.0,
                     ),
+                    // child: _getStepWidget(3),
                     child: _getStepWidget(state.currentStep),
+
                   ),
                 ),
                 Container(
@@ -167,9 +169,9 @@ class _HomePageState extends State<HomePage> {
                         child: CustomButton(
                           onSubmit: () async {
                             if (state.currentStep < _stepTitles.length - 1) {
-                              if (_validateCurrentForm(state.currentStep)) {
+                              // if (_validateCurrentForm(state.currentStep)) {
                                 context.read<StepperCubit>().onStepForward();
-                              }
+                              // }
                             } else {
                               if (_validateCurrentForm(state.currentStep)) {
                                 context.read<FormDataCubit>().onSubmit();

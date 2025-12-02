@@ -10,459 +10,1339 @@ import 'package:bo_acc_form/common/widget/custom_text_field.dart';
 import 'package:intl/intl.dart';
 import 'package:bo_acc_form/presentation/widget/guardian_form.dart';
 
-class NomineeForm extends StatefulWidget {
+class NomineeForm extends StatelessWidget {
   final int index;
   final String mode;
 
   const NomineeForm({super.key, required this.index, required this.mode});
 
   @override
-  State<NomineeForm> createState() => _NomineeFormState();
+  Widget build(BuildContext context) {
+    return BlocBuilder<FormDataCubit, FormDataState>(
+      buildWhen: (previous, current) {
+        // Rebuild if the number of nominees changes or the specific nominee changes
+        if (index >= previous.nominees.length || index >= current.nominees.length) {
+          return true;
+        }
+        return previous.nominees[index] != current.nominees[index];
+      },
+      builder: (context, state) {
+        if (index >= state.nominees.length) {
+          return const SizedBox.shrink();
+        }
+
+        final nominee = state.nominees[index];
+
+        return SectionBox(
+          title: Text(
+            mode == 'guardian' ? "Guardian Details" : "Nominee ${index + 1}",
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ),
+          child: Container(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (mode != 'guardian') ...[
+                  NomineeCourtesyTitleDropdown(nomineeIndex: index),
+                  NomineeFirstNameTextField(nomineeIndex: index),
+                  NomineeLastNameTextField(nomineeIndex: index),
+                  NomineeRelationshipTextField(nomineeIndex: index),
+                  NomineePercentageTextField(nomineeIndex: index),
+                ],
+                NomineeResidentialStatusSelector(nomineeIndex: index),
+                NomineeDateOfBirthPicker(nomineeIndex: index),
+                NomineeNidTextField(nomineeIndex: index),
+                NomineeAddressLine1TextField(nomineeIndex: index),
+                NomineeAddressLine2TextField(nomineeIndex: index),
+                NomineeAddressLine3TextField(nomineeIndex: index),
+                NomineeCityTextField(nomineeIndex: index),
+                NomineePostCodeTextField(nomineeIndex: index),
+                NomineeDivisionTextField(nomineeIndex: index),
+                NomineeCountryDropdown(nomineeIndex: index),
+                NomineeEmailTextField(nomineeIndex: index),
+                NomineeMobileTextField(nomineeIndex: index),
+                NomineeTelephoneTextField(nomineeIndex: index),
+                NomineeFaxTextField(nomineeIndex: index),
+                if (mode != 'guardian')
+                  NomineeIsMinorToggle(nomineeIndex: index),
+                if (nominee.isNomineeMinor && mode != 'guardian')
+                  GuardianForm(nomineeIndex: index),
+                if (mode == 'primary')
+                  SecondNomineeToggle(),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 }
 
-class _NomineeFormState extends State<NomineeForm> {
-  final _firstNameController = TextEditingController();
-  final _lastNameController = TextEditingController();
-  final _relationshipController = TextEditingController();
-  final _percentageController = TextEditingController();
-  final _nidController = TextEditingController();
-  final _addressLine1Controller = TextEditingController();
-  final _addressLine2Controller = TextEditingController();
-  final _addressLine3Controller = TextEditingController();
-  final _cityController = TextEditingController();
-  final _postCodeController = TextEditingController();
-  final _divisionController = TextEditingController();
-  final _mobileController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _telephoneController = TextEditingController();
-  final _faxController = TextEditingController();
+// Individual widget components for NomineeForm
 
-  String? _selectedResidentialStatus;
-  String? _selectedCountry;
+class NomineeCourtesyTitleDropdown extends StatelessWidget {
+  final int nomineeIndex;
+
+  const NomineeCourtesyTitleDropdown({
+    super.key,
+    required this.nomineeIndex,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<FormDataCubit, FormDataState>(
+      buildWhen: (previous, current) {
+        if (nomineeIndex >= previous.nominees.length ||
+            nomineeIndex >= current.nominees.length) {
+          return false;
+        }
+        return previous.nominees[nomineeIndex].courtesyTitle !=
+            current.nominees[nomineeIndex].courtesyTitle;
+      },
+      builder: (context, state) {
+        if (nomineeIndex >= state.nominees.length) {
+          return const SizedBox.shrink();
+        }
+        final nominee = state.nominees[nomineeIndex];
+        return CustomDropdown(
+          labelText: "Courtesy Title",
+          hintText: "Select an option",
+          values: const ["Mr", "Mrs", "Ms", "Dr"],
+          selectedValue: nominee.courtesyTitle.isEmpty
+              ? null
+              : nominee.courtesyTitle,
+          onChanged: (value) {
+            context.read<FormDataCubit>().nomineeUpdateCourtesyTitle(
+              nomineeIndex,
+              value!,
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+class NomineeFirstNameTextField extends StatefulWidget {
+  final int nomineeIndex;
+
+  const NomineeFirstNameTextField({
+    super.key,
+    required this.nomineeIndex,
+  });
+
+  @override
+  State<NomineeFirstNameTextField> createState() =>
+      _NomineeFirstNameTextFieldState();
+}
+
+class _NomineeFirstNameTextFieldState extends State<NomineeFirstNameTextField> {
+  late TextEditingController _controller;
 
   @override
   void initState() {
     super.initState();
-    _initiateFromCubit();
-  }
-
-  void _initiateFromCubit() {
-    final cubit = context.read<FormDataCubit>();
-    final nominees = cubit.state.nominees;
-
-    if (widget.index >= nominees.length) {
-      for (int i = nominees.length; i <= widget.index; i++) {
-        cubit.addNominee();
-      }
-    }
-    if (widget.index < cubit.state.nominees.length) {
-      final nominee = cubit.state.nominees[widget.index];
-
-      _selectedResidentialStatus = nominee.residentialStatus.isNotEmpty
-          ? nominee.residentialStatus
-          : null;
-      _selectedCountry = nominee.country.isNotEmpty ? nominee.country : null;
-
-      _firstNameController.text = nominee.firstName;
-      _lastNameController.text = nominee.lastName;
-      _relationshipController.text = nominee.relationship;
-      _percentageController.text = nominee.percentage;
-      _nidController.text = nominee.nid;
-      _addressLine1Controller.text = nominee.addressLine1;
-      _addressLine2Controller.text = nominee.addressLine2;
-      _addressLine3Controller.text = nominee.addressLine3;
-      _cityController.text = nominee.city;
-      _postCodeController.text = nominee.postCode;
-      _divisionController.text = nominee.division;
-      _mobileController.text = nominee.mobileNumber;
-      _emailController.text = nominee.email;
-      _telephoneController.text = nominee.telephone;
-      _faxController.text = nominee.fax;
-    }
+    _controller = TextEditingController();
   }
 
   @override
   void dispose() {
-    _firstNameController.dispose();
-    _lastNameController.dispose();
-    _relationshipController.dispose();
-    _percentageController.dispose();
-    _nidController.dispose();
-    _addressLine1Controller.dispose();
-    _addressLine2Controller.dispose();
-    _addressLine3Controller.dispose();
-    _cityController.dispose();
-    _postCodeController.dispose();
-    _divisionController.dispose();
-    _mobileController.dispose();
-    _emailController.dispose();
-    _telephoneController.dispose();
-    _faxController.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<FormDataCubit, FormDataState>(
-      builder: (context, state) {
-        if (widget.index >= state.nominees.length) {
-          return SizedBox.shrink();
+      buildWhen: (previous, current) {
+        if (widget.nomineeIndex >= previous.nominees.length ||
+            widget.nomineeIndex >= current.nominees.length) {
+          return false;
         }
+        return previous.nominees[widget.nomineeIndex].firstName !=
+            current.nominees[widget.nomineeIndex].firstName;
+      },
+      builder: (context, state) {
+        if (widget.nomineeIndex >= state.nominees.length) {
+          return const SizedBox.shrink();
+        }
+        final nominee = state.nominees[widget.nomineeIndex];
+        if (_controller.text != nominee.firstName) {
+          _controller.text = nominee.firstName;
+        }
+        return CustomTextField(
+          hintText: "Enter First Name",
+          label: "First Name",
+          controller: _controller,
+          onChanged: (value) {
+            context.read<FormDataCubit>().nomineeUpdateFirstName(
+              widget.nomineeIndex,
+              value,
+            );
+          },
+          isRequired: true,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter a first name.';
+            }
+            return null;
+          },
+        );
+      },
+    );
+  }
+}
 
-        final nominee = state.nominees[widget.index];
+class NomineeLastNameTextField extends StatefulWidget {
+  final int nomineeIndex;
 
-        return SectionBox(
-          title: Text(
-            widget.mode == 'guardian'
-                ? "Guardian Details"
-                : "Nominee ${widget.index + 1}",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-          ),
-          child: Container(
-            padding: EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (widget.mode != 'guardian') ...[
-                  CustomDropdown(
-                    labelText: "Courtesy Title",
-                    hintText: "Select an option",
-                    values: ["Mr", "Mrs", "Ms", "Dr"],
-                    selectedValue: nominee.courtesyTitle.isEmpty
-                        ? null
-                        : nominee.courtesyTitle,
-                    onChanged: (value) {
-                      context.read<FormDataCubit>().nomineeUpdateCourtesyTitle(
-                        widget.index,
-                        value!,
-                      );
-                    },
-                  ),
-                  CustomTextField(
-                    hintText: "Enter First Name",
-                    label: "First Name",
-                    controller: _firstNameController,
-                    onChanged: (value) {
-                      context.read<FormDataCubit>().nomineeUpdateFirstName(
-                        widget.index,
-                        value,
-                      );
-                    },
-                    isRequired: true,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter a first name.';
-                      }
-                      return null;
-                    },
-                  ),
-                  CustomTextField(
-                    hintText: "Enter Last Name",
-                    label: "Last Name",
-                    controller: _lastNameController,
-                    onChanged: (value) {
-                      context.read<FormDataCubit>().nomineeUpdateLastName(
-                        widget.index,
-                        value,
-                      );
-                    },
-                    isRequired: true,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter a last name.';
-                      }
-                      return null;
-                    },
-                  ),
-                  CustomTextField(
-                    hintText: "Relationship with A/C Holder",
-                    label: "Relationship",
-                    controller: _relationshipController,
-                    onChanged: (value) {
-                      context.read<FormDataCubit>().nomineeUpdateRelationship(
-                        widget.index,
-                        value,
-                      );
-                    },
-                    isRequired: true,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter a relationship.';
-                      }
-                      return null;
-                    },
-                  ),
-                  CustomTextField(
-                    hintText: "Enter Percentage",
-                    label: "Percentage",
-                    controller: _percentageController,
-                    onChanged: (value) {
-                      context.read<FormDataCubit>().nomineeUpdatePercentage(
-                        widget.index,
-                        value,
-                      );
-                    },
-                    isRequired: true,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter a percentage.';
-                      }
-                      return null;
-                    },
-                  ),
-                ],
-                CustomCheckSelector(
-                  label: "Residential Status",
-                  listOfValues: ["Resident", "Non Resident", "Foreigner"],
-                  selectedValue: _selectedResidentialStatus,
-                  onChanged: (value) {
-                    _selectedResidentialStatus = value;
-                    context
-                        .read<FormDataCubit>()
-                        .nomineeUpdateResidentialStatus(widget.index, value!);
-                  },
-                  isRequired: true,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please select a residential status.';
-                    }
-                    return null;
-                  },
-                ),
-                CustomDatePicker(
-                  labelText: "Date of Birth (YYYY-MM-DD)",
-                  selectedDate: nominee.dateOfBirth,
-                  formatter: DateFormat('yyyy-MM-dd'),
-                  onTap: () async {
-                    final cubit = context.read<FormDataCubit>();
-                    final picked = await showDatePicker(
-                      context: context,
-                      firstDate: DateTime(1900),
-                      lastDate: DateTime.now(),
-                    );
-                    if (picked != null) {
-                      cubit.nomineeUpdateDateOfBirth(widget.index, picked);
-                    }
-                  },
-                  hintText: "YYYY-MM-DD",
-                  isRequired: true,
-                  validator: (value) {
-                    if (value == null) {
-                      return 'Please select a date of birth.';
-                    }
-                    return null;
-                  },
-                ),
-                CustomTextField(
-                  hintText: "Enter National Identity Card Number",
-                  label: "National ID",
-                  controller: _nidController,
-                  onChanged: (value) {
-                    context.read<FormDataCubit>().nomineeUpdateNid(
-                      widget.index,
-                      value,
-                    );
-                  },
-                  isRequired: true,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a NID.';
-                    }
-                    return null;
-                  },
-                ),
-                CustomTextField(
-                  hintText: "Enter Address Line 1",
-                  label: "Address Line 1",
-                  controller: _addressLine1Controller,
-                  onChanged: (value) {
-                    context.read<FormDataCubit>().nomineeUpdateAddressLine1(
-                      widget.index,
-                      value,
-                    );
-                  },
-                  isRequired: true,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter an address.';
-                    }
-                    return null;
-                  },
-                ),
-                CustomTextField(
-                  hintText: "Enter Address Line 2",
-                  label: "Address Line 2",
-                  controller: _addressLine2Controller,
-                  onChanged: (value) {
-                    context.read<FormDataCubit>().nomineeUpdateAddressLine2(
-                      widget.index,
-                      value,
-                    );
-                  },
-                ),
-                CustomTextField(
-                  hintText: "Enter Address Line 3",
-                  label: "Address Line 3",
-                  controller: _addressLine3Controller,
-                  onChanged: (value) {
-                    context.read<FormDataCubit>().nomineeUpdateAddressLine3(
-                      widget.index,
-                      value,
-                    );
-                  },
-                ),
-                CustomTextField(
-                  hintText: "Enter City",
-                  label: "City",
-                  controller: _cityController,
-                  onChanged: (value) {
-                    context.read<FormDataCubit>().nomineeUpdateCity(
-                      widget.index,
-                      value,
-                    );
-                  },
-                  isRequired: true,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a city.';
-                    }
-                    return null;
-                  },
-                ),
-                CustomTextField(
-                  hintText: "Enter Post Code",
-                  label: "Post Code",
-                  controller: _postCodeController,
-                  onChanged: (value) {
-                    context.read<FormDataCubit>().nomineeUpdatePostCode(
-                      widget.index,
-                      value,
-                    );
-                  },
-                  isRequired: true,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a post code.';
-                    }
-                    return null;
-                  },
-                ),
-                CustomTextField(
-                  hintText: "Enter Division",
-                  label: "Division",
-                  controller: _divisionController,
-                  onChanged: (value) {
-                    context.read<FormDataCubit>().nomineeUpdateDivision(
-                      widget.index,
-                      value,
-                    );
-                  },
-                  isRequired: true,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a division.';
-                    }
-                    return null;
-                  },
-                ),
-                CustomDropdown(
-                  labelText: "Country",
-                  hintText: "Select an option",
-                  values: ["USA", "Canada", "India", "UK", "Bangladesh"],
-                  selectedValue: _selectedCountry,
-                  onChanged: (value) {
-                    setState(() {
-                      _selectedCountry = value;
-                    });
-                    context.read<FormDataCubit>().nomineeUpdateCountry(
-                      widget.index,
-                      value!,
-                    );
-                  },
-                  isRequired: true,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please select a country.';
-                    }
-                    return null;
-                  },
-                ),
+  const NomineeLastNameTextField({
+    super.key,
+    required this.nomineeIndex,
+  });
 
-                CustomTextField(
-                  hintText: "Enter Email Address",
-                  label: "Email",
-                  controller: _emailController,
-                  onChanged: (value) {
-                    context.read<FormDataCubit>().nomineeUpdateEmail(
-                      widget.index,
-                      value,
-                    );
-                  },
-                ),
-                CustomTextField(
-                  hintText: "Enter Mobile",
-                  label: "Mobile",
-                  controller: _mobileController,
-                  onChanged: (value) {
-                    context.read<FormDataCubit>().nomineeUpdateMobileNumber(
-                      widget.index,
-                      value,
-                    );
-                  },
-                  isRequired: true,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a mobile number.';
-                    }
-                    return null;
-                  },
-                ),
-                CustomTextField(
-                  hintText: "Enter Telephone Number",
-                  label: "Telephone",
-                  controller: _telephoneController,
-                  onChanged: (value) {
-                    context.read<FormDataCubit>().nomineeUpdateTelephone(
-                      widget.index,
-                      value,
-                    );
-                  },
-                ),
-                CustomTextField(
-                  hintText: "Enter FAX Number",
-                  label: "FAX",
-                  controller: _faxController,
-                  onChanged: (value) {
-                    context.read<FormDataCubit>().nomineeUpdateFax(
-                      widget.index,
-                      value,
-                    );
-                  },
-                ),
-                if (widget.mode != 'guardian')
-                  CustomSliderToggle(
-                    label: "Is Nominee ${widget.index + 1} a Minor?",
-                    selectedValue: nominee.isNomineeMinor,
-                    onChanged: (value) {
-                      context.read<FormDataCubit>().nomineeUpdateIsNomineeMinor(
-                        widget.index,
-                        value!,
-                      );
-                    },
-                  ),
-                if (nominee.isNomineeMinor && widget.mode != 'guardian')
-                  GuardianForm(nominee: nominee, nomineeIndex: widget.index),
-                if (widget.mode == 'primary')
-                  CustomSliderToggle(
-                    label: "Do you want to add a 2nd Nominee",
-                    selectedValue: state.isSecondNomineeAvailable,
-                    onChanged: (value) {
-                      context.read<FormDataCubit>().toggleSecondNominee();
-                    },
-                  ),
-              ],
-            ),
-          ),
+  @override
+  State<NomineeLastNameTextField> createState() =>
+      _NomineeLastNameTextFieldState();
+}
+
+class _NomineeLastNameTextFieldState extends State<NomineeLastNameTextField> {
+  late TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<FormDataCubit, FormDataState>(
+      buildWhen: (previous, current) {
+        if (widget.nomineeIndex >= previous.nominees.length ||
+            widget.nomineeIndex >= current.nominees.length) {
+          return false;
+        }
+        return previous.nominees[widget.nomineeIndex].lastName !=
+            current.nominees[widget.nomineeIndex].lastName;
+      },
+      builder: (context, state) {
+        if (widget.nomineeIndex >= state.nominees.length) {
+          return const SizedBox.shrink();
+        }
+        final nominee = state.nominees[widget.nomineeIndex];
+        if (_controller.text != nominee.lastName) {
+          _controller.text = nominee.lastName;
+        }
+        return CustomTextField(
+          hintText: "Enter Last Name",
+          label: "Last Name",
+          controller: _controller,
+          onChanged: (value) {
+            context.read<FormDataCubit>().nomineeUpdateLastName(
+              widget.nomineeIndex,
+              value,
+            );
+          },
+          isRequired: true,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter a last name.';
+            }
+            return null;
+          },
+        );
+      },
+    );
+  }
+}
+
+class NomineeRelationshipTextField extends StatefulWidget {
+  final int nomineeIndex;
+
+  const NomineeRelationshipTextField({
+    super.key,
+    required this.nomineeIndex,
+  });
+
+  @override
+  State<NomineeRelationshipTextField> createState() =>
+      _NomineeRelationshipTextFieldState();
+}
+
+class _NomineeRelationshipTextFieldState
+    extends State<NomineeRelationshipTextField> {
+  late TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<FormDataCubit, FormDataState>(
+      buildWhen: (previous, current) {
+        if (widget.nomineeIndex >= previous.nominees.length ||
+            widget.nomineeIndex >= current.nominees.length) {
+          return false;
+        }
+        return previous.nominees[widget.nomineeIndex].relationship !=
+            current.nominees[widget.nomineeIndex].relationship;
+      },
+      builder: (context, state) {
+        if (widget.nomineeIndex >= state.nominees.length) {
+          return const SizedBox.shrink();
+        }
+        final nominee = state.nominees[widget.nomineeIndex];
+        if (_controller.text != nominee.relationship) {
+          _controller.text = nominee.relationship;
+        }
+        return CustomTextField(
+          hintText: "Relationship with A/C Holder",
+          label: "Relationship",
+          controller: _controller,
+          onChanged: (value) {
+            context.read<FormDataCubit>().nomineeUpdateRelationship(
+              widget.nomineeIndex,
+              value,
+            );
+          },
+          isRequired: true,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter a relationship.';
+            }
+            return null;
+          },
+        );
+      },
+    );
+  }
+}
+
+class NomineePercentageTextField extends StatefulWidget {
+  final int nomineeIndex;
+
+  const NomineePercentageTextField({
+    super.key,
+    required this.nomineeIndex,
+  });
+
+  @override
+  State<NomineePercentageTextField> createState() =>
+      _NomineePercentageTextFieldState();
+}
+
+class _NomineePercentageTextFieldState
+    extends State<NomineePercentageTextField> {
+  late TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<FormDataCubit, FormDataState>(
+      buildWhen: (previous, current) {
+        if (widget.nomineeIndex >= previous.nominees.length ||
+            widget.nomineeIndex >= current.nominees.length) {
+          return false;
+        }
+        return previous.nominees[widget.nomineeIndex].percentage !=
+            current.nominees[widget.nomineeIndex].percentage;
+      },
+      builder: (context, state) {
+        if (widget.nomineeIndex >= state.nominees.length) {
+          return const SizedBox.shrink();
+        }
+        final nominee = state.nominees[widget.nomineeIndex];
+        if (_controller.text != nominee.percentage) {
+          _controller.text = nominee.percentage;
+        }
+        return CustomTextField(
+          hintText: "Enter Percentage",
+          label: "Percentage",
+          controller: _controller,
+          onChanged: (value) {
+            context.read<FormDataCubit>().nomineeUpdatePercentage(
+              widget.nomineeIndex,
+              value,
+            );
+          },
+          isRequired: true,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter a percentage.';
+            }
+            return null;
+          },
+        );
+      },
+    );
+  }
+}
+
+class NomineeResidentialStatusSelector extends StatelessWidget {
+  final int nomineeIndex;
+
+  const NomineeResidentialStatusSelector({
+    super.key,
+    required this.nomineeIndex,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<FormDataCubit, FormDataState>(
+      buildWhen: (previous, current) {
+        if (nomineeIndex >= previous.nominees.length ||
+            nomineeIndex >= current.nominees.length) {
+          return false;
+        }
+        return previous.nominees[nomineeIndex].residentialStatus !=
+            current.nominees[nomineeIndex].residentialStatus;
+      },
+      builder: (context, state) {
+        if (nomineeIndex >= state.nominees.length) {
+          return const SizedBox.shrink();
+        }
+        final nominee = state.nominees[nomineeIndex];
+        return CustomCheckSelector(
+          label: "Residential Status",
+          listOfValues: const ["Resident", "Non Resident", "Foreigner"],
+          selectedValue: nominee.residentialStatus.isNotEmpty
+              ? nominee.residentialStatus
+              : null,
+          onChanged: (value) {
+            context.read<FormDataCubit>().nomineeUpdateResidentialStatus(
+              nomineeIndex,
+              value!,
+            );
+          },
+          isRequired: true,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please select a residential status.';
+            }
+            return null;
+          },
+        );
+      },
+    );
+  }
+}
+
+class NomineeDateOfBirthPicker extends StatelessWidget {
+  final int nomineeIndex;
+
+  const NomineeDateOfBirthPicker({
+    super.key,
+    required this.nomineeIndex,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<FormDataCubit, FormDataState>(
+      buildWhen: (previous, current) {
+        if (nomineeIndex >= previous.nominees.length ||
+            nomineeIndex >= current.nominees.length) {
+          return false;
+        }
+        return previous.nominees[nomineeIndex].dateOfBirth !=
+            current.nominees[nomineeIndex].dateOfBirth;
+      },
+      builder: (context, state) {
+        if (nomineeIndex >= state.nominees.length) {
+          return const SizedBox.shrink();
+        }
+        final nominee = state.nominees[nomineeIndex];
+        return CustomDatePicker(
+          labelText: "Date of Birth (YYYY-MM-DD)",
+          selectedDate: nominee.dateOfBirth,
+          formatter: DateFormat('yyyy-MM-dd'),
+          onTap: () async {
+            final picked = await showDatePicker(
+              context: context,
+              firstDate: DateTime(1900),
+              lastDate: DateTime.now(),
+            );
+            if (picked != null) {
+              context.read<FormDataCubit>().nomineeUpdateDateOfBirth(
+                nomineeIndex,
+                picked,
+              );
+            }
+          },
+          hintText: "YYYY-MM-DD",
+          isRequired: true,
+          validator: (value) {
+            if (value == null) {
+              return 'Please select a date of birth.';
+            }
+            return null;
+          },
+        );
+      },
+    );
+  }
+}
+
+class NomineeNidTextField extends StatefulWidget {
+  final int nomineeIndex;
+
+  const NomineeNidTextField({
+    super.key,
+    required this.nomineeIndex,
+  });
+
+  @override
+  State<NomineeNidTextField> createState() => _NomineeNidTextFieldState();
+}
+
+class _NomineeNidTextFieldState extends State<NomineeNidTextField> {
+  late TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<FormDataCubit, FormDataState>(
+      buildWhen: (previous, current) {
+        if (widget.nomineeIndex >= previous.nominees.length ||
+            widget.nomineeIndex >= current.nominees.length) {
+          return false;
+        }
+        return previous.nominees[widget.nomineeIndex].nid !=
+            current.nominees[widget.nomineeIndex].nid;
+      },
+      builder: (context, state) {
+        if (widget.nomineeIndex >= state.nominees.length) {
+          return const SizedBox.shrink();
+        }
+        final nominee = state.nominees[widget.nomineeIndex];
+        if (_controller.text != nominee.nid) {
+          _controller.text = nominee.nid;
+        }
+        return CustomTextField(
+          hintText: "Enter National Identity Card Number",
+          label: "National ID",
+          controller: _controller,
+          onChanged: (value) {
+            context.read<FormDataCubit>().nomineeUpdateNid(
+              widget.nomineeIndex,
+              value,
+            );
+          },
+          isRequired: true,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter a NID.';
+            }
+            return null;
+          },
+        );
+      },
+    );
+  }
+}
+
+class NomineeAddressLine1TextField extends StatefulWidget {
+  final int nomineeIndex;
+
+  const NomineeAddressLine1TextField({
+    super.key,
+    required this.nomineeIndex,
+  });
+
+  @override
+  State<NomineeAddressLine1TextField> createState() =>
+      _NomineeAddressLine1TextFieldState();
+}
+
+class _NomineeAddressLine1TextFieldState
+    extends State<NomineeAddressLine1TextField> {
+  late TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<FormDataCubit, FormDataState>(
+      buildWhen: (previous, current) {
+        if (widget.nomineeIndex >= previous.nominees.length ||
+            widget.nomineeIndex >= current.nominees.length) {
+          return false;
+        }
+        return previous.nominees[widget.nomineeIndex].addressLine1 !=
+            current.nominees[widget.nomineeIndex].addressLine1;
+      },
+      builder: (context, state) {
+        if (widget.nomineeIndex >= state.nominees.length) {
+          return const SizedBox.shrink();
+        }
+        final nominee = state.nominees[widget.nomineeIndex];
+        if (_controller.text != nominee.addressLine1) {
+          _controller.text = nominee.addressLine1;
+        }
+        return CustomTextField(
+          hintText: "Enter Address Line 1",
+          label: "Address Line 1",
+          controller: _controller,
+          onChanged: (value) {
+            context.read<FormDataCubit>().nomineeUpdateAddressLine1(
+              widget.nomineeIndex,
+              value,
+            );
+          },
+          isRequired: true,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter an address.';
+            }
+            return null;
+          },
+        );
+      },
+    );
+  }
+}
+
+class NomineeAddressLine2TextField extends StatefulWidget {
+  final int nomineeIndex;
+
+  const NomineeAddressLine2TextField({
+    super.key,
+    required this.nomineeIndex,
+  });
+
+  @override
+  State<NomineeAddressLine2TextField> createState() =>
+      _NomineeAddressLine2TextFieldState();
+}
+
+class _NomineeAddressLine2TextFieldState
+    extends State<NomineeAddressLine2TextField> {
+  late TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<FormDataCubit, FormDataState>(
+      buildWhen: (previous, current) {
+        if (widget.nomineeIndex >= previous.nominees.length ||
+            widget.nomineeIndex >= current.nominees.length) {
+          return false;
+        }
+        return previous.nominees[widget.nomineeIndex].addressLine2 !=
+            current.nominees[widget.nomineeIndex].addressLine2;
+      },
+      builder: (context, state) {
+        if (widget.nomineeIndex >= state.nominees.length) {
+          return const SizedBox.shrink();
+        }
+        final nominee = state.nominees[widget.nomineeIndex];
+        if (_controller.text != nominee.addressLine2) {
+          _controller.text = nominee.addressLine2;
+        }
+        return CustomTextField(
+          hintText: "Enter Address Line 2",
+          label: "Address Line 2",
+          controller: _controller,
+          onChanged: (value) {
+            context.read<FormDataCubit>().nomineeUpdateAddressLine2(
+              widget.nomineeIndex,
+              value,
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+class NomineeAddressLine3TextField extends StatefulWidget {
+  final int nomineeIndex;
+
+  const NomineeAddressLine3TextField({
+    super.key,
+    required this.nomineeIndex,
+  });
+
+  @override
+  State<NomineeAddressLine3TextField> createState() =>
+      _NomineeAddressLine3TextFieldState();
+}
+
+class _NomineeAddressLine3TextFieldState
+    extends State<NomineeAddressLine3TextField> {
+  late TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<FormDataCubit, FormDataState>(
+      buildWhen: (previous, current) {
+        if (widget.nomineeIndex >= previous.nominees.length ||
+            widget.nomineeIndex >= current.nominees.length) {
+          return false;
+        }
+        return previous.nominees[widget.nomineeIndex].addressLine3 !=
+            current.nominees[widget.nomineeIndex].addressLine3;
+      },
+      builder: (context, state) {
+        if (widget.nomineeIndex >= state.nominees.length) {
+          return const SizedBox.shrink();
+        }
+        final nominee = state.nominees[widget.nomineeIndex];
+        if (_controller.text != nominee.addressLine3) {
+          _controller.text = nominee.addressLine3;
+        }
+        return CustomTextField(
+          hintText: "Enter Address Line 3",
+          label: "Address Line 3",
+          controller: _controller,
+          onChanged: (value) {
+            context.read<FormDataCubit>().nomineeUpdateAddressLine3(
+              widget.nomineeIndex,
+              value,
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+class NomineeCityTextField extends StatefulWidget {
+  final int nomineeIndex;
+
+  const NomineeCityTextField({
+    super.key,
+    required this.nomineeIndex,
+  });
+
+  @override
+  State<NomineeCityTextField> createState() => _NomineeCityTextFieldState();
+}
+
+class _NomineeCityTextFieldState extends State<NomineeCityTextField> {
+  late TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<FormDataCubit, FormDataState>(
+      buildWhen: (previous, current) {
+        if (widget.nomineeIndex >= previous.nominees.length ||
+            widget.nomineeIndex >= current.nominees.length) {
+          return false;
+        }
+        return previous.nominees[widget.nomineeIndex].city !=
+            current.nominees[widget.nomineeIndex].city;
+      },
+      builder: (context, state) {
+        if (widget.nomineeIndex >= state.nominees.length) {
+          return const SizedBox.shrink();
+        }
+        final nominee = state.nominees[widget.nomineeIndex];
+        if (_controller.text != nominee.city) {
+          _controller.text = nominee.city;
+        }
+        return CustomTextField(
+          hintText: "Enter City",
+          label: "City",
+          controller: _controller,
+          onChanged: (value) {
+            context.read<FormDataCubit>().nomineeUpdateCity(
+              widget.nomineeIndex,
+              value,
+            );
+          },
+          isRequired: true,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter a city.';
+            }
+            return null;
+          },
+        );
+      },
+    );
+  }
+}
+
+class NomineePostCodeTextField extends StatefulWidget {
+  final int nomineeIndex;
+
+  const NomineePostCodeTextField({
+    super.key,
+    required this.nomineeIndex,
+  });
+
+  @override
+  State<NomineePostCodeTextField> createState() =>
+      _NomineePostCodeTextFieldState();
+}
+
+class _NomineePostCodeTextFieldState extends State<NomineePostCodeTextField> {
+  late TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<FormDataCubit, FormDataState>(
+      buildWhen: (previous, current) {
+        if (widget.nomineeIndex >= previous.nominees.length ||
+            widget.nomineeIndex >= current.nominees.length) {
+          return false;
+        }
+        return previous.nominees[widget.nomineeIndex].postCode !=
+            current.nominees[widget.nomineeIndex].postCode;
+      },
+      builder: (context, state) {
+        if (widget.nomineeIndex >= state.nominees.length) {
+          return const SizedBox.shrink();
+        }
+        final nominee = state.nominees[widget.nomineeIndex];
+        if (_controller.text != nominee.postCode) {
+          _controller.text = nominee.postCode;
+        }
+        return CustomTextField(
+          hintText: "Enter Post Code",
+          label: "Post Code",
+          controller: _controller,
+          onChanged: (value) {
+            context.read<FormDataCubit>().nomineeUpdatePostCode(
+              widget.nomineeIndex,
+              value,
+            );
+          },
+          isRequired: true,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter a post code.';
+            }
+            return null;
+          },
+        );
+      },
+    );
+  }
+}
+
+class NomineeDivisionTextField extends StatefulWidget {
+  final int nomineeIndex;
+
+  const NomineeDivisionTextField({
+    super.key,
+    required this.nomineeIndex,
+  });
+
+  @override
+  State<NomineeDivisionTextField> createState() =>
+      _NomineeDivisionTextFieldState();
+}
+
+class _NomineeDivisionTextFieldState extends State<NomineeDivisionTextField> {
+  late TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<FormDataCubit, FormDataState>(
+      buildWhen: (previous, current) {
+        if (widget.nomineeIndex >= previous.nominees.length ||
+            widget.nomineeIndex >= current.nominees.length) {
+          return false;
+        }
+        return previous.nominees[widget.nomineeIndex].division !=
+            current.nominees[widget.nomineeIndex].division;
+      },
+      builder: (context, state) {
+        if (widget.nomineeIndex >= state.nominees.length) {
+          return const SizedBox.shrink();
+        }
+        final nominee = state.nominees[widget.nomineeIndex];
+        if (_controller.text != nominee.division) {
+          _controller.text = nominee.division;
+        }
+        return CustomTextField(
+          hintText: "Enter Division",
+          label: "Division",
+          controller: _controller,
+          onChanged: (value) {
+            context.read<FormDataCubit>().nomineeUpdateDivision(
+              widget.nomineeIndex,
+              value,
+            );
+          },
+          isRequired: true,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter a division.';
+            }
+            return null;
+          },
+        );
+      },
+    );
+  }
+}
+
+class NomineeCountryDropdown extends StatelessWidget {
+  final int nomineeIndex;
+
+  const NomineeCountryDropdown({
+    super.key,
+    required this.nomineeIndex,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<FormDataCubit, FormDataState>(
+      buildWhen: (previous, current) {
+        if (nomineeIndex >= previous.nominees.length ||
+            nomineeIndex >= current.nominees.length) {
+          return false;
+        }
+        return previous.nominees[nomineeIndex].country !=
+            current.nominees[nomineeIndex].country;
+      },
+      builder: (context, state) {
+        if (nomineeIndex >= state.nominees.length) {
+          return const SizedBox.shrink();
+        }
+        final nominee = state.nominees[nomineeIndex];
+        return CustomDropdown(
+          labelText: "Country",
+          hintText: "Select an option",
+          values: const ["USA", "Canada", "India", "UK", "Bangladesh"],
+          selectedValue: nominee.country.isNotEmpty ? nominee.country : null,
+          onChanged: (value) {
+            context.read<FormDataCubit>().nomineeUpdateCountry(
+              nomineeIndex,
+              value!,
+            );
+          },
+          isRequired: true,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please select a country.';
+            }
+            return null;
+          },
+        );
+      },
+    );
+  }
+}
+
+class NomineeEmailTextField extends StatefulWidget {
+  final int nomineeIndex;
+
+  const NomineeEmailTextField({
+    super.key,
+    required this.nomineeIndex,
+  });
+
+  @override
+  State<NomineeEmailTextField> createState() => _NomineeEmailTextFieldState();
+}
+
+class _NomineeEmailTextFieldState extends State<NomineeEmailTextField> {
+  late TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<FormDataCubit, FormDataState>(
+      buildWhen: (previous, current) {
+        if (widget.nomineeIndex >= previous.nominees.length ||
+            widget.nomineeIndex >= current.nominees.length) {
+          return false;
+        }
+        return previous.nominees[widget.nomineeIndex].email !=
+            current.nominees[widget.nomineeIndex].email;
+      },
+      builder: (context, state) {
+        if (widget.nomineeIndex >= state.nominees.length) {
+          return const SizedBox.shrink();
+        }
+        final nominee = state.nominees[widget.nomineeIndex];
+        if (_controller.text != nominee.email) {
+          _controller.text = nominee.email;
+        }
+        return CustomTextField(
+          hintText: "Enter Email Address",
+          label: "Email",
+          controller: _controller,
+          onChanged: (value) {
+            context.read<FormDataCubit>().nomineeUpdateEmail(
+              widget.nomineeIndex,
+              value,
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+class NomineeMobileTextField extends StatefulWidget {
+  final int nomineeIndex;
+
+  const NomineeMobileTextField({
+    super.key,
+    required this.nomineeIndex,
+  });
+
+  @override
+  State<NomineeMobileTextField> createState() => _NomineeMobileTextFieldState();
+}
+
+class _NomineeMobileTextFieldState extends State<NomineeMobileTextField> {
+  late TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<FormDataCubit, FormDataState>(
+      buildWhen: (previous, current) {
+        if (widget.nomineeIndex >= previous.nominees.length ||
+            widget.nomineeIndex >= current.nominees.length) {
+          return false;
+        }
+        return previous.nominees[widget.nomineeIndex].mobileNumber !=
+            current.nominees[widget.nomineeIndex].mobileNumber;
+      },
+      builder: (context, state) {
+        if (widget.nomineeIndex >= state.nominees.length) {
+          return const SizedBox.shrink();
+        }
+        final nominee = state.nominees[widget.nomineeIndex];
+        if (_controller.text != nominee.mobileNumber) {
+          _controller.text = nominee.mobileNumber;
+        }
+        return CustomTextField(
+          hintText: "Enter Mobile",
+          label: "Mobile",
+          controller: _controller,
+          onChanged: (value) {
+            context.read<FormDataCubit>().nomineeUpdateMobileNumber(
+              widget.nomineeIndex,
+              value,
+            );
+          },
+          isRequired: true,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter a mobile number.';
+            }
+            return null;
+          },
+        );
+      },
+    );
+  }
+}
+
+class NomineeTelephoneTextField extends StatefulWidget {
+  final int nomineeIndex;
+
+  const NomineeTelephoneTextField({
+    super.key,
+    required this.nomineeIndex,
+  });
+
+  @override
+  State<NomineeTelephoneTextField> createState() =>
+      _NomineeTelephoneTextFieldState();
+}
+
+class _NomineeTelephoneTextFieldState extends State<NomineeTelephoneTextField> {
+  late TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<FormDataCubit, FormDataState>(
+      buildWhen: (previous, current) {
+        if (widget.nomineeIndex >= previous.nominees.length ||
+            widget.nomineeIndex >= current.nominees.length) {
+          return false;
+        }
+        return previous.nominees[widget.nomineeIndex].telephone !=
+            current.nominees[widget.nomineeIndex].telephone;
+      },
+      builder: (context, state) {
+        if (widget.nomineeIndex >= state.nominees.length) {
+          return const SizedBox.shrink();
+        }
+        final nominee = state.nominees[widget.nomineeIndex];
+        if (_controller.text != nominee.telephone) {
+          _controller.text = nominee.telephone;
+        }
+        return CustomTextField(
+          hintText: "Enter Telephone Number",
+          label: "Telephone",
+          controller: _controller,
+          onChanged: (value) {
+            context.read<FormDataCubit>().nomineeUpdateTelephone(
+              widget.nomineeIndex,
+              value,
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+class NomineeFaxTextField extends StatefulWidget {
+  final int nomineeIndex;
+
+  const NomineeFaxTextField({
+    super.key,
+    required this.nomineeIndex,
+  });
+
+  @override
+  State<NomineeFaxTextField> createState() => _NomineeFaxTextFieldState();
+}
+
+class _NomineeFaxTextFieldState extends State<NomineeFaxTextField> {
+  late TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<FormDataCubit, FormDataState>(
+      buildWhen: (previous, current) {
+        if (widget.nomineeIndex >= previous.nominees.length ||
+            widget.nomineeIndex >= current.nominees.length) {
+          return false;
+        }
+        return previous.nominees[widget.nomineeIndex].fax !=
+            current.nominees[widget.nomineeIndex].fax;
+      },
+      builder: (context, state) {
+        if (widget.nomineeIndex >= state.nominees.length) {
+          return const SizedBox.shrink();
+        }
+        final nominee = state.nominees[widget.nomineeIndex];
+        if (_controller.text != nominee.fax) {
+          _controller.text = nominee.fax;
+        }
+        return CustomTextField(
+          hintText: "Enter FAX Number",
+          label: "FAX",
+          controller: _controller,
+          onChanged: (value) {
+            context.read<FormDataCubit>().nomineeUpdateFax(
+              widget.nomineeIndex,
+              value,
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+class NomineeIsMinorToggle extends StatelessWidget {
+  final int nomineeIndex;
+
+  const NomineeIsMinorToggle({
+    super.key,
+    required this.nomineeIndex,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<FormDataCubit, FormDataState>(
+      buildWhen: (previous, current) {
+        if (nomineeIndex >= previous.nominees.length ||
+            nomineeIndex >= current.nominees.length) {
+          return false;
+        }
+        return previous.nominees[nomineeIndex].isNomineeMinor !=
+            current.nominees[nomineeIndex].isNomineeMinor;
+      },
+      builder: (context, state) {
+        if (nomineeIndex >= state.nominees.length) {
+          return const SizedBox.shrink();
+        }
+        final nominee = state.nominees[nomineeIndex];
+        return CustomSliderToggle(
+          label: "Is Nominee ${nomineeIndex + 1} a Minor?",
+          selectedValue: nominee.isNomineeMinor,
+          onChanged: (value) {
+            context.read<FormDataCubit>().nomineeUpdateIsNomineeMinor(
+              nomineeIndex,
+              value!,
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+class SecondNomineeToggle extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<FormDataCubit, FormDataState>(
+      buildWhen: (previous, current) =>
+      previous.isSecondNomineeAvailable != current.isSecondNomineeAvailable,
+      builder: (context, state) {
+        return CustomSliderToggle(
+          label: "Do you want to add a 2nd Nominee",
+          selectedValue: state.isSecondNomineeAvailable,
+          onChanged: (value) {
+            context.read<FormDataCubit>().toggleSecondNominee();
+          },
         );
       },
     );

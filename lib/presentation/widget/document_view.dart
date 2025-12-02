@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:bo_acc_form/common/widget/custom_image_picker.dart';
 import 'package:bo_acc_form/common/widget/section_box.dart';
 import 'package:bo_acc_form/domain/entities/document_enitity.dart';
@@ -19,86 +17,140 @@ class DocumentView extends StatefulWidget {
 class _DocumentViewState extends State<DocumentView> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FormDataCubit, FormDataState>(
-      builder: (context, state) {
-        final documents = state.documentEntity;
-
-        return SingleChildScrollView(
-          child: Form(
-            key: widget.formKey,
-            child: Column(
-              children: [
-                SectionBox(
-                  title: Text(
-                    "Please Upload Your Necessary Document",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                  ),
-                  child: Container(
-                    padding: EdgeInsets.all(16),
-                    child: _buildDocumentsForm(documents),
-                  ),
-                ),
-              ],
+    return SingleChildScrollView(
+      child: Form(
+        key: widget.formKey,
+        child: Column(
+          children: [
+            SectionBox(
+              title: const Text(
+                "Please Upload Your Necessary Document",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                child: _buildDocumentsForm(),
+              ),
             ),
-          ),
-        );
-      },
+          ],
+        ),
+      ),
     );
   }
 
-  Widget _buildDocumentsForm(DocumentEntity documents) {
+  Widget _buildDocumentsForm() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CustomImagePicker(
+        FirstApplicantPhotoPicker(),
+        FirstApplicantNidFrontPicker(),
+        FirstApplicantNidBackPicker(),
+        FirstApplicantSignaturePicker(),
+        FirstApplicantTinCertificatePicker(),
+        FirstApplicantBankStatementPicker(),
+      ],
+    );
+  }
+}
+
+// Individual widget components for DocumentView
+
+class FirstApplicantPhotoPicker extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<FormDataCubit, FormDataState>(
+      buildWhen: (previous, current) =>
+          previous.documentEntity.firstApplicantPhoto !=
+          current.documentEntity.firstApplicantPhoto,
+      builder: (context, state) {
+        return CustomImagePicker(
           onImagePicked: (image) {
             context.read<FormDataCubit>().documentUpdateFirstApplicantPhoto(
               image,
             );
           },
-          initialImage: documents.firstApplicantPhoto,
+          initialImage: state.documentEntity.firstApplicantPhoto,
           title: "First Applicant (1st Holder) Photo",
           subtitle: "Image Size 591x709 pixel",
           validator: (file) {
             if (file == null) return 'Please upload a photo';
             return null;
           },
-        ),
-        CustomImagePicker(
+        );
+      },
+    );
+  }
+}
+
+class FirstApplicantNidFrontPicker extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<FormDataCubit, FormDataState>(
+      buildWhen: (previous, current) =>
+          previous.documentEntity.firstApplicantNidFront !=
+          current.documentEntity.firstApplicantNidFront,
+      builder: (context, state) {
+        return CustomImagePicker(
           onImagePicked: (image) {
             context.read<FormDataCubit>().documentUpdateFirstApplicantNidFront(
               image,
             );
           },
-          initialImage: documents.firstApplicantNidFront,
+          initialImage: state.documentEntity.firstApplicantNidFront,
           title: "First Applicant (1st Holder) NID/Passport/Driving Front Side",
           isRect: true,
           validator: (file) {
             if (file == null) return 'Please upload NID front side';
             return null;
           },
-        ),
-        CustomImagePicker(
+        );
+      },
+    );
+  }
+}
+
+class FirstApplicantNidBackPicker extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<FormDataCubit, FormDataState>(
+      buildWhen: (previous, current) =>
+          previous.documentEntity.firstApplicantNidBack !=
+          current.documentEntity.firstApplicantNidBack,
+      builder: (context, state) {
+        return CustomImagePicker(
           onImagePicked: (image) {
             context.read<FormDataCubit>().documentUpdateFirstApplicantNidBack(
               image,
             );
           },
-          initialImage: documents.firstApplicantNidBack,
+          initialImage: state.documentEntity.firstApplicantNidBack,
           title: "First Applicant (1st Holder) NID/Passport/Driving Back Side",
           isRect: true,
           validator: (file) {
             if (file == null) return 'Please upload NID back side';
             return null;
           },
-        ),
-        CustomImagePicker(
+        );
+      },
+    );
+  }
+}
+
+class FirstApplicantSignaturePicker extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<FormDataCubit, FormDataState>(
+      buildWhen: (previous, current) =>
+          previous.documentEntity.firstApplicantSignature !=
+          current.documentEntity.firstApplicantSignature,
+      builder: (context, state) {
+        return CustomImagePicker(
           onImagePicked: (image) {
             context.read<FormDataCubit>().documentUpdateFirstApplicantSignature(
               image,
             );
           },
-          initialImage: documents.firstApplicantSignature,
+          initialImage: state.documentEntity.firstApplicantSignature,
           title: "Signature of First Applicant",
           subtitle: "(Image size 300x50 pixel)",
           isRect: true,
@@ -106,28 +158,54 @@ class _DocumentViewState extends State<DocumentView> {
             if (file == null) return 'Please upload signature';
             return null;
           },
-        ),
-        CustomImagePicker(
+        );
+      },
+    );
+  }
+}
+
+class FirstApplicantTinCertificatePicker extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<FormDataCubit, FormDataState>(
+      buildWhen: (previous, current) =>
+          previous.documentEntity.firstApplicantTinCertificate !=
+          current.documentEntity.firstApplicantTinCertificate,
+      builder: (context, state) {
+        return CustomImagePicker(
           onImagePicked: (image) {
             context
                 .read<FormDataCubit>()
                 .documentUpdateFirstApplicantTinCertificate(image);
           },
-          initialImage: documents.firstApplicantTinCertificate,
+          initialImage: state.documentEntity.firstApplicantTinCertificate,
           isRect: true,
           title: "TIN Certificate of First Applicant (1st Holder)",
           validator: (file) {
             if (file == null) return 'Please upload TIN certificate';
             return null;
           },
-        ),
-        CustomImagePicker(
+        );
+      },
+    );
+  }
+}
+
+class FirstApplicantBankStatementPicker extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<FormDataCubit, FormDataState>(
+      buildWhen: (previous, current) =>
+          previous.documentEntity.firstApplicantBankStatement !=
+          current.documentEntity.firstApplicantBankStatement,
+      builder: (context, state) {
+        return CustomImagePicker(
           onImagePicked: (image) {
             context
                 .read<FormDataCubit>()
                 .documentUpdateFirstApplicantBankStatement(image);
           },
-          initialImage: documents.firstApplicantBankStatement,
+          initialImage: state.documentEntity.firstApplicantBankStatement,
           title: "Bank Statement/Certificate/Cheque Copy",
           isRect: true,
           subtitle: "(Please use a MICR Cheque Leaf)",
@@ -135,8 +213,8 @@ class _DocumentViewState extends State<DocumentView> {
             if (file == null) return 'Please upload bank statement';
             return null;
           },
-        ),
-      ],
+        );
+      },
     );
   }
 }
