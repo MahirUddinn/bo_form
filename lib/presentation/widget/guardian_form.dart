@@ -13,7 +13,11 @@ class GuardianForm extends StatefulWidget {
   final NomineeEntity nominee;
   final int nomineeIndex;
 
-  const GuardianForm({super.key, required this.nominee, required this.nomineeIndex});
+  const GuardianForm({
+    super.key,
+    required this.nominee,
+    required this.nomineeIndex,
+  });
 
   @override
   State<GuardianForm> createState() => _GuardianFormState();
@@ -37,9 +41,6 @@ class _GuardianFormState extends State<GuardianForm> {
 
   String? _selectedResidentialStatus;
   String? _selectedCountry;
-  DateTime? _dob;
-  DateTime? _dom;
-
 
   @override
   void initState() {
@@ -69,14 +70,6 @@ class _GuardianFormState extends State<GuardianForm> {
     _guardianEmailController.text = nominee.guardianEmail;
     _guardianTelephoneController.text = nominee.guardianTelephone;
     _guardianFaxController.text = nominee.guardianFax;
-
-    if (nominee.guardianDateOfBirth.isNotEmpty) {
-      try {
-        _dob = DateFormat('yyyy-MM-dd').parse(nominee.guardianDateOfBirth);
-      } catch (e) {
-        _dob = null;
-      }
-    }
   }
 
   @override
@@ -136,6 +129,13 @@ class _GuardianFormState extends State<GuardianForm> {
                   value,
                 );
               },
+              isRequired: true,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter a first name.';
+                }
+                return null;
+              },
             ),
             CustomTextField(
               hintText: "Enter Last Name",
@@ -146,6 +146,13 @@ class _GuardianFormState extends State<GuardianForm> {
                   widget.nomineeIndex,
                   value,
                 );
+              },
+              isRequired: true,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter a last name.';
+                }
+                return null;
               },
             ),
             CustomTextField(
@@ -158,35 +165,46 @@ class _GuardianFormState extends State<GuardianForm> {
                   value,
                 );
               },
+              isRequired: true,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter a relationship.';
+                }
+                return null;
+              },
             ),
             CustomDatePicker(
               labelText: "Maturity Date of Minor(YYYY-MM-DD)",
-              selectedDate: _dom,
+              selectedDate: widget.nominee.guardianDateOfMaturity,
               formatter: DateFormat('yyyy-MM-dd'),
+              isRequired: true,
               onTap: () async {
                 final cubit = context.read<FormDataCubit>();
                 final picked = await showDatePicker(
                   context: context,
                   firstDate: DateTime(1900),
-                  lastDate: DateTime(DateTime.now().year+18),
+                  lastDate: DateTime(DateTime.now().year + 18),
                 );
                 if (picked != null) {
-                  setState(() {
-                    _dom = picked;
-                  });
-                  if (!mounted) return;
                   cubit.nomineeUpdateGuardianDateOfMaturity(
                     widget.nomineeIndex,
-                    DateFormat('yyyy-MM-dd').format(picked),
+                    picked,
                   );
                 }
               },
               hintText: "YYYY-MM-DD",
+              validator: (value) {
+                if (value == null) {
+                  return 'Please select a maturity date.';
+                }
+                return null;
+              },
             ),
             CustomCheckSelector(
               label: "Residential Status",
               listOfValues: ["Resident", "Non Resident", "Foreigner"],
               selectedValue: _selectedResidentialStatus,
+              isRequired: true,
               onChanged: (value) {
                 _selectedResidentialStatus = value;
                 context
@@ -196,40 +214,57 @@ class _GuardianFormState extends State<GuardianForm> {
                       value!,
                     );
               },
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please select a residential status.';
+                }
+                return null;
+              },
             ),
             CustomDatePicker(
               labelText: "Date of Birth (YYYY-MM-DD)",
-              selectedDate: _dob,
+              selectedDate: widget.nominee.guardianDateOfBirth,
               formatter: DateFormat('yyyy-MM-dd'),
+              isRequired: true,
               onTap: () async {
-                final cubit = context.read<FormDataCubit>();
                 final picked = await showDatePicker(
                   context: context,
                   firstDate: DateTime(1900),
                   lastDate: DateTime.now(),
                 );
                 if (picked != null) {
-                  setState(() {
-                    _dob = picked;
-                  });
-                  if (!mounted) return;
-                  cubit.nomineeUpdateGuardianDateOfBirth(
-                    widget.nomineeIndex,
-                    DateFormat('yyyy-MM-dd').format(picked),
-                  );
+                  context
+                      .read<FormDataCubit>()
+                      .nomineeUpdateGuardianDateOfBirth(
+                        widget.nomineeIndex,
+                        picked,
+                      );
                 }
               },
               hintText: "YYYY-MM-DD",
+              validator: (value) {
+                if (value == null) {
+                  return 'Please select a date of birth.';
+                }
+                return null;
+              },
             ),
             CustomTextField(
               hintText: "Enter National Identity Card Number",
               label: "National ID",
               controller: _guardianNidController,
+              isRequired: true,
               onChanged: (value) {
                 context.read<FormDataCubit>().nomineeUpdateGuardianNid(
                   widget.nomineeIndex,
                   value,
                 );
+              },
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter a NID.';
+                }
+                return null;
               },
             ),
             CustomTextField(
@@ -241,6 +276,13 @@ class _GuardianFormState extends State<GuardianForm> {
                   widget.nomineeIndex,
                   value,
                 );
+              },
+              isRequired: true,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter an address.';
+                }
+                return null;
               },
             ),
             CustomTextField(
@@ -275,6 +317,13 @@ class _GuardianFormState extends State<GuardianForm> {
                   value,
                 );
               },
+              isRequired: true,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter a city.';
+                }
+                return null;
+              },
             ),
             CustomTextField(
               hintText: "Enter Post Code",
@@ -286,6 +335,13 @@ class _GuardianFormState extends State<GuardianForm> {
                   value,
                 );
               },
+              isRequired: true,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter a post code.';
+                }
+                return null;
+              },
             ),
             CustomTextField(
               hintText: "Enter Division",
@@ -296,6 +352,13 @@ class _GuardianFormState extends State<GuardianForm> {
                   widget.nomineeIndex,
                   value,
                 );
+              },
+              isRequired: true,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter a division.';
+                }
+                return null;
               },
             ),
             CustomDropdown(
@@ -311,16 +374,12 @@ class _GuardianFormState extends State<GuardianForm> {
                   value!,
                 );
               },
-            ),
-            CustomTextField(
-              hintText: "Enter Mobile",
-              label: "Mobile",
-              controller: _guardianMobileController,
-              onChanged: (value) {
-                context.read<FormDataCubit>().nomineeUpdateGuardianMobileNumber(
-                  widget.nomineeIndex,
-                  value,
-                );
+              isRequired: true,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please select a country.';
+                }
+                return null;
               },
             ),
             CustomTextField(
@@ -332,6 +391,24 @@ class _GuardianFormState extends State<GuardianForm> {
                   widget.nomineeIndex,
                   value,
                 );
+              },
+            ),
+            CustomTextField(
+              hintText: "Enter Mobile",
+              label: "Mobile",
+              controller: _guardianMobileController,
+              onChanged: (value) {
+                context.read<FormDataCubit>().nomineeUpdateGuardianMobileNumber(
+                  widget.nomineeIndex,
+                  value,
+                );
+              },
+              isRequired: true,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter a mobile number.';
+                }
+                return null;
               },
             ),
             CustomTextField(
@@ -354,6 +431,12 @@ class _GuardianFormState extends State<GuardianForm> {
                   widget.nomineeIndex,
                   value,
                 );
+              },
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter a FAX number.';
+                }
+                return null;
               },
             ),
           ],

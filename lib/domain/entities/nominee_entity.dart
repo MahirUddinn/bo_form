@@ -5,7 +5,7 @@ class NomineeEntity {
   final String relationship;
   final String percentage;
   final String residentialStatus;
-  final String dateOfBirth;
+  final DateTime? dateOfBirth;
   final String nid;
   final String addressLine1;
   final String addressLine2;
@@ -25,10 +25,10 @@ class NomineeEntity {
   final String guardianFirstName;
   final String guardianLastName;
   final String guardianRelationship;
-  final String guardianDateOfMaturity;
+  final DateTime? guardianDateOfMaturity;
 
   final String guardianResidentialStatus;
-  final String guardianDateOfBirth;
+  final DateTime? guardianDateOfBirth;
   final String guardianNid;
   final String guardianAddressLine1;
   final String guardianAddressLine2;
@@ -49,7 +49,7 @@ class NomineeEntity {
     required this.relationship,
     required this.percentage,
     required this.residentialStatus,
-    required this.dateOfBirth,
+    this.dateOfBirth,
     required this.nid,
     required this.addressLine1,
     required this.addressLine2,
@@ -67,9 +67,9 @@ class NomineeEntity {
     required this.guardianFirstName,
     required this.guardianLastName,
     required this.guardianRelationship,
-    required this.guardianDateOfMaturity,
+    this.guardianDateOfMaturity,
     required this.guardianResidentialStatus,
-    required this.guardianDateOfBirth,
+    this.guardianDateOfBirth,
     required this.guardianNid,
     required this.guardianAddressLine1,
     required this.guardianAddressLine2,
@@ -92,7 +92,7 @@ class NomineeEntity {
       relationship: '',
       percentage: '',
       residentialStatus: '',
-      dateOfBirth: '',
+      dateOfBirth: null,
       nid: '',
       addressLine1: '',
       addressLine2: '',
@@ -110,9 +110,9 @@ class NomineeEntity {
       guardianFirstName: '',
       guardianLastName: '',
       guardianRelationship: '',
-      guardianDateOfMaturity: '',
+      guardianDateOfMaturity: null,
       guardianResidentialStatus: '',
-      guardianDateOfBirth: '',
+      guardianDateOfBirth: null,
       guardianNid: '',
       guardianAddressLine1: '',
       guardianAddressLine2: '',
@@ -135,7 +135,7 @@ class NomineeEntity {
     String? relationship,
     String? percentage,
     String? residentialStatus,
-    String? dateOfBirth,
+    DateTime? dateOfBirth,
     String? nid,
     String? addressLine1,
     String? addressLine2,
@@ -153,9 +153,9 @@ class NomineeEntity {
     String? guardianFirstName,
     String? guardianLastName,
     String? guardianRelationship,
-    String? guardianDateOfMaturity,
+    DateTime? guardianDateOfMaturity,
     String? guardianResidentialStatus,
-    String? guardianDateOfBirth,
+    DateTime? guardianDateOfBirth,
     String? guardianNid,
     String? guardianAddressLine1,
     String? guardianAddressLine2,

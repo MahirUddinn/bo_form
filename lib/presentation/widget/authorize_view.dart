@@ -11,20 +11,15 @@ class AuthorizeView extends StatefulWidget {
   const AuthorizeView({super.key, required this.formKey});
   final GlobalKey<FormState> formKey;
 
-
   @override
   State<AuthorizeView> createState() => _AuthorizeViewState();
 }
 
 class _AuthorizeViewState extends State<AuthorizeView> {
-
-  DateTime? _dob;
-
   String? _selectedCourtesyTitle;
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _occupationController = TextEditingController();
-  String? _dateOfBirth;
   final TextEditingController _fatherNameController = TextEditingController();
   final TextEditingController _motherNameController = TextEditingController();
   final TextEditingController _addressLine1Controller = TextEditingController();
@@ -37,7 +32,7 @@ class _AuthorizeViewState extends State<AuthorizeView> {
   final TextEditingController _mobileNumberController = TextEditingController();
   final TextEditingController _emailAddressController = TextEditingController();
   final TextEditingController _telephoneNumberController =
-  TextEditingController();
+      TextEditingController();
   final TextEditingController _faxNumberController = TextEditingController();
   final TextEditingController _nidController = TextEditingController();
 
@@ -51,7 +46,9 @@ class _AuthorizeViewState extends State<AuthorizeView> {
     final cubit = context.read<FormDataCubit>();
     final entity = cubit.state.authorizeEntity;
 
-    _selectedCourtesyTitle = entity.courtesyTitle.isNotEmpty ? entity.courtesyTitle : null;
+    _selectedCourtesyTitle = entity.courtesyTitle.isNotEmpty
+        ? entity.courtesyTitle
+        : null;
     _selectedCountry = entity.country.isNotEmpty ? entity.country : null;
 
     _firstNameController.text = entity.firstName;
@@ -70,16 +67,6 @@ class _AuthorizeViewState extends State<AuthorizeView> {
     _telephoneNumberController.text = entity.telephone;
     _faxNumberController.text = entity.fax;
     _nidController.text = entity.nid;
-
-    if (entity.dateOfBirth.isNotEmpty) {
-      try {
-        _dob = DateFormat('yyyy-MM-dd').parse(entity.dateOfBirth);
-        _dateOfBirth = entity.dateOfBirth;
-      } catch (e) {
-        _dob = null;
-        _dateOfBirth = null;
-      }
-    }
   }
 
   @override
@@ -109,14 +96,13 @@ class _AuthorizeViewState extends State<AuthorizeView> {
       builder: (context, state) {
         return SingleChildScrollView(
           child: SectionBox(
-            title: Text("Authorize", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+            title: Text(
+              "Authorize",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
             child: Form(
               key: widget.formKey,
-              child: Column(
-                children: [
-                  _buildFirstACHolder(state),
-                ],
-              ),
+              child: Column(children: [_buildFirstACHolder(state)]),
             ),
           ),
         );
@@ -140,7 +126,9 @@ class _AuthorizeViewState extends State<AuthorizeView> {
               setState(() {
                 _selectedCourtesyTitle = value;
               });
-              context.read<FormDataCubit>().authorizeUpdateCourtesyTitle(value!);
+              context.read<FormDataCubit>().authorizeUpdateCourtesyTitle(
+                value!,
+              );
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -197,7 +185,7 @@ class _AuthorizeViewState extends State<AuthorizeView> {
           CustomDatePicker(
             isRequired: true,
             labelText: "Date of Birth (YYYY-MM-DD)",
-            selectedDate: _dob,
+            selectedDate: state.authorizeEntity.dateOfBirth,
             formatter: DateFormat('yyyy-MM-dd'),
             onTap: () async {
               DateTime? picked = await showDatePicker(
@@ -206,21 +194,18 @@ class _AuthorizeViewState extends State<AuthorizeView> {
                 lastDate: DateTime.now(),
               );
               if (picked != null) {
-                setState(() {
-                  _dateOfBirth = DateFormat('yyyy-MM-dd').format(picked);
-                  _dob = picked;
-                });
-                if (!mounted) return;
-                context.read<FormDataCubit>().authorizeUpdateDateOfBirth(_dateOfBirth!);
+                context.read<FormDataCubit>().authorizeUpdateDateOfBirth(
+                  picked,
+                );
               }
             },
             hintText: "YYYY-MM-DD",
-            // validator: (value) {
-            //   if (value == null) {
-            //     return 'Please select a date of birth.';
-            //   }
-            //   return null;
-            // },
+            validator: (value) {
+              if (value == null) {
+                return 'Please select a date of birth.';
+              }
+              return null;
+            },
           ),
           CustomTextField(
             hintText: "Enter National Identity Card Number",

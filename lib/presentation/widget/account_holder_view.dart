@@ -19,8 +19,6 @@ class AccountHolderView extends StatefulWidget {
 }
 
 class _AccountHolderViewState extends State<AccountHolderView> {
-  DateTime? _dob;
-
   String? _selectedBoType;
   final TextEditingController _boIdController = TextEditingController();
   String? _selectedReferral;
@@ -29,7 +27,6 @@ class _AccountHolderViewState extends State<AccountHolderView> {
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _occupationController = TextEditingController();
-  String? _formattedDateOfBirth;
   final TextEditingController _fatherNameController = TextEditingController();
   final TextEditingController _motherNameController = TextEditingController();
   final TextEditingController _addressLine1Controller = TextEditingController();
@@ -42,7 +39,7 @@ class _AccountHolderViewState extends State<AccountHolderView> {
   final TextEditingController _mobileNumberController = TextEditingController();
   final TextEditingController _emailAddressController = TextEditingController();
   final TextEditingController _telephoneNumberController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _faxNumberController = TextEditingController();
   final TextEditingController _nationalityController = TextEditingController();
   final TextEditingController _nidController = TextEditingController();
@@ -63,22 +60,21 @@ class _AccountHolderViewState extends State<AccountHolderView> {
     final entity = cubit.state.accountHolderEntity;
 
     _selectedBoType = entity.boType.isNotEmpty ? entity.boType : null;
+
     _selectedReferral = entity.referral.isNotEmpty ? entity.referral : null;
-    _selectedClientType = entity.clientType.isNotEmpty
-        ? entity.clientType
-        : null;
-    _selectedCourtesyTitle = entity.courtesyTitle.isNotEmpty
-        ? entity.courtesyTitle
-        : null;
+    _selectedClientType =
+    entity.clientType.isNotEmpty ? entity.clientType : null;
+    _selectedCourtesyTitle =
+    entity.courtesyTitle.isNotEmpty ? entity.courtesyTitle : null;
     _selectedCountry = entity.country.isNotEmpty ? entity.country : null;
-    _selectedBrokerOffice = entity.brokerOffice.isNotEmpty
-        ? entity.brokerOffice
-        : null;
+    _selectedBrokerOffice =
+    entity.brokerOffice.isNotEmpty ? entity.brokerOffice : null;
     _selectedResidentialStatus = entity.residentialStatus.isNotEmpty
         ? entity.residentialStatus
         : null;
     _selectedGender = entity.gender.isNotEmpty ? entity.gender : null;
 
+    _boIdController.text = entity.boID;
     _firstNameController.text = entity.firstName;
     _lastNameController.text = entity.lastName;
     _occupationController.text = entity.occupation;
@@ -97,16 +93,6 @@ class _AccountHolderViewState extends State<AccountHolderView> {
     _nationalityController.text = entity.nationality;
     _nidController.text = entity.nid;
     _tinController.text = entity.tin;
-
-    if (entity.dateOfBirth.isNotEmpty) {
-      try {
-        _dob = DateFormat('yyyy-MM-dd').parse(entity.dateOfBirth);
-        _formattedDateOfBirth = entity.dateOfBirth;
-      } catch (e) {
-        _dob = null;
-        _formattedDateOfBirth = null;
-      }
-    }
 
     isOfficerOrDirectorOrAuthorizedRepresentative =
         entity.isOfficerOrDirectorOrAuthorizedRepresentative;
@@ -266,7 +252,7 @@ class _AccountHolderViewState extends State<AccountHolderView> {
           CustomDatePicker(
             isRequired: true,
             labelText: "Date of Birth (YYYY-MM-DD)",
-            selectedDate: _dob,
+            selectedDate: state.accountHolderEntity.dateOfBirth,
             formatter: DateFormat('yyyy-MM-dd'),
             onTap: () async {
               DateTime? picked = await showDatePicker(
@@ -275,16 +261,9 @@ class _AccountHolderViewState extends State<AccountHolderView> {
                 lastDate: DateTime.now(),
               );
               if (picked != null) {
-                setState(() {
-                  _formattedDateOfBirth = DateFormat(
-                    'yyyy-MM-dd',
-                  ).format(picked);
-                  _dob = picked;
-                });
-                if (!mounted) return;
-                context.read<FormDataCubit>().accountHolderUpdateDateOfBirth(
-                  _formattedDateOfBirth!,
-                );
+                context
+                    .read<FormDataCubit>()
+                    .accountHolderUpdateDateOfBirth(picked);
               }
             },
             hintText: "YYYY-MM-DD",
@@ -576,15 +555,15 @@ class _AccountHolderViewState extends State<AccountHolderView> {
           ),
           CustomSliderToggle(
             label:
-                "Whether the applicant is an officer or Director or Authorized Representative of any Stock Exchange/Listed Company/Brokerage Firm",
+            "Whether the applicant is an officer or Director or Authorized Representative of any Stock Exchange/Listed Company/Brokerage Firm",
             selectedValue: isOfficerOrDirectorOrAuthorizedRepresentative,
             onChanged: (value) {
               isOfficerOrDirectorOrAuthorizedRepresentative = value;
               context
                   .read<FormDataCubit>()
                   .accountHolderUpdateIsOfficerOrDirectorOrAuthorizedRepresentative(
-                    value!,
-                  );
+                value!,
+              );
             },
           ),
         ],
@@ -616,21 +595,21 @@ class _AccountHolderViewState extends State<AccountHolderView> {
           ),
           _selectedBoType == "Link BO"
               ? CustomTextField(
-                  hintText: "Enter BOID",
-                  controller: _boIdController,
-                  onChanged: (value) {
-                    context.read<FormDataCubit>().accountHolderUpdateBoID(
-                      value,
-                    );
-                  },
-                  validator: (value) {
-                    if (_selectedBoType == "Link BO" &&
-                        (value == null || value.isEmpty)) {
-                      return 'Please enter a BOID.';
-                    }
-                    return null;
-                  },
-                )
+            hintText: "Enter BOID",
+            controller: _boIdController,
+            onChanged: (value) {
+              context.read<FormDataCubit>().accountHolderUpdateBoID(
+                value,
+              );
+            },
+            validator: (value) {
+              if (_selectedBoType == "Link BO" &&
+                  (value == null || value.isEmpty)) {
+                return 'Please enter a BOID.';
+              }
+              return null;
+            },
+          )
               : Container(),
           SizedBox(height: 8),
           Text(

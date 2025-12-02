@@ -39,7 +39,6 @@ class _NomineeFormState extends State<NomineeForm> {
 
   String? _selectedResidentialStatus;
   String? _selectedCountry;
-  DateTime? _dob;
 
   @override
   void initState() {
@@ -56,36 +55,29 @@ class _NomineeFormState extends State<NomineeForm> {
         cubit.addNominee();
       }
     }
+    if (widget.index < cubit.state.nominees.length) {
+      final nominee = cubit.state.nominees[widget.index];
 
-    final nominee = cubit.state.nominees[widget.index];
+      _selectedResidentialStatus = nominee.residentialStatus.isNotEmpty
+          ? nominee.residentialStatus
+          : null;
+      _selectedCountry = nominee.country.isNotEmpty ? nominee.country : null;
 
-    _selectedResidentialStatus = nominee.residentialStatus.isNotEmpty
-        ? nominee.residentialStatus
-        : null;
-    _selectedCountry = nominee.country.isNotEmpty ? nominee.country : null;
-
-    _firstNameController.text = nominee.firstName;
-    _lastNameController.text = nominee.lastName;
-    _relationshipController.text = nominee.relationship;
-    _percentageController.text = nominee.percentage;
-    _nidController.text = nominee.nid;
-    _addressLine1Controller.text = nominee.addressLine1;
-    _addressLine2Controller.text = nominee.addressLine2;
-    _addressLine3Controller.text = nominee.addressLine3;
-    _cityController.text = nominee.city;
-    _postCodeController.text = nominee.postCode;
-    _divisionController.text = nominee.division;
-    _mobileController.text = nominee.mobileNumber;
-    _emailController.text = nominee.email;
-    _telephoneController.text = nominee.telephone;
-    _faxController.text = nominee.fax;
-
-    if (nominee.dateOfBirth.isNotEmpty) {
-      try {
-        _dob = DateFormat('yyyy-MM-dd').parse(nominee.dateOfBirth);
-      } catch (e) {
-        _dob = null;
-      }
+      _firstNameController.text = nominee.firstName;
+      _lastNameController.text = nominee.lastName;
+      _relationshipController.text = nominee.relationship;
+      _percentageController.text = nominee.percentage;
+      _nidController.text = nominee.nid;
+      _addressLine1Controller.text = nominee.addressLine1;
+      _addressLine2Controller.text = nominee.addressLine2;
+      _addressLine3Controller.text = nominee.addressLine3;
+      _cityController.text = nominee.city;
+      _postCodeController.text = nominee.postCode;
+      _divisionController.text = nominee.division;
+      _mobileController.text = nominee.mobileNumber;
+      _emailController.text = nominee.email;
+      _telephoneController.text = nominee.telephone;
+      _faxController.text = nominee.fax;
     }
   }
 
@@ -112,13 +104,11 @@ class _NomineeFormState extends State<NomineeForm> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<FormDataCubit, FormDataState>(
-      buildWhen: (previous, current) {
-        return previous.nominees[widget.index] !=
-                current.nominees[widget.index] ||
-            previous.isSecondNomineeAvailable !=
-                current.isSecondNomineeAvailable;
-      },
       builder: (context, state) {
+        if (widget.index >= state.nominees.length) {
+          return SizedBox.shrink();
+        }
+
         final nominee = state.nominees[widget.index];
 
         return SectionBox(
@@ -126,10 +116,10 @@ class _NomineeFormState extends State<NomineeForm> {
             widget.mode == 'guardian'
                 ? "Guardian Details"
                 : "Nominee ${widget.index + 1}",
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
           ),
           child: Container(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -137,7 +127,7 @@ class _NomineeFormState extends State<NomineeForm> {
                   CustomDropdown(
                     labelText: "Courtesy Title",
                     hintText: "Select an option",
-                    values: const ["Mr", "Mrs", "Ms", "Dr"],
+                    values: ["Mr", "Mrs", "Ms", "Dr"],
                     selectedValue: nominee.courtesyTitle.isEmpty
                         ? null
                         : nominee.courtesyTitle,
@@ -158,6 +148,13 @@ class _NomineeFormState extends State<NomineeForm> {
                         value,
                       );
                     },
+                    isRequired: true,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a first name.';
+                      }
+                      return null;
+                    },
                   ),
                   CustomTextField(
                     hintText: "Enter Last Name",
@@ -168,6 +165,13 @@ class _NomineeFormState extends State<NomineeForm> {
                         widget.index,
                         value,
                       );
+                    },
+                    isRequired: true,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a last name.';
+                      }
+                      return null;
                     },
                   ),
                   CustomTextField(
@@ -180,6 +184,13 @@ class _NomineeFormState extends State<NomineeForm> {
                         value,
                       );
                     },
+                    isRequired: true,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a relationship.';
+                      }
+                      return null;
+                    },
                   ),
                   CustomTextField(
                     hintText: "Enter Percentage",
@@ -191,12 +202,18 @@ class _NomineeFormState extends State<NomineeForm> {
                         value,
                       );
                     },
+                    isRequired: true,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a percentage.';
+                      }
+                      return null;
+                    },
                   ),
                 ],
-
                 CustomCheckSelector(
                   label: "Residential Status",
-                  listOfValues: const ["Resident", "Non Resident", "Foreigner"],
+                  listOfValues: ["Resident", "Non Resident", "Foreigner"],
                   selectedValue: _selectedResidentialStatus,
                   onChanged: (value) {
                     _selectedResidentialStatus = value;
@@ -204,11 +221,17 @@ class _NomineeFormState extends State<NomineeForm> {
                         .read<FormDataCubit>()
                         .nomineeUpdateResidentialStatus(widget.index, value!);
                   },
+                  isRequired: true,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please select a residential status.';
+                    }
+                    return null;
+                  },
                 ),
-
                 CustomDatePicker(
                   labelText: "Date of Birth (YYYY-MM-DD)",
-                  selectedDate: _dob,
+                  selectedDate: nominee.dateOfBirth,
                   formatter: DateFormat('yyyy-MM-dd'),
                   onTap: () async {
                     final cubit = context.read<FormDataCubit>();
@@ -218,19 +241,18 @@ class _NomineeFormState extends State<NomineeForm> {
                       lastDate: DateTime.now(),
                     );
                     if (picked != null) {
-                      setState(() {
-                        _dob = picked;
-                      });
-                      if (!mounted) return;
-                      cubit.nomineeUpdateDateOfBirth(
-                        widget.index,
-                        DateFormat('yyyy-MM-dd').format(picked),
-                      );
+                      cubit.nomineeUpdateDateOfBirth(widget.index, picked);
                     }
                   },
                   hintText: "YYYY-MM-DD",
+                  isRequired: true,
+                  validator: (value) {
+                    if (value == null) {
+                      return 'Please select a date of birth.';
+                    }
+                    return null;
+                  },
                 ),
-
                 CustomTextField(
                   hintText: "Enter National Identity Card Number",
                   label: "National ID",
@@ -241,8 +263,14 @@ class _NomineeFormState extends State<NomineeForm> {
                       value,
                     );
                   },
+                  isRequired: true,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a NID.';
+                    }
+                    return null;
+                  },
                 ),
-
                 CustomTextField(
                   hintText: "Enter Address Line 1",
                   label: "Address Line 1",
@@ -253,8 +281,14 @@ class _NomineeFormState extends State<NomineeForm> {
                       value,
                     );
                   },
+                  isRequired: true,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter an address.';
+                    }
+                    return null;
+                  },
                 ),
-
                 CustomTextField(
                   hintText: "Enter Address Line 2",
                   label: "Address Line 2",
@@ -266,7 +300,6 @@ class _NomineeFormState extends State<NomineeForm> {
                     );
                   },
                 ),
-
                 CustomTextField(
                   hintText: "Enter Address Line 3",
                   label: "Address Line 3",
@@ -278,7 +311,6 @@ class _NomineeFormState extends State<NomineeForm> {
                     );
                   },
                 ),
-
                 CustomTextField(
                   hintText: "Enter City",
                   label: "City",
@@ -289,8 +321,14 @@ class _NomineeFormState extends State<NomineeForm> {
                       value,
                     );
                   },
+                  isRequired: true,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a city.';
+                    }
+                    return null;
+                  },
                 ),
-
                 CustomTextField(
                   hintText: "Enter Post Code",
                   label: "Post Code",
@@ -301,8 +339,14 @@ class _NomineeFormState extends State<NomineeForm> {
                       value,
                     );
                   },
+                  isRequired: true,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a post code.';
+                    }
+                    return null;
+                  },
                 ),
-
                 CustomTextField(
                   hintText: "Enter Division",
                   label: "Division",
@@ -313,31 +357,34 @@ class _NomineeFormState extends State<NomineeForm> {
                       value,
                     );
                   },
+                  isRequired: true,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a division.';
+                    }
+                    return null;
+                  },
                 ),
-
                 CustomDropdown(
                   labelText: "Country",
                   hintText: "Select an option",
-                  values: const ["USA", "Canada", "India", "UK", "Bangladesh"],
+                  values: ["USA", "Canada", "India", "UK", "Bangladesh"],
                   selectedValue: _selectedCountry,
                   onChanged: (value) {
-                    _selectedCountry = value;
+                    setState(() {
+                      _selectedCountry = value;
+                    });
                     context.read<FormDataCubit>().nomineeUpdateCountry(
                       widget.index,
                       value!,
                     );
                   },
-                ),
-
-                CustomTextField(
-                  hintText: "Enter Mobile",
-                  label: "Mobile",
-                  controller: _mobileController,
-                  onChanged: (value) {
-                    context.read<FormDataCubit>().nomineeUpdateMobileNumber(
-                      widget.index,
-                      value,
-                    );
+                  isRequired: true,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please select a country.';
+                    }
+                    return null;
                   },
                 ),
 
@@ -352,7 +399,24 @@ class _NomineeFormState extends State<NomineeForm> {
                     );
                   },
                 ),
-
+                CustomTextField(
+                  hintText: "Enter Mobile",
+                  label: "Mobile",
+                  controller: _mobileController,
+                  onChanged: (value) {
+                    context.read<FormDataCubit>().nomineeUpdateMobileNumber(
+                      widget.index,
+                      value,
+                    );
+                  },
+                  isRequired: true,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a mobile number.';
+                    }
+                    return null;
+                  },
+                ),
                 CustomTextField(
                   hintText: "Enter Telephone Number",
                   label: "Telephone",
@@ -364,7 +428,6 @@ class _NomineeFormState extends State<NomineeForm> {
                     );
                   },
                 ),
-
                 CustomTextField(
                   hintText: "Enter FAX Number",
                   label: "FAX",
@@ -376,7 +439,6 @@ class _NomineeFormState extends State<NomineeForm> {
                     );
                   },
                 ),
-
                 if (widget.mode != 'guardian')
                   CustomSliderToggle(
                     label: "Is Nominee ${widget.index + 1} a Minor?",
@@ -388,10 +450,8 @@ class _NomineeFormState extends State<NomineeForm> {
                       );
                     },
                   ),
-
                 if (nominee.isNomineeMinor && widget.mode != 'guardian')
                   GuardianForm(nominee: nominee, nomineeIndex: widget.index),
-
                 if (widget.mode == 'primary')
                   CustomSliderToggle(
                     label: "Do you want to add a 2nd Nominee",

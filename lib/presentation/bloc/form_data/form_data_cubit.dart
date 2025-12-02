@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'dart:io';
 
 import 'package:bo_acc_form/domain/entities/autherize_entity.dart';
@@ -14,15 +15,15 @@ class FormDataCubit extends Cubit<FormDataState> {
   GlobalKey<FormState>? formKey;
 
   FormDataCubit()
-    : super(
-        FormDataState(
-          accountHolderEntity: AccountHolderEntity.empty(),
-          bankInfoEntity: BankInfoEntity.empty(),
-          authorizeEntity: AuthorizeEntity.empty(),
-          nominees: [NomineeEntity.empty()],
-          documentEntity: DocumentEntity.empty()
-        ),
-      );
+      : super(
+          FormDataState(
+            accountHolderEntity: AccountHolderEntity.empty(),
+            bankInfoEntity: BankInfoEntity.empty(),
+            authorizeEntity: AuthorizeEntity.empty(),
+            nominees: [NomineeEntity.empty()],
+            documentEntity: DocumentEntity.empty(),
+          ),
+        );
 
   bool validateAccountHolderForm() {
     return formKey?.currentState?.validate() ?? false;
@@ -80,7 +81,7 @@ class FormDataCubit extends Cubit<FormDataState> {
     emit(state.copyWith(accountHolderEntity: updatedEntity));
   }
 
-  void accountHolderUpdateDateOfBirth(String dateOfBirth) {
+  void accountHolderUpdateDateOfBirth(DateTime? dateOfBirth) {
     final updatedEntity = state.accountHolderEntity.copyWith(
       dateOfBirth: dateOfBirth,
     );
@@ -265,7 +266,7 @@ class FormDataCubit extends Cubit<FormDataState> {
     emit(state.copyWith(authorizeEntity: updatedEntity));
   }
 
-  void authorizeUpdateDateOfBirth(String dateOfBirth) {
+  void authorizeUpdateDateOfBirth(DateTime? dateOfBirth) {
     final updatedEntity = state.authorizeEntity.copyWith(
       dateOfBirth: dateOfBirth,
     );
@@ -425,7 +426,7 @@ class FormDataCubit extends Cubit<FormDataState> {
     });
   }
 
-  void nomineeUpdateDateOfBirth(int index, String dateOfBirth) {
+  void nomineeUpdateDateOfBirth(int index, DateTime? dateOfBirth) {
     _updateNomineeField(index, (nominee) {
       return nominee.copyWith(dateOfBirth: dateOfBirth);
     });
@@ -542,7 +543,7 @@ class FormDataCubit extends Cubit<FormDataState> {
 
   void nomineeUpdateGuardianDateOfMaturity(
     int index,
-    String guardianDateOfMaturity,
+    DateTime? guardianDateOfMaturity,
   ) {
     _updateNomineeField(index, (nominee) {
       return nominee.copyWith(guardianDateOfMaturity: guardianDateOfMaturity);
@@ -560,7 +561,8 @@ class FormDataCubit extends Cubit<FormDataState> {
     });
   }
 
-  void nomineeUpdateGuardianDateOfBirth(int index, String guardianDateOfBirth) {
+  void nomineeUpdateGuardianDateOfBirth(
+      int index, DateTime? guardianDateOfBirth) {
     _updateNomineeField(index, (nominee) {
       return nominee.copyWith(guardianDateOfBirth: guardianDateOfBirth);
     });
@@ -701,7 +703,6 @@ class FormDataCubit extends Cubit<FormDataState> {
     final nominees = state.nominees;
     final documents = state.documentEntity;
 
-
     print('\n=== FORM SUBMISSION DATA ===');
     print('Submission Time: ${DateTime.now()}');
 
@@ -714,7 +715,8 @@ class FormDataCubit extends Cubit<FormDataState> {
     print('First Name: ${accountHolder.firstName}');
     print('Last Name: ${accountHolder.lastName}');
     print('Occupation: ${accountHolder.occupation}');
-    print('Date of Birth: ${accountHolder.dateOfBirth}');
+    print(
+        'Date of Birth: ${accountHolder.dateOfBirth != null ? DateFormat('yyyy-MM-dd').format(accountHolder.dateOfBirth!) : ''}');
     print('Father Name: ${accountHolder.fatherName}');
     print('Mother Name: ${accountHolder.motherName}');
     print('Address Line 1: ${accountHolder.addressLine1}');
@@ -749,7 +751,8 @@ class FormDataCubit extends Cubit<FormDataState> {
     print('First Name: ${authorize.firstName}');
     print('Last Name: ${authorize.lastName}');
     print('Occupation: ${authorize.occupation}');
-    print('Date of Birth: ${authorize.dateOfBirth}');
+    print(
+        'Date of Birth: ${authorize.dateOfBirth != null ? DateFormat('yyyy-MM-dd').format(authorize.dateOfBirth!) : ''}');
     print('Father Name: ${authorize.fatherName}');
     print('Mother Name: ${authorize.motherName}');
     print('Address Line 1: ${authorize.addressLine1}');
@@ -778,7 +781,8 @@ class FormDataCubit extends Cubit<FormDataState> {
       print('  Relationship: ${nominee.relationship}');
       print('  Percentage: ${nominee.percentage}');
       print('  Residential Status: ${nominee.residentialStatus}');
-      print('  Date of Birth: ${nominee.dateOfBirth}');
+      print(
+          '  Date of Birth: ${nominee.dateOfBirth != null ? DateFormat('yyyy-MM-dd').format(nominee.dateOfBirth!) : ''}');
       print('  NID: ${nominee.nid}');
       print('  Address Line 1: ${nominee.addressLine1}');
       print('  Address Line 2: ${nominee.addressLine2}');
@@ -799,12 +803,13 @@ class FormDataCubit extends Cubit<FormDataState> {
         print('    Guardian First Name: ${nominee.guardianFirstName}');
         print('    Guardian Last Name: ${nominee.guardianLastName}');
         print('    Guardian Relationship: ${nominee.guardianRelationship}');
-        print('    Guardian Date of Birth: ${nominee.guardianDateOfMaturity}');
-
+        print(
+            '    Guardian Date of Maturity: ${nominee.guardianDateOfMaturity != null ? DateFormat('yyyy-MM-dd').format(nominee.guardianDateOfMaturity!) : ''}');
         print(
           '    Guardian Residential Status: ${nominee.guardianResidentialStatus}',
         );
-        print('    Guardian Date of Birth: ${nominee.guardianDateOfBirth}');
+        print(
+            '    Guardian Date of Birth: ${nominee.guardianDateOfBirth != null ? DateFormat('yyyy-MM-dd').format(nominee.guardianDateOfBirth!) : ''}');
         print('    Guardian NID: ${nominee.guardianNid}');
         print('    Guardian Address Line 1: ${nominee.guardianAddressLine1}');
         print('    Guardian Address Line 2: ${nominee.guardianAddressLine2}');
@@ -820,12 +825,18 @@ class FormDataCubit extends Cubit<FormDataState> {
       }
     }
     print('\n=== DOCUMENTS INFORMATION ===');
-    print('First Applicant Photo: ${documents.firstApplicantPhoto?.path ?? "Not uploaded"}');
-    print('First Applicant NID Front: ${documents.firstApplicantNidFront?.path ?? "Not uploaded"}');
-    print('First Applicant NID Back: ${documents.firstApplicantNidBack?.path ?? "Not uploaded"}');
-    print('First Applicant Signature: ${documents.firstApplicantSignature?.path ?? "Not uploaded"}');
-    print('First Applicant TIN Certificate: ${documents.firstApplicantTinCertificate?.path ?? "Not uploaded"}');
-    print('First Applicant Bank Statement: ${documents.firstApplicantBankStatement?.path ?? "Not uploaded"}');
+    print(
+        'First Applicant Photo: ${documents.firstApplicantPhoto?.path ?? "Not uploaded"}');
+    print(
+        'First Applicant NID Front: ${documents.firstApplicantNidFront?.path ?? "Not uploaded"}');
+    print(
+        'First Applicant NID Back: ${documents.firstApplicantNidBack?.path ?? "Not uploaded"}');
+    print(
+        'First Applicant Signature: ${documents.firstApplicantSignature?.path ?? "Not uploaded"}');
+    print(
+        'First Applicant TIN Certificate: ${documents.firstApplicantTinCertificate?.path ?? "Not uploaded"}');
+    print(
+        'First Applicant Bank Statement: ${documents.firstApplicantBankStatement?.path ?? "Not uploaded"}');
 
     print('\n=== FORM SUBMITTED SUCCESSFULLY ===');
   }

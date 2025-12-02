@@ -167,18 +167,15 @@ class _HomePageState extends State<HomePage> {
                         child: CustomButton(
                           onSubmit: () async {
                             if (state.currentStep < _stepTitles.length - 1) {
-                              // if (_validateCurrentForm(state.currentStep)) {
+                              if (_validateCurrentForm(state.currentStep)) {
                                 context.read<StepperCubit>().onStepForward();
-                              // }
+                              }
                             } else {
                               if (_validateCurrentForm(state.currentStep)) {
                                 context.read<FormDataCubit>().onSubmit();
                                 context.read<StepperCubit>().onStepTapped(0);
                               } else {
                                 context.read<FormDataCubit>().onSubmit();
-                                // context.read<StepperCubit>().onStepTapped(0);
-
-
                               }
                             }
                           },

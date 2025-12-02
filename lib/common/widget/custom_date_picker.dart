@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class CustomDatePicker extends StatelessWidget {
+class CustomDatePicker extends StatefulWidget {
   final String hintText;
   final String labelText;
   final DateTime? selectedDate;
   final DateFormat formatter;
-  final void Function()? onTap;
+  final VoidCallback? onTap;
   final String? Function(DateTime?)? validator;
   final bool isRequired;
 
@@ -22,50 +22,70 @@ class CustomDatePicker extends StatelessWidget {
   });
 
   @override
+  State<CustomDatePicker> createState() => _CustomDatePickerState();
+}
+
+class _CustomDatePickerState extends State<CustomDatePicker> {
+  DateTime? _lastValidatedDate;
+
+  //done by ai
+  @override
+  void didUpdateWidget(CustomDatePicker oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.selectedDate != oldWidget.selectedDate) {
+      _lastValidatedDate = null;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return FormField<DateTime>(
-      validator: validator,
-      initialValue: selectedDate,
+      validator: (value) {
+        // also done by ai
+        return widget.validator?.call(widget.selectedDate);
+      },
+      initialValue: widget.selectedDate,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       builder: (field) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 6,),
-            labelText != ""
+            const SizedBox(height: 6),
+            widget.labelText != ""
                 ? RichText(
-                    text: TextSpan(
-                      text: labelText,
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        color: Theme.of(context).textTheme.bodyLarge?.color,
-                      ),
-                      children: [
-                        isRequired
-                            ? TextSpan(
-                                text: " *",
-                                style: TextStyle(color: Colors.red),
-                              )
-                            : TextSpan(),
-                      ],
-                    ),
+              text: TextSpan(
+                text: widget.labelText,
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  color: Theme.of(context).textTheme.bodyLarge?.color,
+                ),
+                children: [
+                  widget.isRequired
+                      ? const TextSpan(
+                    text: " *",
+                    style: TextStyle(color: Colors.red),
                   )
+                      : const TextSpan(),
+                ],
+              ),
+            )
                 : Container(),
-             SizedBox(height: 6),
+            const SizedBox(height: 6),
             Container(
-              padding:  EdgeInsets.symmetric(vertical: 2),
+              padding: const EdgeInsets.symmetric(vertical: 2),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(14),
               ),
               child: InkWell(
-                onTap: onTap,
+                onTap: widget.onTap,
                 borderRadius: BorderRadius.circular(14),
                 child: InputDecorator(
-                  isEmpty: selectedDate == null,
+                  isEmpty: widget.selectedDate == null,
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Theme.of(context).cardColor,
-                    hintText: hintText,
+                    hintText: widget.hintText,
                     hintStyle: TextStyle(
                       color: Theme.of(context).hintColor,
                       fontSize: 15,
@@ -74,7 +94,7 @@ class CustomDatePicker extends StatelessWidget {
                       borderSide: BorderSide.none,
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    contentPadding:  EdgeInsets.symmetric(
+                    contentPadding: const EdgeInsets.symmetric(
                       horizontal: 16,
                       vertical: 14,
                     ),
@@ -85,7 +105,7 @@ class CustomDatePicker extends StatelessWidget {
                     errorText: field.errorText,
                   ),
                   child: Text(
-                    selectedDate != null ? formatter.format(selectedDate!) : "",
+                    widget.selectedDate != null ? widget.formatter.format(widget.selectedDate!) : "",
                     style: TextStyle(
                       color: Theme.of(context).textTheme.bodyLarge?.color,
                       fontSize: 15,

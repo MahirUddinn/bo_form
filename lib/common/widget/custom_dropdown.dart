@@ -80,6 +80,7 @@ class CustomDropdown extends StatelessWidget {
                   width: 1,
                 ),
               ),
+
               focusedErrorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(14),
                 borderSide: BorderSide(

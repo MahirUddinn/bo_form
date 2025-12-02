@@ -3,7 +3,7 @@ class AuthorizeEntity {
   final String firstName;
   final String lastName;
   final String occupation;
-  final String dateOfBirth;
+  final DateTime? dateOfBirth;
   final String fatherName;
   final String motherName;
   final String addressLine1;
@@ -24,7 +24,7 @@ class AuthorizeEntity {
     required this.firstName,
     required this.lastName,
     required this.occupation,
-    required this.dateOfBirth,
+    this.dateOfBirth,
     required this.fatherName,
     required this.motherName,
     required this.addressLine1,
@@ -47,7 +47,7 @@ class AuthorizeEntity {
       firstName: "",
       lastName: "",
       occupation: "",
-      dateOfBirth: "",
+      dateOfBirth: null,
       fatherName: "",
       motherName: "",
       addressLine1: "",
@@ -70,7 +70,7 @@ class AuthorizeEntity {
     String? firstName,
     String? lastName,
     String? occupation,
-    String? dateOfBirth,
+    DateTime? dateOfBirth,
     String? fatherName,
     String? motherName,
     String? addressLine1,
