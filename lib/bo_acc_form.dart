@@ -3,11 +3,11 @@ import 'package:bo_acc_form/presentation/bloc/stepper_cubit/stepper_cubit.dart';
 import 'package:bo_acc_form/presentation/screen/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 class BOAccForm extends StatelessWidget {
   BOAccForm({super.key});
 
   final _primaryColor = Color(0xFF3B60EC);
-
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +23,7 @@ class BOAccForm extends StatelessWidget {
           brightness: Brightness.light,
           onPrimaryContainer: Colors.black,
           primaryContainer: Colors.white,
+          error: Colors.red,
         ),
         appBarTheme: AppBarTheme(
           backgroundColor: Color(0xFFE0E0E0),
@@ -78,7 +79,7 @@ class BOAccForm extends StatelessWidget {
           fillColor: Color(0xFF1E1E1E),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Color(0xFF343434))
+            borderSide: BorderSide(color: Color(0xFF343434)),
           ),
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(color: _primaryColor),
@@ -91,11 +92,13 @@ class BOAccForm extends StatelessWidget {
         hintColor: Colors.grey,
       ),
 
-      home: MultiBlocProvider(providers: [
-        BlocProvider(create: (context) => StepperCubit(),),
-        BlocProvider(create: (context) => FormDataCubit(),),
-
-      ], child: HomePage()),
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (context) => StepperCubit()),
+          BlocProvider(create: (context) => FormDataCubit()),
+        ],
+        child: HomePage(),
+      ),
     );
   }
 }

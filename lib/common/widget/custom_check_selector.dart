@@ -9,7 +9,6 @@ class CustomCheckSelector extends StatelessWidget {
   final bool isRect;
   final bool isRequired;
 
-
   const CustomCheckSelector({
     super.key,
     this.label = "",
@@ -17,7 +16,8 @@ class CustomCheckSelector extends StatelessWidget {
     required this.selectedValue,
     required this.onChanged,
     this.validator,
-    this.isRect = false, this.isRequired = false,
+    this.isRect = false,
+    this.isRequired = false,
   });
 
   @override
@@ -31,25 +31,27 @@ class CustomCheckSelector extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 6,),
-            label != ""?
-            RichText(
-              text: TextSpan(
-                text: label,
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                  color: Theme.of(context).textTheme.bodyLarge?.color,
-                ),
-                children: [
-                  isRequired?
-                  TextSpan(
-                    text: " *",
-                    style: TextStyle(color: Colors.red),
-                  ):TextSpan(),
-                ],
-              ),
-            ): Container(),
+            SizedBox(height: 6),
+            label != ""
+                ? RichText(
+                    text: TextSpan(
+                      text: label,
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        color: Theme.of(context).textTheme.bodyLarge?.color,
+                      ),
+                      children: [
+                        isRequired
+                            ? TextSpan(
+                                text: " *",
+                                style: TextStyle(color: Colors.red),
+                              )
+                            : TextSpan(),
+                      ],
+                    ),
+                  )
+                : Container(),
 
             SizedBox(height: 12),
 
@@ -104,11 +106,13 @@ class CustomCheckSelector extends StatelessWidget {
                 padding: EdgeInsets.only(top: 6),
                 child: Text(
                   state.errorText!,
-                  style: TextStyle(color: Colors.red[900], fontSize: 12),
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.error,
+                    fontSize: 12,
+                  ),
                 ),
               ),
-            SizedBox(height: 6,),
-
+            SizedBox(height: 6),
           ],
         );
       },

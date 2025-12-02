@@ -26,8 +26,9 @@ class CustomSliderToggle extends StatelessWidget {
           margin: EdgeInsets.only(top: 6),
           padding: EdgeInsets.all(12),
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(14),
-              color: Theme.of(context).disabledColor),
+            borderRadius: BorderRadius.circular(14),
+            color: Theme.of(context).disabledColor,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -52,7 +53,7 @@ class CustomSliderToggle extends StatelessWidget {
                       ),
                     )
                   : Container(),
-               SizedBox(height: 8),
+              SizedBox(height: 8),
               Row(
                 children: [
                   Switch(
@@ -82,10 +83,13 @@ class CustomSliderToggle extends StatelessWidget {
               ),
               if (state.hasError)
                 Padding(
-                  padding:  EdgeInsets.only(top: 6),
+                  padding: EdgeInsets.only(top: 6),
                   child: Text(
                     state.errorText!,
-                    style: TextStyle(color: Colors.red[900], fontSize: 12),
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.error,
+                      fontSize: 12,
+                    ),
                   ),
                 ),
             ],

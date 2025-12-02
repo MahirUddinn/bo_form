@@ -11,7 +11,7 @@ import 'package:bo_acc_form/presentation/widget/nominee_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomePage extends StatefulWidget {
-   const HomePage({super.key});
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -44,7 +44,7 @@ class _HomePageState extends State<HomePage> {
 
     scrollController.animateTo(
       offset,
-      duration:  Duration(milliseconds: 300),
+      duration: Duration(milliseconds: 300),
       curve: Curves.easeInOut,
     );
   }
@@ -138,7 +138,7 @@ class _HomePageState extends State<HomePage> {
               children: [
                 Expanded(
                   child: Padding(
-                    padding:  EdgeInsets.symmetric(
+                    padding: EdgeInsets.symmetric(
                       horizontal: 8.0,
                       vertical: 8.0,
                     ),
@@ -146,7 +146,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 Container(
-                  padding:  EdgeInsets.all(16),
+                  padding: EdgeInsets.all(16),
                   child: Row(
                     children: [
                       if (state.currentStep > 0)
@@ -156,13 +156,13 @@ class _HomePageState extends State<HomePage> {
                               context.read<StepperCubit>().onStepBackwards();
                             },
                             color: customTheme.disabledColor,
-                            child:  Text(
+                            child: Text(
                               "< Prev",
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                           ),
                         ),
-                      if (state.currentStep > 0)  SizedBox(width: 16),
+                      if (state.currentStep > 0) SizedBox(width: 16),
                       Expanded(
                         child: CustomButton(
                           onSubmit: () async {
@@ -184,7 +184,7 @@ class _HomePageState extends State<HomePage> {
                             state.currentStep == _stepTitles.length - 1
                                 ? "Submit"
                                 : "Next >",
-                            style:  TextStyle(
+                            style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                             ),
@@ -201,5 +201,4 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
 }

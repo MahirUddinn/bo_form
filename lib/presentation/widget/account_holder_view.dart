@@ -39,7 +39,7 @@ class _AccountHolderViewState extends State<AccountHolderView> {
   final TextEditingController _mobileNumberController = TextEditingController();
   final TextEditingController _emailAddressController = TextEditingController();
   final TextEditingController _telephoneNumberController =
-  TextEditingController();
+      TextEditingController();
   final TextEditingController _faxNumberController = TextEditingController();
   final TextEditingController _nationalityController = TextEditingController();
   final TextEditingController _nidController = TextEditingController();
@@ -62,13 +62,16 @@ class _AccountHolderViewState extends State<AccountHolderView> {
     _selectedBoType = entity.boType.isNotEmpty ? entity.boType : null;
 
     _selectedReferral = entity.referral.isNotEmpty ? entity.referral : null;
-    _selectedClientType =
-    entity.clientType.isNotEmpty ? entity.clientType : null;
-    _selectedCourtesyTitle =
-    entity.courtesyTitle.isNotEmpty ? entity.courtesyTitle : null;
+    _selectedClientType = entity.clientType.isNotEmpty
+        ? entity.clientType
+        : null;
+    _selectedCourtesyTitle = entity.courtesyTitle.isNotEmpty
+        ? entity.courtesyTitle
+        : null;
     _selectedCountry = entity.country.isNotEmpty ? entity.country : null;
-    _selectedBrokerOffice =
-    entity.brokerOffice.isNotEmpty ? entity.brokerOffice : null;
+    _selectedBrokerOffice = entity.brokerOffice.isNotEmpty
+        ? entity.brokerOffice
+        : null;
     _selectedResidentialStatus = entity.residentialStatus.isNotEmpty
         ? entity.residentialStatus
         : null;
@@ -261,9 +264,9 @@ class _AccountHolderViewState extends State<AccountHolderView> {
                 lastDate: DateTime.now(),
               );
               if (picked != null) {
-                context
-                    .read<FormDataCubit>()
-                    .accountHolderUpdateDateOfBirth(picked);
+                context.read<FormDataCubit>().accountHolderUpdateDateOfBirth(
+                  picked,
+                );
               }
             },
             hintText: "YYYY-MM-DD",
@@ -555,15 +558,15 @@ class _AccountHolderViewState extends State<AccountHolderView> {
           ),
           CustomSliderToggle(
             label:
-            "Whether the applicant is an officer or Director or Authorized Representative of any Stock Exchange/Listed Company/Brokerage Firm",
+                "Whether the applicant is an officer or Director or Authorized Representative of any Stock Exchange/Listed Company/Brokerage Firm",
             selectedValue: isOfficerOrDirectorOrAuthorizedRepresentative,
             onChanged: (value) {
               isOfficerOrDirectorOrAuthorizedRepresentative = value;
               context
                   .read<FormDataCubit>()
                   .accountHolderUpdateIsOfficerOrDirectorOrAuthorizedRepresentative(
-                value!,
-              );
+                    value!,
+                  );
             },
           ),
         ],
@@ -595,21 +598,21 @@ class _AccountHolderViewState extends State<AccountHolderView> {
           ),
           _selectedBoType == "Link BO"
               ? CustomTextField(
-            hintText: "Enter BOID",
-            controller: _boIdController,
-            onChanged: (value) {
-              context.read<FormDataCubit>().accountHolderUpdateBoID(
-                value,
-              );
-            },
-            validator: (value) {
-              if (_selectedBoType == "Link BO" &&
-                  (value == null || value.isEmpty)) {
-                return 'Please enter a BOID.';
-              }
-              return null;
-            },
-          )
+                  hintText: "Enter BOID",
+                  controller: _boIdController,
+                  onChanged: (value) {
+                    context.read<FormDataCubit>().accountHolderUpdateBoID(
+                      value,
+                    );
+                  },
+                  validator: (value) {
+                    if (_selectedBoType == "Link BO" &&
+                        (value == null || value.isEmpty)) {
+                      return 'Please enter a BOID.';
+                    }
+                    return null;
+                  },
+                )
               : Container(),
           SizedBox(height: 8),
           Text(

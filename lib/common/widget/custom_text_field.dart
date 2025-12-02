@@ -10,6 +10,7 @@ class CustomTextField extends StatelessWidget {
   final TextEditingController? controller;
   final bool isRequired;
   final void Function(String)? onChanged;
+  final FocusNode? focusNode;
 
   const CustomTextField({
     super.key,
@@ -22,6 +23,7 @@ class CustomTextField extends StatelessWidget {
     this.controller,
     this.isRequired = false,
     this.onChanged,
+    this.focusNode,
   });
 
   @override
@@ -62,6 +64,7 @@ class CustomTextField extends StatelessWidget {
             obscureText: isObscure,
             keyboardType: keyboardType,
             validator: validator,
+            focusNode: focusNode,
             onSaved: onSaved,
             onChanged: onChanged,
             decoration: InputDecoration(

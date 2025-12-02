@@ -157,7 +157,7 @@ class AccountHolderEntity {
       gender: gender ?? this.gender,
       isOfficerOrDirectorOrAuthorizedRepresentative:
           isOfficerOrDirectorOrAuthorizedRepresentative ??
-              this.isOfficerOrDirectorOrAuthorizedRepresentative,
+          this.isOfficerOrDirectorOrAuthorizedRepresentative,
     );
   }
 }

@@ -14,7 +14,7 @@ class FormDataState {
     required this.authorizeEntity,
     required this.nominees,
     this.isSecondNomineeAvailable = false,
-    required this.documentEntity
+    required this.documentEntity,
   });
 
   FormDataState copyWith({
@@ -23,7 +23,7 @@ class FormDataState {
     AuthorizeEntity? authorizeEntity,
     List<NomineeEntity>? nominees,
     bool? isSecondNomineeAvailable,
-    DocumentEntity? documentEntity
+    DocumentEntity? documentEntity,
   }) {
     return FormDataState(
       accountHolderEntity: accountHolderEntity ?? this.accountHolderEntity,
@@ -32,7 +32,7 @@ class FormDataState {
       nominees: nominees ?? this.nominees,
       isSecondNomineeAvailable:
           isSecondNomineeAvailable ?? this.isSecondNomineeAvailable,
-      documentEntity: documentEntity ?? this.documentEntity
+      documentEntity: documentEntity ?? this.documentEntity,
     );
   }
 }

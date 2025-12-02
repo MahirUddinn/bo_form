@@ -1,11 +1,10 @@
 part of 'stepper_cubit.dart';
 
-class StepperState{
+class StepperState {
   final int currentStep;
   StepperState({required this.currentStep});
 
-  StepperState copyWith({int? currentStep}){
+  StepperState copyWith({int? currentStep}) {
     return StepperState(currentStep: currentStep ?? this.currentStep);
   }
 }
-

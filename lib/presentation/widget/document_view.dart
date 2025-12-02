@@ -52,7 +52,9 @@ class _DocumentViewState extends State<DocumentView> {
       children: [
         CustomImagePicker(
           onImagePicked: (image) {
-            context.read<FormDataCubit>().documentUpdateFirstApplicantPhoto(image);
+            context.read<FormDataCubit>().documentUpdateFirstApplicantPhoto(
+              image,
+            );
           },
           initialImage: documents.firstApplicantPhoto,
           title: "First Applicant (1st Holder) Photo",
@@ -64,7 +66,9 @@ class _DocumentViewState extends State<DocumentView> {
         ),
         CustomImagePicker(
           onImagePicked: (image) {
-            context.read<FormDataCubit>().documentUpdateFirstApplicantNidFront(image);
+            context.read<FormDataCubit>().documentUpdateFirstApplicantNidFront(
+              image,
+            );
           },
           initialImage: documents.firstApplicantNidFront,
           title: "First Applicant (1st Holder) NID/Passport/Driving Front Side",
@@ -76,7 +80,9 @@ class _DocumentViewState extends State<DocumentView> {
         ),
         CustomImagePicker(
           onImagePicked: (image) {
-            context.read<FormDataCubit>().documentUpdateFirstApplicantNidBack(image);
+            context.read<FormDataCubit>().documentUpdateFirstApplicantNidBack(
+              image,
+            );
           },
           initialImage: documents.firstApplicantNidBack,
           title: "First Applicant (1st Holder) NID/Passport/Driving Back Side",
@@ -88,7 +94,9 @@ class _DocumentViewState extends State<DocumentView> {
         ),
         CustomImagePicker(
           onImagePicked: (image) {
-            context.read<FormDataCubit>().documentUpdateFirstApplicantSignature(image);
+            context.read<FormDataCubit>().documentUpdateFirstApplicantSignature(
+              image,
+            );
           },
           initialImage: documents.firstApplicantSignature,
           title: "Signature of First Applicant",
@@ -101,7 +109,9 @@ class _DocumentViewState extends State<DocumentView> {
         ),
         CustomImagePicker(
           onImagePicked: (image) {
-            context.read<FormDataCubit>().documentUpdateFirstApplicantTinCertificate(image);
+            context
+                .read<FormDataCubit>()
+                .documentUpdateFirstApplicantTinCertificate(image);
           },
           initialImage: documents.firstApplicantTinCertificate,
           isRect: true,
@@ -113,7 +123,9 @@ class _DocumentViewState extends State<DocumentView> {
         ),
         CustomImagePicker(
           onImagePicked: (image) {
-            context.read<FormDataCubit>().documentUpdateFirstApplicantBankStatement(image);
+            context
+                .read<FormDataCubit>()
+                .documentUpdateFirstApplicantBankStatement(image);
           },
           initialImage: documents.firstApplicantBankStatement,
           title: "Bank Statement/Certificate/Cheque Copy",
