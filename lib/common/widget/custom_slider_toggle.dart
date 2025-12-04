@@ -1,3 +1,4 @@
+import 'package:bo_acc_form/common/constants/app_ui_const.dart';
 import 'package:flutter/material.dart';
 
 class CustomSliderToggle extends StatelessWidget {
@@ -32,28 +33,13 @@ class CustomSliderToggle extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 6),
-              label != ""
-                  ? RichText(
-                      text: TextSpan(
-                        text: label,
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                          color: Theme.of(context).textTheme.bodyLarge?.color,
-                        ),
-                        children: [
-                          isRequired
-                              ? TextSpan(
-                                  text: " *",
-                                  style: TextStyle(color: Colors.red),
-                                )
-                              : TextSpan(),
-                        ],
-                      ),
-                    )
-                  : Container(),
-              SizedBox(height: 8),
+              AppUiWidgets.verticalSpacing6,
+              AppUiWidgets.fieldLabel(
+                context,
+                label: label,
+                isRequired: isRequired,
+              ),
+              AppUiWidgets.verticalSpacing8,
               Row(
                 children: [
                   Switch(
@@ -86,10 +72,7 @@ class CustomSliderToggle extends StatelessWidget {
                   padding: EdgeInsets.only(top: 6),
                   child: Text(
                     state.errorText!,
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.error,
-                      fontSize: 12,
-                    ),
+                    style: AppUiWidgets.errorTextStyle(context),
                   ),
                 ),
             ],

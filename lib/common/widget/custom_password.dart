@@ -1,3 +1,4 @@
+import 'package:bo_acc_form/common/constants/app_ui_const.dart';
 import 'package:flutter/material.dart';
 
 class CustomPasswordField extends StatefulWidget {
@@ -8,14 +9,14 @@ class CustomPasswordField extends StatefulWidget {
   final void Function(String?)? onSaved;
   final bool isRequired;
 
-
   const CustomPasswordField({
     super.key,
     this.label = "",
     required this.hintText,
     this.controller,
     this.validator,
-    this.onSaved, this.isRequired = false,
+    this.onSaved,
+    this.isRequired = false,
   });
 
   @override
@@ -30,27 +31,13 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: 6,),
-        widget.label != ""?
-        RichText(
-          text: TextSpan(
-            text: widget.label,
-            style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w600,
-              color: Theme.of(context).textTheme.bodyLarge?.color,
-            ),
-            children: [
-              widget.isRequired?
-              TextSpan(
-                text: " *",
-                style: TextStyle(color: Colors.red),
-              ):TextSpan(),
-            ],
-          ),
-        ): Container(),
-
-        SizedBox(height: 6),
+        AppUiWidgets.verticalSpacing6,
+        AppUiWidgets.fieldLabel(
+          context,
+          label: widget.label,
+          isRequired: widget.isRequired,
+        ),
+        AppUiWidgets.verticalSpacing6,
         Container(
           padding: EdgeInsets.symmetric(vertical: 2),
           decoration: BoxDecoration(borderRadius: BorderRadius.circular(14)),
@@ -62,10 +49,7 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
             onSaved: widget.onSaved,
             decoration: InputDecoration(
               hintText: widget.hintText,
-              hintStyle: TextStyle(
-                color: Theme.of(context).hintColor,
-                fontSize: 15,
-              ),
+              hintStyle: AppUiWidgets.hintTextStyle(context),
 
               filled: true,
               fillColor: Theme.of(context).cardColor,

@@ -1,3 +1,4 @@
+import 'package:bo_acc_form/common/constants/app_ui_const.dart';
 import 'package:flutter/material.dart';
 
 class CustomCheckSelector extends StatelessWidget {
@@ -31,29 +32,13 @@ class CustomCheckSelector extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 6),
-            label != ""
-                ? RichText(
-                    text: TextSpan(
-                      text: label,
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        color: Theme.of(context).textTheme.bodyLarge?.color,
-                      ),
-                      children: [
-                        isRequired
-                            ? TextSpan(
-                                text: " *",
-                                style: TextStyle(color: Colors.red),
-                              )
-                            : TextSpan(),
-                      ],
-                    ),
-                  )
-                : Container(),
-
-            SizedBox(height: 12),
+            AppUiWidgets.verticalSpacing6,
+            AppUiWidgets.fieldLabel(
+              context,
+              label: label,
+              isRequired: isRequired,
+            ),
+            AppUiWidgets.verticalSpacing12,
 
             Wrap(
               spacing: 14,
@@ -106,13 +91,10 @@ class CustomCheckSelector extends StatelessWidget {
                 padding: EdgeInsets.only(top: 6),
                 child: Text(
                   state.errorText!,
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.error,
-                    fontSize: 12,
-                  ),
+                  style: AppUiWidgets.errorTextStyle(context),
                 ),
               ),
-            SizedBox(height: 6),
+            AppUiWidgets.verticalSpacing6,
           ],
         );
       },

@@ -1,3 +1,4 @@
+import 'package:bo_acc_form/common/constants/app_ui_const.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -50,28 +51,13 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 6),
-            widget.labelText != ""
-                ? RichText(
-              text: TextSpan(
-                text: widget.labelText,
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                  color: Theme.of(context).textTheme.bodyLarge?.color,
-                ),
-                children: [
-                  widget.isRequired
-                      ? const TextSpan(
-                    text: " *",
-                    style: TextStyle(color: Colors.red),
-                  )
-                      : const TextSpan(),
-                ],
-              ),
-            )
-                : Container(),
-            const SizedBox(height: 6),
+            AppUiWidgets.verticalSpacing6,
+            AppUiWidgets.fieldLabel(
+              context,
+              label: widget.labelText,
+              isRequired: widget.isRequired,
+            ),
+            AppUiWidgets.verticalSpacing6,
             Container(
               padding: const EdgeInsets.symmetric(vertical: 2),
               decoration: BoxDecoration(
@@ -86,10 +72,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
                     filled: true,
                     fillColor: Theme.of(context).cardColor,
                     hintText: widget.hintText,
-                    hintStyle: TextStyle(
-                      color: Theme.of(context).hintColor,
-                      fontSize: 15,
-                    ),
+                    hintStyle: AppUiWidgets.hintTextStyle(context),
                     border: OutlineInputBorder(
                       borderSide: BorderSide.none,
                       borderRadius: BorderRadius.circular(12),
@@ -105,7 +88,9 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
                     errorText: field.errorText,
                   ),
                   child: Text(
-                    widget.selectedDate != null ? widget.formatter.format(widget.selectedDate!) : "",
+                    widget.selectedDate != null
+                        ? widget.formatter.format(widget.selectedDate!)
+                        : "",
                     style: TextStyle(
                       color: Theme.of(context).textTheme.bodyLarge?.color,
                       fontSize: 15,
