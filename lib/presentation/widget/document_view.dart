@@ -1,5 +1,7 @@
-import 'dart:io';
 
+
+import 'package:bo_acc_form/common/constants/app_sizes.dart';
+import 'package:bo_acc_form/common/constants/app_strings.dart';
 import 'package:bo_acc_form/common/widget/custom_image_picker.dart';
 import 'package:bo_acc_form/common/widget/section_box.dart';
 import 'package:bo_acc_form/domain/entities/document_enitity.dart';
@@ -30,11 +32,11 @@ class _DocumentViewState extends State<DocumentView> {
               children: [
                 SectionBox(
                   title: Text(
-                    "Please Upload Your Necessary Document",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    AppStrings.documentTitle,
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: AppSizes.fs16),
                   ),
                   child: Container(
-                    padding: EdgeInsets.all(16),
+                    padding: EdgeInsets.all(AppSizes.p16),
                     child: _buildDocumentsForm(documents),
                   ),
                 ),
@@ -57,10 +59,10 @@ class _DocumentViewState extends State<DocumentView> {
             );
           },
           initialImage: documents.firstApplicantPhoto,
-          title: "First Applicant (1st Holder) Photo",
-          subtitle: "Image Size 591x709 pixel",
+          title: AppStrings.firstApplicantPhoto,
+          subtitle: AppStrings.photoSize,
           validator: (file) {
-            if (file == null) return 'Please upload a photo';
+            if (file == null) return AppStrings.uploadPhotoError;
             return null;
           },
         ),
@@ -71,10 +73,10 @@ class _DocumentViewState extends State<DocumentView> {
             );
           },
           initialImage: documents.firstApplicantNidFront,
-          title: "First Applicant (1st Holder) NID/Passport/Driving Front Side",
+          title: AppStrings.firstApplicantNidFront,
           isRect: true,
           validator: (file) {
-            if (file == null) return 'Please upload NID front side';
+            if (file == null) return AppStrings.uploadNidFrontError;
             return null;
           },
         ),
@@ -85,10 +87,10 @@ class _DocumentViewState extends State<DocumentView> {
             );
           },
           initialImage: documents.firstApplicantNidBack,
-          title: "First Applicant (1st Holder) NID/Passport/Driving Back Side",
+          title: AppStrings.firstApplicantNidBack,
           isRect: true,
           validator: (file) {
-            if (file == null) return 'Please upload NID back side';
+            if (file == null) return AppStrings.uploadNidBackError;
             return null;
           },
         ),
@@ -99,11 +101,11 @@ class _DocumentViewState extends State<DocumentView> {
             );
           },
           initialImage: documents.firstApplicantSignature,
-          title: "Signature of First Applicant",
-          subtitle: "(Image size 300x50 pixel)",
+          title: AppStrings.firstApplicantSignature,
+          subtitle: AppStrings.signatureSize,
           isRect: true,
           validator: (file) {
-            if (file == null) return 'Please upload signature';
+            if (file == null) return AppStrings.uploadSignatureError;
             return null;
           },
         ),
@@ -115,9 +117,9 @@ class _DocumentViewState extends State<DocumentView> {
           },
           initialImage: documents.firstApplicantTinCertificate,
           isRect: true,
-          title: "TIN Certificate of First Applicant (1st Holder)",
+          title: AppStrings.firstApplicantTin,
           validator: (file) {
-            if (file == null) return 'Please upload TIN certificate';
+            if (file == null) return AppStrings.uploadTinError;
             return null;
           },
         ),
@@ -128,11 +130,11 @@ class _DocumentViewState extends State<DocumentView> {
                 .documentUpdateFirstApplicantBankStatement(image);
           },
           initialImage: documents.firstApplicantBankStatement,
-          title: "Bank Statement/Certificate/Cheque Copy",
+          title: AppStrings.bankStatement,
           isRect: true,
-          subtitle: "(Please use a MICR Cheque Leaf)",
+          subtitle: AppStrings.micrCheque,
           validator: (file) {
-            if (file == null) return 'Please upload bank statement';
+            if (file == null) return AppStrings.uploadBankStatementError;
             return null;
           },
         ),

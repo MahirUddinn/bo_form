@@ -1,3 +1,5 @@
+import 'package:bo_acc_form/common/constants/app_sizes.dart';
+import 'package:bo_acc_form/common/constants/app_strings.dart';
 import 'package:bo_acc_form/common/widget/custom_date_picker.dart';
 import 'package:bo_acc_form/common/widget/custom_check_selector.dart';
 import 'package:bo_acc_form/common/widget/custom_dropdown.dart';
@@ -136,7 +138,7 @@ class _AccountHolderViewState extends State<AccountHolderView> {
               children: [
                 SectionBox(
                   title: Text(
-                    "Account Holder",
+                    AppStrings.accountHolder,
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                   child: Column(
@@ -144,7 +146,7 @@ class _AccountHolderViewState extends State<AccountHolderView> {
                       _buildAccountHolder(state),
                       SectionBox(
                         title: Text(
-                          "First A/C Holder",
+                          AppStrings.firstACHolder,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
@@ -165,13 +167,13 @@ class _AccountHolderViewState extends State<AccountHolderView> {
 
   Widget _buildFirstACHolder(FormDataState state) {
     return Container(
-      margin: EdgeInsets.all(16),
+      margin: EdgeInsets.all(AppSizes.p16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomCheckSelector(
-            label: "Type of Client",
-            listOfValues: ["Individual", "Joint"],
+            label: AppStrings.typeOfClient,
+            listOfValues: [AppStrings.individual, AppStrings.joint],
             isRequired: true,
             selectedValue: _selectedClientType,
             onChanged: (value) {
@@ -182,15 +184,15 @@ class _AccountHolderViewState extends State<AccountHolderView> {
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please select a client type.';
+                return AppStrings.selectClientType;
               }
               return null;
             },
           ),
           CustomDropdown(
-            labelText: "Courtesy Title",
-            hintText: "Select an option",
-            values: ["Mr", "Mrs", "Ms", "Dr"],
+            labelText: AppStrings.courtesyTitle,
+            hintText: AppStrings.selectOption,
+            values: [AppStrings.mr, AppStrings.mrs, AppStrings.ms, AppStrings.dr],
             selectedValue: _selectedCourtesyTitle,
             onChanged: (value) {
               _selectedCourtesyTitle = value;
@@ -200,45 +202,45 @@ class _AccountHolderViewState extends State<AccountHolderView> {
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please select a courtesy title.';
+                return AppStrings.selectCourtesyTitle;
               }
               return null;
             },
           ),
           CustomTextField(
-            hintText: "Enter First Name",
+            hintText: AppStrings.enterFirstName,
             isRequired: true,
-            label: "First Name",
+            label: AppStrings.firstName,
             controller: _firstNameController,
             onChanged: (value) {
               context.read<FormDataCubit>().accountHolderUpdateFirstName(value);
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter a first name.';
+                return AppStrings.enterFirstNameError;
               }
               return null;
             },
           ),
           CustomTextField(
-            hintText: "Enter Last Name",
+            hintText: AppStrings.enterLastName,
             isRequired: true,
-            label: "Last Name",
+            label: AppStrings.lastName,
             controller: _lastNameController,
             onChanged: (value) {
               context.read<FormDataCubit>().accountHolderUpdateLastName(value);
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter a last name.';
+                return AppStrings.enterLastNameError;
               }
               return null;
             },
           ),
           CustomTextField(
-            hintText: "Enter Occupation",
+            hintText: AppStrings.enterOccupation,
             isRequired: true,
-            label: "Occupation",
+            label: AppStrings.occupation,
             controller: _occupationController,
             onChanged: (value) {
               context.read<FormDataCubit>().accountHolderUpdateOccupation(
@@ -247,14 +249,14 @@ class _AccountHolderViewState extends State<AccountHolderView> {
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter an occupation.';
+                return AppStrings.enterOccupationError;
               }
               return null;
             },
           ),
           CustomDatePicker(
             isRequired: true,
-            labelText: "Date of Birth (YYYY-MM-DD)",
+            labelText: AppStrings.dobLabel,
             selectedDate: state.accountHolderEntity.dateOfBirth,
             formatter: DateFormat('yyyy-MM-dd'),
             onTap: () async {
@@ -269,18 +271,18 @@ class _AccountHolderViewState extends State<AccountHolderView> {
                 );
               }
             },
-            hintText: "YYYY-MM-DD",
+            hintText: AppStrings.dobHint,
             validator: (value) {
               if (value == null) {
-                return 'Please select a date of birth.';
+                return AppStrings.selectDobError;
               }
               return null;
             },
           ),
           CustomTextField(
-            hintText: "Enter Father Name",
+            hintText: AppStrings.enterFatherName,
             isRequired: true,
-            label: "Father's Name",
+            label: AppStrings.fatherName,
             controller: _fatherNameController,
             onChanged: (value) {
               context.read<FormDataCubit>().accountHolderUpdateFatherName(
@@ -289,15 +291,15 @@ class _AccountHolderViewState extends State<AccountHolderView> {
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return "Please enter a father's name.";
+                return AppStrings.enterFatherNameError;
               }
               return null;
             },
           ),
           CustomTextField(
-            hintText: "Enter Mother Name",
+            hintText: AppStrings.enterMotherName,
             isRequired: true,
-            label: "Mother's Name",
+            label: AppStrings.motherName,
             controller: _motherNameController,
             onChanged: (value) {
               context.read<FormDataCubit>().accountHolderUpdateMotherName(
@@ -306,15 +308,15 @@ class _AccountHolderViewState extends State<AccountHolderView> {
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return "Please enter a mother's name.";
+                return AppStrings.enterMotherNameError;
               }
               return null;
             },
           ),
           CustomTextField(
-            hintText: "Enter Address Line 1",
+            hintText: AppStrings.enterAddressLine1,
             isRequired: true,
-            label: "Address Line 1",
+            label: AppStrings.addressLine1,
             controller: _addressLine1Controller,
             onChanged: (value) {
               context.read<FormDataCubit>().accountHolderUpdateAddressLine1(
@@ -323,15 +325,15 @@ class _AccountHolderViewState extends State<AccountHolderView> {
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter an address.';
+                return AppStrings.enterAddressError;
               }
               return null;
             },
           ),
           CustomTextField(
-            hintText: "Enter Address Line 2",
+            hintText: AppStrings.enterAddressLine2,
             isRequired: false,
-            label: "Address Line 2",
+            label: AppStrings.addressLine2,
             controller: _addressLine2Controller,
             onChanged: (value) {
               context.read<FormDataCubit>().accountHolderUpdateAddressLine2(
@@ -340,9 +342,9 @@ class _AccountHolderViewState extends State<AccountHolderView> {
             },
           ),
           CustomTextField(
-            hintText: "Enter Address Line 3",
+            hintText: AppStrings.enterAddressLine3,
             isRequired: false,
-            label: "Address Line 3",
+            label: AppStrings.addressLine3,
             controller: _addressLine3Controller,
             onChanged: (value) {
               context.read<FormDataCubit>().accountHolderUpdateAddressLine3(
@@ -351,71 +353,77 @@ class _AccountHolderViewState extends State<AccountHolderView> {
             },
           ),
           CustomTextField(
-            hintText: "Enter City",
+            hintText: AppStrings.enterCity,
             isRequired: true,
-            label: "City",
+            label: AppStrings.city,
             controller: _cityNameController,
             onChanged: (value) {
               context.read<FormDataCubit>().accountHolderUpdateCity(value);
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter a city.';
+                return AppStrings.enterCityError;
               }
               return null;
             },
           ),
           CustomTextField(
-            hintText: "Enter Post Code",
+            hintText: AppStrings.enterPostCode,
             isRequired: true,
-            label: "Post Code",
+            label: AppStrings.postCode,
             controller: _postCodeController,
             onChanged: (value) {
               context.read<FormDataCubit>().accountHolderUpdatePostCode(value);
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter a post code.';
+                return AppStrings.enterPostCodeError;
               }
               return null;
             },
           ),
           CustomTextField(
-            hintText: "Enter District",
+            hintText: AppStrings.enterDistrict,
             isRequired: true,
-            label: "District",
+            label: AppStrings.district,
             controller: _districtNameController,
             onChanged: (value) {
               context.read<FormDataCubit>().accountHolderUpdateDistrict(value);
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter a district.';
+                return AppStrings.enterDistrictError;
               }
               return null;
             },
           ),
           CustomDropdown(
-            labelText: "Country",
-            hintText: "Select an option",
+            labelText: AppStrings.country,
+            hintText: AppStrings.selectOption,
             selectedValue: _selectedCountry,
             isRequired: true,
-            values: ["USA", "Canada", "India", "UK", "Bangladesh"],
+            values: [
+              AppStrings.usa,
+              AppStrings.canada,
+              AppStrings.india,
+              AppStrings.uk,
+              AppStrings.bangladesh
+            ],
             onChanged: (value) {
               _selectedCountry = value;
               context.read<FormDataCubit>().accountHolderUpdateCountry(value!);
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please select a country.';
+                return AppStrings.selectCountryError;
               }
               return null;
             },
           ),
           CustomTextField(
-            hintText: "Enter Mobile",
+            hintText: AppStrings.enterMobile,
             isRequired: true,
-            label: "Mobile",
+            label: AppStrings.mobile,
             controller: _mobileNumberController,
             onChanged: (value) {
               context.read<FormDataCubit>().accountHolderUpdateMobileNumber(
@@ -424,48 +432,48 @@ class _AccountHolderViewState extends State<AccountHolderView> {
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter a mobile number.';
+                return AppStrings.enterMobileError;
               }
               return null;
             },
           ),
           CustomTextField(
-            hintText: "Enter Email Address",
+            hintText: AppStrings.enterEmail,
             isRequired: true,
-            label: "Email",
+            label: AppStrings.email,
             controller: _emailAddressController,
             onChanged: (value) {
               context.read<FormDataCubit>().accountHolderUpdateEmail(value);
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter an email address.';
+                return AppStrings.enterEmailError;
               }
               return null;
             },
           ),
           CustomTextField(
-            hintText: "Enter Telephone Number",
+            hintText: AppStrings.enterTelephone,
             isRequired: false,
-            label: "Telephone",
+            label: AppStrings.telephone,
             controller: _telephoneNumberController,
             onChanged: (value) {
               context.read<FormDataCubit>().accountHolderUpdateTelephone(value);
             },
           ),
           CustomTextField(
-            hintText: "Enter FAX Number",
+            hintText: AppStrings.enterFax,
             isRequired: false,
-            label: "FAX",
+            label: AppStrings.fax,
             controller: _faxNumberController,
             onChanged: (value) {
               context.read<FormDataCubit>().accountHolderUpdateFax(value);
             },
           ),
           CustomTextField(
-            hintText: "Enter Nationality",
+            hintText: AppStrings.enterNationality,
             isRequired: true,
-            label: "Nationality",
+            label: AppStrings.nationality,
             controller: _nationalityController,
             onChanged: (value) {
               context.read<FormDataCubit>().accountHolderUpdateNationality(
@@ -474,41 +482,47 @@ class _AccountHolderViewState extends State<AccountHolderView> {
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter a nationality.';
+                return AppStrings.enterNationalityError;
               }
               return null;
             },
           ),
           CustomTextField(
-            hintText: "Enter National Identity Card Number",
+            hintText: AppStrings.enterNationalId,
             isRequired: true,
-            label: "National ID",
+            label: AppStrings.nationalId,
             controller: _nidController,
             onChanged: (value) {
               context.read<FormDataCubit>().accountHolderUpdateNid(value);
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter a national ID.';
+                return AppStrings.enterNationalIdError;
               }
               return null;
             },
           ),
           CustomTextField(
-            hintText: "Enter Tax Identification Number (TIN)",
+            hintText: AppStrings.enterTin,
             isRequired: false,
-            label: "Tax Identification Number (TIN)",
+            label: AppStrings.tin,
             controller: _tinController,
             onChanged: (value) {
               context.read<FormDataCubit>().accountHolderUpdateTin(value);
             },
           ),
           CustomDropdown(
-            labelText: "Broker Branch",
-            hintText: "Select an option",
+            labelText: AppStrings.brokerBranch,
+            hintText: AppStrings.selectOption,
             selectedValue: _selectedBrokerOffice,
             isRequired: true,
-            values: ["HEAD OFFICE", "SYLHET", "BOGURA", "BMSL", "TANGAIL"],
+            values: [
+              AppStrings.headOffice,
+              AppStrings.sylhet,
+              AppStrings.bogura,
+              AppStrings.bmsl,
+              AppStrings.tangail
+            ],
             onChanged: (value) {
               _selectedBrokerOffice = value;
               context.read<FormDataCubit>().accountHolderUpdateBrokerOffice(
@@ -517,14 +531,18 @@ class _AccountHolderViewState extends State<AccountHolderView> {
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please select a broker branch.';
+                return AppStrings.selectBrokerBranchError;
               }
               return null;
             },
           ),
           CustomCheckSelector(
-            label: "Residential Status",
-            listOfValues: ["Resident", "Non Resident", "Foreigner"],
+            label: AppStrings.residentialStatus,
+            listOfValues: [
+              AppStrings.resident,
+              AppStrings.nonResident,
+              AppStrings.foreigner
+            ],
             isRequired: true,
             selectedValue: _selectedResidentialStatus,
             onChanged: (value) {
@@ -535,14 +553,14 @@ class _AccountHolderViewState extends State<AccountHolderView> {
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please select a residential status.';
+                return AppStrings.selectResidentialStatusError;
               }
               return null;
             },
           ),
           CustomCheckSelector(
-            label: "Gender",
-            listOfValues: ["Male", "Female"],
+            label: AppStrings.gender,
+            listOfValues: [AppStrings.male, AppStrings.female],
             isRequired: true,
             selectedValue: _selectedGender,
             onChanged: (value) {
@@ -551,14 +569,13 @@ class _AccountHolderViewState extends State<AccountHolderView> {
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please select a gender.';
+                return AppStrings.selectGenderError;
               }
               return null;
             },
           ),
           CustomSliderToggle(
-            label:
-                "Whether the applicant is an officer or Director or Authorized Representative of any Stock Exchange/Listed Company/Brokerage Firm",
+            label: AppStrings.officerDirectorLabel,
             selectedValue: isOfficerOrDirectorOrAuthorizedRepresentative,
             onChanged: (value) {
               isOfficerOrDirectorOrAuthorizedRepresentative = value;
@@ -576,14 +593,14 @@ class _AccountHolderViewState extends State<AccountHolderView> {
 
   Widget _buildAccountHolder(FormDataState state) {
     return Container(
-      margin: EdgeInsets.all(16),
+      margin: EdgeInsets.all(AppSizes.p16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomCheckSelector(
             isRequired: true,
-            label: "BO Type",
-            listOfValues: ["New BO", "Link BO"],
+            label: AppStrings.boType,
+            listOfValues: [AppStrings.newBo, AppStrings.linkBo],
             selectedValue: _selectedBoType,
             onChanged: (value) {
               _selectedBoType = value;
@@ -591,14 +608,14 @@ class _AccountHolderViewState extends State<AccountHolderView> {
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please select a BO type.';
+                return AppStrings.selectBoTypeError;
               }
               return null;
             },
           ),
-          _selectedBoType == "Link BO"
+          _selectedBoType == AppStrings.linkBo
               ? CustomTextField(
-                  hintText: "Enter BOID",
+                  hintText: AppStrings.enterBoId,
                   controller: _boIdController,
                   onChanged: (value) {
                     context.read<FormDataCubit>().accountHolderUpdateBoID(
@@ -606,27 +623,27 @@ class _AccountHolderViewState extends State<AccountHolderView> {
                     );
                   },
                   validator: (value) {
-                    if (_selectedBoType == "Link BO" &&
+                    if (_selectedBoType == AppStrings.linkBo &&
                         (value == null || value.isEmpty)) {
-                      return 'Please enter a BOID.';
+                      return AppStrings.enterBoIdError;
                     }
                     return null;
                   },
                 )
               : Container(),
-          SizedBox(height: 8),
+          SizedBox(height: AppSizes.h8),
           Text(
-            "Referral(Lets us know where you heard of our BO account services)",
+            AppStrings.referralLabel,
           ),
           CustomDropdown(
-            hintText: "Select an option",
+            hintText: AppStrings.selectOption,
             selectedValue: _selectedReferral,
             values: [
-              "Social Media",
-              "Offline Event",
-              "Dealer",
-              "Associate",
-              "Friend Recommendation",
+              AppStrings.socialMedia,
+              AppStrings.offlineEvent,
+              AppStrings.dealer,
+              AppStrings.associate,
+              AppStrings.friendRecommendation,
             ],
             onChanged: (referral) {
               _selectedReferral = referral;

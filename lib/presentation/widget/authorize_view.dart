@@ -1,3 +1,5 @@
+import 'package:bo_acc_form/common/constants/app_sizes.dart';
+import 'package:bo_acc_form/common/constants/app_strings.dart';
 import 'package:bo_acc_form/common/widget/section_box.dart';
 import 'package:bo_acc_form/presentation/bloc/form_data/form_data_cubit.dart';
 import 'package:flutter/material.dart';
@@ -97,8 +99,8 @@ class _AuthorizeViewState extends State<AuthorizeView> {
         return SingleChildScrollView(
           child: SectionBox(
             title: Text(
-              "Authorize",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              AppStrings.authorize,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: AppSizes.fs16),
             ),
             child: Form(
               key: widget.formKey,
@@ -112,14 +114,14 @@ class _AuthorizeViewState extends State<AuthorizeView> {
 
   Widget _buildFirstACHolder(FormDataState state) {
     return Container(
-      margin: EdgeInsets.all(16),
+      margin: EdgeInsets.all(AppSizes.p16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomDropdown(
-            labelText: "Courtesy Title",
-            hintText: "Select an option",
-            values: ["Mr", "Mrs", "Ms", "Dr"],
+            labelText: AppStrings.courtesyTitle,
+            hintText: AppStrings.selectOption,
+            values: [AppStrings.mr, AppStrings.mrs, AppStrings.ms, AppStrings.dr],
             selectedValue: _selectedCourtesyTitle,
             isRequired: true,
             onChanged: (value) {
@@ -132,59 +134,59 @@ class _AuthorizeViewState extends State<AuthorizeView> {
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please select a courtesy title.';
+                return AppStrings.selectCourtesyTitle;
               }
               return null;
             },
           ),
           CustomTextField(
-            hintText: "Enter First Name",
+            hintText: AppStrings.enterFirstName,
             isRequired: true,
-            label: "First Name",
+            label: AppStrings.firstName,
             controller: _firstNameController,
             onChanged: (value) {
               context.read<FormDataCubit>().authorizeUpdateFirstName(value);
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter a first name.';
+                return AppStrings.enterFirstNameError;
               }
               return null;
             },
           ),
           CustomTextField(
-            hintText: "Enter Last Name",
+            hintText: AppStrings.enterLastName,
             isRequired: true,
-            label: "Last Name",
+            label: AppStrings.lastName,
             controller: _lastNameController,
             onChanged: (value) {
               context.read<FormDataCubit>().authorizeUpdateLastName(value);
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter a last name.';
+                return AppStrings.enterLastNameError;
               }
               return null;
             },
           ),
           CustomTextField(
-            hintText: "Enter Occupation",
+            hintText: AppStrings.enterOccupation,
             isRequired: true,
-            label: "Occupation",
+            label: AppStrings.occupation,
             controller: _occupationController,
             onChanged: (value) {
               context.read<FormDataCubit>().authorizeUpdateOccupation(value);
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter an occupation.';
+                return AppStrings.enterOccupationError;
               }
               return null;
             },
           ),
           CustomDatePicker(
             isRequired: true,
-            labelText: "Date of Birth (YYYY-MM-DD)",
+            labelText: AppStrings.dobLabel,
             selectedDate: state.authorizeEntity.dateOfBirth,
             formatter: DateFormat('yyyy-MM-dd'),
             onTap: () async {
@@ -199,143 +201,149 @@ class _AuthorizeViewState extends State<AuthorizeView> {
                 );
               }
             },
-            hintText: "YYYY-MM-DD",
+            hintText: AppStrings.dobHint,
             validator: (value) {
               if (value == null) {
-                return 'Please select a date of birth.';
+                return AppStrings.selectDobError;
               }
               return null;
             },
           ),
           CustomTextField(
-            hintText: "Enter National Identity Card Number",
+            hintText: AppStrings.enterNationalId,
             isRequired: true,
-            label: "National ID",
+            label: AppStrings.nationalId,
             controller: _nidController,
             onChanged: (value) {
               context.read<FormDataCubit>().authorizeUpdateNid(value);
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter a national ID.';
+                return AppStrings.enterNationalIdError;
               }
               return null;
             },
           ),
           CustomTextField(
-            hintText: "Enter Father Name",
+            hintText: AppStrings.enterFatherName,
             isRequired: true,
-            label: "Father's Name",
+            label: AppStrings.fatherName,
             controller: _fatherNameController,
             onChanged: (value) {
               context.read<FormDataCubit>().authorizeUpdateFatherName(value);
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return "Please enter a father's name.";
+                return AppStrings.enterFatherNameError;
               }
               return null;
             },
           ),
           CustomTextField(
-            hintText: "Enter Mother Name",
+            hintText: AppStrings.enterMotherName,
             isRequired: true,
-            label: "Mother's Name",
+            label: AppStrings.motherName,
             controller: _motherNameController,
             onChanged: (value) {
               context.read<FormDataCubit>().authorizeUpdateMotherName(value);
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return "Please enter a mother's name.";
+                return AppStrings.enterMotherNameError;
               }
               return null;
             },
           ),
           CustomTextField(
-            hintText: "Enter Address Line 1",
+            hintText: AppStrings.enterAddressLine1,
             isRequired: true,
-            label: "Address Line 1",
+            label: AppStrings.addressLine1,
             controller: _addressLine1Controller,
             onChanged: (value) {
               context.read<FormDataCubit>().authorizeUpdateAddressLine1(value);
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter an address.';
+                return AppStrings.enterAddressError;
               }
               return null;
             },
           ),
           CustomTextField(
-            hintText: "Enter Address Line 2",
+            hintText: AppStrings.enterAddressLine2,
             isRequired: false,
-            label: "Address Line 2",
+            label: AppStrings.addressLine2,
             controller: _addressLine2Controller,
             onChanged: (value) {
               context.read<FormDataCubit>().authorizeUpdateAddressLine2(value);
             },
           ),
           CustomTextField(
-            hintText: "Enter Address Line 3",
+            hintText: AppStrings.enterAddressLine3,
             isRequired: false,
-            label: "Address Line 3",
+            label: AppStrings.addressLine3,
             controller: _addressLine3Controller,
             onChanged: (value) {
               context.read<FormDataCubit>().authorizeUpdateAddressLine3(value);
             },
           ),
           CustomTextField(
-            hintText: "Enter City",
+            hintText: AppStrings.enterCity,
             isRequired: true,
-            label: "City",
+            label: AppStrings.city,
             controller: _cityNameController,
             onChanged: (value) {
               context.read<FormDataCubit>().authorizeUpdateCity(value);
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter a city.';
+                return AppStrings.enterCityError;
               }
               return null;
             },
           ),
           CustomTextField(
-            hintText: "Enter Post Code",
+            hintText: AppStrings.enterPostCode,
             isRequired: true,
-            label: "Post Code",
+            label: AppStrings.postCode,
             controller: _postCodeController,
             onChanged: (value) {
               context.read<FormDataCubit>().authorizeUpdatePostCode(value);
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter a post code.';
+                return AppStrings.enterPostCodeError;
               }
               return null;
             },
           ),
           CustomTextField(
-            hintText: "Enter Division",
+            hintText: AppStrings.enterDivision,
             isRequired: true,
-            label: "Division",
+            label: AppStrings.division,
             controller: _divisionNameController,
             onChanged: (value) {
               context.read<FormDataCubit>().authorizeUpdateDivision(value);
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter a division.';
+                return AppStrings.enterDivisionError;
               }
               return null;
             },
           ),
           CustomDropdown(
-            labelText: "Country",
-            hintText: "Select an option",
+            labelText: AppStrings.country,
+            hintText: AppStrings.selectOption,
             selectedValue: _selectedCountry,
             isRequired: true,
-            values: ["USA", "Canada", "India", "UK", "Bangladesh"],
+            values: [
+              AppStrings.usa,
+              AppStrings.canada,
+              AppStrings.india,
+              AppStrings.uk,
+              AppStrings.bangladesh
+            ],
             onChanged: (value) {
               setState(() {
                 _selectedCountry = value;
@@ -344,54 +352,54 @@ class _AuthorizeViewState extends State<AuthorizeView> {
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please select a country.';
+                return AppStrings.selectCountryError;
               }
               return null;
             },
           ),
           CustomTextField(
-            hintText: "Enter Mobile",
+            hintText: AppStrings.enterMobile,
             isRequired: true,
-            label: "Mobile",
+            label: AppStrings.mobile,
             controller: _mobileNumberController,
             onChanged: (value) {
               context.read<FormDataCubit>().authorizeUpdateMobileNumber(value);
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter a mobile number.';
+                return AppStrings.enterMobileError;
               }
               return null;
             },
           ),
           CustomTextField(
-            hintText: "Enter Email Address",
+            hintText: AppStrings.enterEmail,
             isRequired: true,
-            label: "Email",
+            label: AppStrings.email,
             controller: _emailAddressController,
             onChanged: (value) {
               context.read<FormDataCubit>().authorizeUpdateEmail(value);
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter an email address.';
+                return AppStrings.enterEmailError;
               }
               return null;
             },
           ),
           CustomTextField(
-            hintText: "Enter Telephone Number",
+            hintText: AppStrings.enterTelephone,
             isRequired: false,
-            label: "Telephone",
+            label: AppStrings.telephone,
             controller: _telephoneNumberController,
             onChanged: (value) {
               context.read<FormDataCubit>().authorizeUpdateTelephone(value);
             },
           ),
           CustomTextField(
-            hintText: "Enter FAX Number",
+            hintText: AppStrings.enterFax,
             isRequired: false,
-            label: "FAX",
+            label: AppStrings.fax,
             controller: _faxNumberController,
             onChanged: (value) {
               context.read<FormDataCubit>().authorizeUpdateFax(value);

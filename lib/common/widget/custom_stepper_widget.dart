@@ -39,7 +39,7 @@ class TopStepperWidget extends StatelessWidget {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: (isActive || isCompleted)
-                        ? Theme.of(context).primaryColor
+                        ? Theme.of(context).colorScheme.primary
                         : Theme.of(context).disabledColor,
                   ),
                   child: Container(
@@ -70,7 +70,7 @@ class TopStepperWidget extends StatelessWidget {
                   steps[index],
                   style: TextStyle(
                     color: (isActive || isCompleted)
-                        ? Theme.of(context).primaryColorDark
+                        ? Theme.of(context).colorScheme.onPrimary
                         : Theme.of(context).hintColor,
                     fontWeight: (isActive || isCompleted)
                         ? FontWeight.bold

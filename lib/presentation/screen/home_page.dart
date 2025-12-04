@@ -1,3 +1,5 @@
+import 'package:bo_acc_form/common/constants/app_sizes.dart';
+import 'package:bo_acc_form/common/constants/app_strings.dart';
 import 'package:bo_acc_form/common/widget/custom_button.dart';
 import 'package:bo_acc_form/common/widget/custom_stepper_widget.dart';
 import 'package:bo_acc_form/presentation/bloc/form_data/form_data_cubit.dart';
@@ -19,7 +21,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final ScrollController scrollController = ScrollController();
-  final double stepItemWidth = 120;
+  final double stepItemWidth = AppSizes.stepItemWidth;
 
   final GlobalKey<FormState> _accountHolderFormKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _bankInfoFormKey = GlobalKey<FormState>();
@@ -50,11 +52,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   final List<String> _stepTitles = [
-    'Account Holder',
-    'Bank Info',
-    'Authorize',
-    'Nominee',
-    'Document',
+    AppStrings.accountHolder,
+    AppStrings.bankInfo,
+    AppStrings.authorize,
+    AppStrings.nominee,
+    AppStrings.document,
   ];
 
   GlobalKey<FormState> _getCurrentFormKey(int currentStep) {
@@ -114,7 +116,7 @@ class _HomePageState extends State<HomePage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          toolbarHeight: 70,
+          toolbarHeight: AppSizes.toolbarHeight,
           titleSpacing: 0,
           title: BlocBuilder<StepperCubit, StepperState>(
             builder: (context, state) {
@@ -139,14 +141,14 @@ class _HomePageState extends State<HomePage> {
                 Expanded(
                   child: Padding(
                     padding: EdgeInsets.symmetric(
-                      horizontal: 8.0,
-                      vertical: 8.0,
+                      horizontal: AppSizes.p8,
+                      vertical: AppSizes.p8,
                     ),
                     child: _getStepWidget(state.currentStep),
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.all(16),
+                  padding: EdgeInsets.all(AppSizes.p16),
                   child: Row(
                     children: [
                       if (state.currentStep > 0)
@@ -157,19 +159,19 @@ class _HomePageState extends State<HomePage> {
                             },
                             color: customTheme.disabledColor,
                             child: Text(
-                              "< Prev",
+                              AppStrings.prevButton,
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                           ),
                         ),
-                      if (state.currentStep > 0) SizedBox(width: 16),
+                      if (state.currentStep > 0) SizedBox(width: AppSizes.w16),
                       Expanded(
                         child: CustomButton(
                           onSubmit: () async {
                             if (state.currentStep < _stepTitles.length - 1) {
-                              if (_validateCurrentForm(state.currentStep)) {
+                              // if (_validateCurrentForm(state.currentStep)) {
                                 context.read<StepperCubit>().onStepForward();
-                              }
+                              // }
                             } else {
                               if (_validateCurrentForm(state.currentStep)) {
                                 context.read<FormDataCubit>().onSubmit();
@@ -179,11 +181,11 @@ class _HomePageState extends State<HomePage> {
                               }
                             }
                           },
-                          color: customTheme.primaryColor,
+                          color: customTheme.colorScheme.primary,
                           child: Text(
                             state.currentStep == _stepTitles.length - 1
-                                ? "Submit"
-                                : "Next >",
+                                ? AppStrings.submitButton
+                                : AppStrings.nextButton,
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,

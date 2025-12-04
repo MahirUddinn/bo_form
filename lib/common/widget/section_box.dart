@@ -1,3 +1,4 @@
+import 'package:bo_acc_form/common/constants/app_sizes.dart';
 import 'package:flutter/material.dart';
 
 class SectionBox extends StatelessWidget {
@@ -10,7 +11,7 @@ class SectionBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 6),
+      margin: EdgeInsets.only(top: AppSizes.mp6),
       width: double.infinity,
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(

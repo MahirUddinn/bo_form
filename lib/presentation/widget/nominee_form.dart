@@ -1,3 +1,5 @@
+import 'package:bo_acc_form/common/constants/app_sizes.dart';
+import 'package:bo_acc_form/common/constants/app_strings.dart';
 import 'package:bo_acc_form/presentation/bloc/form_data/form_data_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:bo_acc_form/common/widget/custom_slider_toggle.dart';
@@ -114,20 +116,20 @@ class _NomineeFormState extends State<NomineeForm> {
         return SectionBox(
           title: Text(
             widget.mode == 'guardian'
-                ? "Guardian Details"
-                : "Nominee ${widget.index + 1}",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ? AppStrings.guardianDetails
+                : "${AppStrings.nomineeLabel} ${widget.index + 1}",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: AppSizes.fs16),
           ),
           child: Container(
-            padding: EdgeInsets.all(16),
+            padding: EdgeInsets.all(AppSizes.p16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (widget.mode != 'guardian') ...[
                   CustomDropdown(
-                    labelText: "Courtesy Title",
-                    hintText: "Select an option",
-                    values: ["Mr", "Mrs", "Ms", "Dr"],
+                    labelText: AppStrings.courtesyTitle,
+                    hintText: AppStrings.selectOption,
+                    values: [AppStrings.mr, AppStrings.mrs, AppStrings.ms, AppStrings.dr],
                     selectedValue: nominee.courtesyTitle.isEmpty
                         ? null
                         : nominee.courtesyTitle,
@@ -139,8 +141,8 @@ class _NomineeFormState extends State<NomineeForm> {
                     },
                   ),
                   CustomTextField(
-                    hintText: "Enter First Name",
-                    label: "First Name",
+                    hintText: AppStrings.enterFirstName,
+                    label: AppStrings.firstName,
                     controller: _firstNameController,
                     onChanged: (value) {
                       context.read<FormDataCubit>().nomineeUpdateFirstName(
@@ -151,14 +153,14 @@ class _NomineeFormState extends State<NomineeForm> {
                     isRequired: true,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter a first name.';
+                        return AppStrings.enterFirstNameError;
                       }
                       return null;
                     },
                   ),
                   CustomTextField(
-                    hintText: "Enter Last Name",
-                    label: "Last Name",
+                    hintText: AppStrings.enterLastName,
+                    label: AppStrings.lastName,
                     controller: _lastNameController,
                     onChanged: (value) {
                       context.read<FormDataCubit>().nomineeUpdateLastName(
@@ -169,14 +171,14 @@ class _NomineeFormState extends State<NomineeForm> {
                     isRequired: true,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter a last name.';
+                        return AppStrings.enterLastNameError;
                       }
                       return null;
                     },
                   ),
                   CustomTextField(
-                    hintText: "Relationship with A/C Holder",
-                    label: "Relationship",
+                    hintText: AppStrings.relationshipHint,
+                    label: AppStrings.relationship,
                     controller: _relationshipController,
                     onChanged: (value) {
                       context.read<FormDataCubit>().nomineeUpdateRelationship(
@@ -187,14 +189,14 @@ class _NomineeFormState extends State<NomineeForm> {
                     isRequired: true,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter a relationship.';
+                        return AppStrings.enterRelationshipError;
                       }
                       return null;
                     },
                   ),
                   CustomTextField(
-                    hintText: "Enter Percentage",
-                    label: "Percentage",
+                    hintText: AppStrings.enterPercentage,
+                    label: AppStrings.percentage,
                     controller: _percentageController,
                     onChanged: (value) {
                       context.read<FormDataCubit>().nomineeUpdatePercentage(
@@ -205,15 +207,15 @@ class _NomineeFormState extends State<NomineeForm> {
                     isRequired: true,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter a percentage.';
+                        return AppStrings.enterPercentageError;
                       }
                       return null;
                     },
                   ),
                 ],
                 CustomCheckSelector(
-                  label: "Residential Status",
-                  listOfValues: ["Resident", "Non Resident", "Foreigner"],
+                  label: AppStrings.residentialStatus,
+                  listOfValues: [AppStrings.resident, AppStrings.nonResident, AppStrings.foreigner],
                   selectedValue: _selectedResidentialStatus,
                   onChanged: (value) {
                     _selectedResidentialStatus = value;
@@ -224,13 +226,13 @@ class _NomineeFormState extends State<NomineeForm> {
                   isRequired: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please select a residential status.';
+                      return AppStrings.selectResidentialStatusError;
                     }
                     return null;
                   },
                 ),
                 CustomDatePicker(
-                  labelText: "Date of Birth (YYYY-MM-DD)",
+                  labelText: AppStrings.dobLabel,
                   selectedDate: nominee.dateOfBirth,
                   formatter: DateFormat('yyyy-MM-dd'),
                   onTap: () async {
@@ -244,18 +246,18 @@ class _NomineeFormState extends State<NomineeForm> {
                       cubit.nomineeUpdateDateOfBirth(widget.index, picked);
                     }
                   },
-                  hintText: "YYYY-MM-DD",
+                  hintText: AppStrings.dobHint,
                   isRequired: true,
                   validator: (value) {
                     if (value == null) {
-                      return 'Please select a date of birth.';
+                      return AppStrings.selectDobError;
                     }
                     return null;
                   },
                 ),
                 CustomTextField(
-                  hintText: "Enter National Identity Card Number",
-                  label: "National ID",
+                  hintText: AppStrings.enterNationalId,
+                  label: AppStrings.nationalId,
                   controller: _nidController,
                   onChanged: (value) {
                     context.read<FormDataCubit>().nomineeUpdateNid(
@@ -266,14 +268,14 @@ class _NomineeFormState extends State<NomineeForm> {
                   isRequired: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter a NID.';
+                      return AppStrings.enterNationalIdError;
                     }
                     return null;
                   },
                 ),
                 CustomTextField(
-                  hintText: "Enter Address Line 1",
-                  label: "Address Line 1",
+                  hintText: AppStrings.enterAddressLine1,
+                  label: AppStrings.addressLine1,
                   controller: _addressLine1Controller,
                   onChanged: (value) {
                     context.read<FormDataCubit>().nomineeUpdateAddressLine1(
@@ -284,14 +286,14 @@ class _NomineeFormState extends State<NomineeForm> {
                   isRequired: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter an address.';
+                      return AppStrings.enterAddressError;
                     }
                     return null;
                   },
                 ),
                 CustomTextField(
-                  hintText: "Enter Address Line 2",
-                  label: "Address Line 2",
+                  hintText: AppStrings.enterAddressLine2,
+                  label: AppStrings.addressLine2,
                   controller: _addressLine2Controller,
                   onChanged: (value) {
                     context.read<FormDataCubit>().nomineeUpdateAddressLine2(
@@ -301,8 +303,8 @@ class _NomineeFormState extends State<NomineeForm> {
                   },
                 ),
                 CustomTextField(
-                  hintText: "Enter Address Line 3",
-                  label: "Address Line 3",
+                  hintText: AppStrings.enterAddressLine3,
+                  label: AppStrings.addressLine3,
                   controller: _addressLine3Controller,
                   onChanged: (value) {
                     context.read<FormDataCubit>().nomineeUpdateAddressLine3(
@@ -312,8 +314,8 @@ class _NomineeFormState extends State<NomineeForm> {
                   },
                 ),
                 CustomTextField(
-                  hintText: "Enter City",
-                  label: "City",
+                  hintText: AppStrings.enterCity,
+                  label: AppStrings.city,
                   controller: _cityController,
                   onChanged: (value) {
                     context.read<FormDataCubit>().nomineeUpdateCity(
@@ -324,14 +326,14 @@ class _NomineeFormState extends State<NomineeForm> {
                   isRequired: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter a city.';
+                      return AppStrings.enterCityError;
                     }
                     return null;
                   },
                 ),
                 CustomTextField(
-                  hintText: "Enter Post Code",
-                  label: "Post Code",
+                  hintText: AppStrings.enterPostCode,
+                  label: AppStrings.postCode,
                   controller: _postCodeController,
                   onChanged: (value) {
                     context.read<FormDataCubit>().nomineeUpdatePostCode(
@@ -342,14 +344,14 @@ class _NomineeFormState extends State<NomineeForm> {
                   isRequired: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter a post code.';
+                      return AppStrings.enterPostCodeError;
                     }
                     return null;
                   },
                 ),
                 CustomTextField(
-                  hintText: "Enter Division",
-                  label: "Division",
+                  hintText: AppStrings.enterDivision,
+                  label: AppStrings.division,
                   controller: _divisionController,
                   onChanged: (value) {
                     context.read<FormDataCubit>().nomineeUpdateDivision(
@@ -360,15 +362,21 @@ class _NomineeFormState extends State<NomineeForm> {
                   isRequired: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter a division.';
+                      return AppStrings.enterDivisionError;
                     }
                     return null;
                   },
                 ),
                 CustomDropdown(
-                  labelText: "Country",
-                  hintText: "Select an option",
-                  values: ["USA", "Canada", "India", "UK", "Bangladesh"],
+                  labelText: AppStrings.country,
+                  hintText: AppStrings.selectOption,
+                  values: [
+                    AppStrings.usa,
+                    AppStrings.canada,
+                    AppStrings.india,
+                    AppStrings.uk,
+                    AppStrings.bangladesh
+                  ],
                   selectedValue: _selectedCountry,
                   onChanged: (value) {
                     setState(() {
@@ -382,15 +390,15 @@ class _NomineeFormState extends State<NomineeForm> {
                   isRequired: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please select a country.';
+                      return AppStrings.selectCountryError;
                     }
                     return null;
                   },
                 ),
 
                 CustomTextField(
-                  hintText: "Enter Email Address",
-                  label: "Email",
+                  hintText: AppStrings.enterEmail,
+                  label: AppStrings.email,
                   controller: _emailController,
                   onChanged: (value) {
                     context.read<FormDataCubit>().nomineeUpdateEmail(
@@ -400,8 +408,8 @@ class _NomineeFormState extends State<NomineeForm> {
                   },
                 ),
                 CustomTextField(
-                  hintText: "Enter Mobile",
-                  label: "Mobile",
+                  hintText: AppStrings.enterMobile,
+                  label: AppStrings.mobile,
                   controller: _mobileController,
                   onChanged: (value) {
                     context.read<FormDataCubit>().nomineeUpdateMobileNumber(
@@ -412,14 +420,14 @@ class _NomineeFormState extends State<NomineeForm> {
                   isRequired: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter a mobile number.';
+                      return AppStrings.enterMobileError;
                     }
                     return null;
                   },
                 ),
                 CustomTextField(
-                  hintText: "Enter Telephone Number",
-                  label: "Telephone",
+                  hintText: AppStrings.enterTelephone,
+                  label: AppStrings.telephone,
                   controller: _telephoneController,
                   onChanged: (value) {
                     context.read<FormDataCubit>().nomineeUpdateTelephone(
@@ -429,8 +437,8 @@ class _NomineeFormState extends State<NomineeForm> {
                   },
                 ),
                 CustomTextField(
-                  hintText: "Enter FAX Number",
-                  label: "FAX",
+                  hintText: AppStrings.enterFax,
+                  label: AppStrings.fax,
                   controller: _faxController,
                   onChanged: (value) {
                     context.read<FormDataCubit>().nomineeUpdateFax(
@@ -441,7 +449,7 @@ class _NomineeFormState extends State<NomineeForm> {
                 ),
                 if (widget.mode != 'guardian')
                   CustomSliderToggle(
-                    label: "Is Nominee ${widget.index + 1} a Minor?",
+                    label: "${AppStrings.isNomineeMinorPrefix}${widget.index + 1}${AppStrings.isNomineeMinorSuffix}",
                     selectedValue: nominee.isNomineeMinor,
                     onChanged: (value) {
                       context.read<FormDataCubit>().nomineeUpdateIsNomineeMinor(
@@ -454,7 +462,7 @@ class _NomineeFormState extends State<NomineeForm> {
                   GuardianForm(nominee: nominee, nomineeIndex: widget.index),
                 if (widget.mode == 'primary')
                   CustomSliderToggle(
-                    label: "Do you want to add a 2nd Nominee",
+                    label: AppStrings.addSecondNominee,
                     selectedValue: state.isSecondNomineeAvailable,
                     onChanged: (value) {
                       context.read<FormDataCubit>().toggleSecondNominee();

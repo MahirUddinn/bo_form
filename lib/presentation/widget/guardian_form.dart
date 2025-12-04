@@ -1,3 +1,5 @@
+import 'package:bo_acc_form/common/constants/app_sizes.dart';
+import 'package:bo_acc_form/common/constants/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:bo_acc_form/presentation/bloc/form_data/form_data_cubit.dart';
 import 'package:bo_acc_form/domain/entities/nominee_entity.dart';
@@ -95,18 +97,18 @@ class _GuardianFormState extends State<GuardianForm> {
   Widget build(BuildContext context) {
     return SectionBox(
       title: Text(
-        "Guardian Details",
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        AppStrings.guardianDetails,
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: AppSizes.fs16),
       ),
       child: Container(
-        padding: EdgeInsets.all(16),
+        padding: EdgeInsets.all(AppSizes.p16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CustomDropdown(
-              labelText: "Courtesy Title",
-              hintText: "Select an option",
-              values: ["Mr", "Mrs", "Ms", "Dr"],
+              labelText: AppStrings.courtesyTitle,
+              hintText: AppStrings.selectOption,
+              values: [AppStrings.mr, AppStrings.mrs, AppStrings.ms, AppStrings.dr],
               selectedValue: widget.nominee.guardianCourtesyTitle.isEmpty
                   ? null
                   : widget.nominee.guardianCourtesyTitle,
@@ -120,8 +122,8 @@ class _GuardianFormState extends State<GuardianForm> {
               },
             ),
             CustomTextField(
-              hintText: "Enter First Name",
-              label: "First Name",
+              hintText: AppStrings.enterFirstName,
+              label: AppStrings.firstName,
               controller: _guardianFirstNameController,
               onChanged: (value) {
                 context.read<FormDataCubit>().nomineeUpdateGuardianFirstName(
@@ -132,14 +134,14 @@ class _GuardianFormState extends State<GuardianForm> {
               isRequired: true,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter a first name.';
+                  return AppStrings.enterFirstNameError;
                 }
                 return null;
               },
             ),
             CustomTextField(
-              hintText: "Enter Last Name",
-              label: "Last Name",
+              hintText: AppStrings.enterLastName,
+              label: AppStrings.lastName,
               controller: _guardianLastNameController,
               onChanged: (value) {
                 context.read<FormDataCubit>().nomineeUpdateGuardianLastName(
@@ -150,14 +152,14 @@ class _GuardianFormState extends State<GuardianForm> {
               isRequired: true,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter a last name.';
+                  return AppStrings.enterLastNameError;
                 }
                 return null;
               },
             ),
             CustomTextField(
-              hintText: "Relationship with Nominee",
-              label: "Relationship",
+              hintText: AppStrings.relationshipWithNominee,
+              label: AppStrings.relationship,
               controller: _guardianRelationshipController,
               onChanged: (value) {
                 context.read<FormDataCubit>().nomineeUpdateGuardianRelationship(
@@ -168,13 +170,13 @@ class _GuardianFormState extends State<GuardianForm> {
               isRequired: true,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter a relationship.';
+                  return AppStrings.enterRelationshipError;
                 }
                 return null;
               },
             ),
             CustomDatePicker(
-              labelText: "Maturity Date of Minor(YYYY-MM-DD)",
+              labelText: AppStrings.maturityDateLabel,
               selectedDate: widget.nominee.guardianDateOfMaturity,
               formatter: DateFormat('yyyy-MM-dd'),
               isRequired: true,
@@ -192,17 +194,17 @@ class _GuardianFormState extends State<GuardianForm> {
                   );
                 }
               },
-              hintText: "YYYY-MM-DD",
+              hintText: AppStrings.dobHint,
               validator: (value) {
                 if (value == null) {
-                  return 'Please select a maturity date.';
+                  return AppStrings.selectMaturityDateError;
                 }
                 return null;
               },
             ),
             CustomCheckSelector(
-              label: "Residential Status",
-              listOfValues: ["Resident", "Non Resident", "Foreigner"],
+              label: AppStrings.residentialStatus,
+              listOfValues: [AppStrings.resident, AppStrings.nonResident, AppStrings.foreigner],
               selectedValue: _selectedResidentialStatus,
               isRequired: true,
               onChanged: (value) {
@@ -216,13 +218,13 @@ class _GuardianFormState extends State<GuardianForm> {
               },
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please select a residential status.';
+                  return AppStrings.selectResidentialStatusError;
                 }
                 return null;
               },
             ),
             CustomDatePicker(
-              labelText: "Date of Birth (YYYY-MM-DD)",
+              labelText: AppStrings.dobLabel,
               selectedDate: widget.nominee.guardianDateOfBirth,
               formatter: DateFormat('yyyy-MM-dd'),
               isRequired: true,
@@ -241,17 +243,17 @@ class _GuardianFormState extends State<GuardianForm> {
                       );
                 }
               },
-              hintText: "YYYY-MM-DD",
+              hintText: AppStrings.dobHint,
               validator: (value) {
                 if (value == null) {
-                  return 'Please select a date of birth.';
+                  return AppStrings.selectDobError;
                 }
                 return null;
               },
             ),
             CustomTextField(
-              hintText: "Enter National Identity Card Number",
-              label: "National ID",
+              hintText: AppStrings.enterNationalId,
+              label: AppStrings.nationalId,
               controller: _guardianNidController,
               isRequired: true,
               onChanged: (value) {
@@ -262,14 +264,14 @@ class _GuardianFormState extends State<GuardianForm> {
               },
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter a NID.';
+                  return AppStrings.enterNationalIdError;
                 }
                 return null;
               },
             ),
             CustomTextField(
-              hintText: "Enter Address Line 1",
-              label: "Address Line 1",
+              hintText: AppStrings.enterAddressLine1,
+              label: AppStrings.addressLine1,
               controller: _guardianAddressLine1Controller,
               onChanged: (value) {
                 context.read<FormDataCubit>().nomineeUpdateGuardianAddressLine1(
@@ -280,14 +282,14 @@ class _GuardianFormState extends State<GuardianForm> {
               isRequired: true,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter an address.';
+                  return AppStrings.enterAddressError;
                 }
                 return null;
               },
             ),
             CustomTextField(
-              hintText: "Enter Address Line 2",
-              label: "Address Line 2",
+              hintText: AppStrings.enterAddressLine2,
+              label: AppStrings.addressLine2,
               controller: _guardianAddressLine2Controller,
               onChanged: (value) {
                 context.read<FormDataCubit>().nomineeUpdateGuardianAddressLine2(
@@ -297,8 +299,8 @@ class _GuardianFormState extends State<GuardianForm> {
               },
             ),
             CustomTextField(
-              hintText: "Enter Address Line 3",
-              label: "Address Line 3",
+              hintText: AppStrings.enterAddressLine3,
+              label: AppStrings.addressLine3,
               controller: _guardianAddressLine3Controller,
               onChanged: (value) {
                 context.read<FormDataCubit>().nomineeUpdateGuardianAddressLine3(
@@ -308,8 +310,8 @@ class _GuardianFormState extends State<GuardianForm> {
               },
             ),
             CustomTextField(
-              hintText: "Enter City",
-              label: "City",
+              hintText: AppStrings.enterCity,
+              label: AppStrings.city,
               controller: _guardianCityController,
               onChanged: (value) {
                 context.read<FormDataCubit>().nomineeUpdateGuardianCity(
@@ -320,14 +322,14 @@ class _GuardianFormState extends State<GuardianForm> {
               isRequired: true,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter a city.';
+                  return AppStrings.enterCityError;
                 }
                 return null;
               },
             ),
             CustomTextField(
-              hintText: "Enter Post Code",
-              label: "Post Code",
+              hintText: AppStrings.enterPostCode,
+              label: AppStrings.postCode,
               controller: _guardianPostCodeController,
               onChanged: (value) {
                 context.read<FormDataCubit>().nomineeUpdateGuardianPostCode(
@@ -338,14 +340,14 @@ class _GuardianFormState extends State<GuardianForm> {
               isRequired: true,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter a post code.';
+                  return AppStrings.enterPostCodeError;
                 }
                 return null;
               },
             ),
             CustomTextField(
-              hintText: "Enter Division",
-              label: "Division",
+              hintText: AppStrings.enterDivision,
+              label: AppStrings.division,
               controller: _guardianDivisionController,
               onChanged: (value) {
                 context.read<FormDataCubit>().nomineeUpdateGuardianDivision(
@@ -356,15 +358,21 @@ class _GuardianFormState extends State<GuardianForm> {
               isRequired: true,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter a division.';
+                  return AppStrings.enterDivisionError;
                 }
                 return null;
               },
             ),
             CustomDropdown(
-              labelText: "Country",
-              hintText: "Select an option",
-              values: ["USA", "Canada", "India", "UK", "Bangladesh"],
+              labelText: AppStrings.country,
+              hintText: AppStrings.selectOption,
+              values: [
+                AppStrings.usa,
+                AppStrings.canada,
+                AppStrings.india,
+                AppStrings.uk,
+                AppStrings.bangladesh
+              ],
               selectedValue: _selectedCountry,
               onChanged: (value) {
                 _selectedCountry = value;
@@ -377,14 +385,14 @@ class _GuardianFormState extends State<GuardianForm> {
               isRequired: true,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please select a country.';
+                  return AppStrings.selectCountryError;
                 }
                 return null;
               },
             ),
             CustomTextField(
-              hintText: "Enter Email Address",
-              label: "Email",
+              hintText: AppStrings.enterEmail,
+              label: AppStrings.email,
               controller: _guardianEmailController,
               onChanged: (value) {
                 context.read<FormDataCubit>().nomineeUpdateGuardianEmail(
@@ -394,8 +402,8 @@ class _GuardianFormState extends State<GuardianForm> {
               },
             ),
             CustomTextField(
-              hintText: "Enter Mobile",
-              label: "Mobile",
+              hintText: AppStrings.enterMobile,
+              label: AppStrings.mobile,
               controller: _guardianMobileController,
               onChanged: (value) {
                 context.read<FormDataCubit>().nomineeUpdateGuardianMobileNumber(
@@ -406,14 +414,14 @@ class _GuardianFormState extends State<GuardianForm> {
               isRequired: true,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter a mobile number.';
+                  return AppStrings.enterMobileError;
                 }
                 return null;
               },
             ),
             CustomTextField(
-              hintText: "Enter Telephone Number",
-              label: "Telephone",
+              hintText: AppStrings.enterTelephone,
+              label: AppStrings.telephone,
               controller: _guardianTelephoneController,
               onChanged: (value) {
                 context.read<FormDataCubit>().nomineeUpdateGuardianTelephone(
@@ -423,8 +431,8 @@ class _GuardianFormState extends State<GuardianForm> {
               },
             ),
             CustomTextField(
-              hintText: "Enter FAX Number",
-              label: "FAX",
+              hintText: AppStrings.enterFax,
+              label: AppStrings.fax,
               controller: _guardianFaxController,
               onChanged: (value) {
                 context.read<FormDataCubit>().nomineeUpdateGuardianFax(
@@ -434,7 +442,7 @@ class _GuardianFormState extends State<GuardianForm> {
               },
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter a FAX number.';
+                  return AppStrings.enterFaxError;
                 }
                 return null;
               },

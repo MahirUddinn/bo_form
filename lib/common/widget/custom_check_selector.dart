@@ -77,7 +77,7 @@ class CustomCheckSelector extends StatelessWidget {
                               ? BorderRadius.circular(5)
                               : BorderRadius.circular(9),
                           color: isSelected
-                              ? Theme.of(context).primaryColor
+                              ? Theme.of(context).colorScheme.primary
                               : Theme.of(context).disabledColor,
                         ),
 

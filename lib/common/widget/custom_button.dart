@@ -1,3 +1,4 @@
+import 'package:bo_acc_form/common/constants/app_sizes.dart';
 import 'package:flutter/material.dart';
 
 class CustomButton extends StatelessWidget {
@@ -14,13 +15,13 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       onTap: onSubmit,
       child: Container(
-        padding: EdgeInsets.all(8),
+        padding: EdgeInsets.all(AppSizes.mp8),
         decoration: BoxDecoration(
           color: color,
-          borderRadius: BorderRadius.circular(5),
+          borderRadius: BorderRadius.circular(AppSizes.br6),
         ),
         child: Center(
           child: child,

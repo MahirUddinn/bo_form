@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:bo_acc_form/common/constants/app_ui_const.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -206,7 +207,7 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
 
                         Icon(
                           Icons.check_circle,
-                          color: Color(0xFF01D3B8),
+                          color: AppUiConst.successColor,
                           size: 20,
                         ),
 

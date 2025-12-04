@@ -1,74 +1,73 @@
 import 'package:bo_acc_form/presentation/bloc/form_data/form_data_cubit.dart';
 import 'package:bo_acc_form/presentation/bloc/stepper_cubit/stepper_cubit.dart';
 import 'package:bo_acc_form/presentation/screen/home_page.dart';
+import 'package:bo_acc_form/common/constants/app_ui_const.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BOAccForm extends StatelessWidget {
-  BOAccForm({super.key});
-
-  final _primaryColor = Color(0xFF3B60EC);
+  const BOAccForm({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'BO Form',
       theme: ThemeData(
-        primaryColorDark: Colors.black,
         brightness: Brightness.light,
-        primaryColor: _primaryColor,
-        scaffoldBackgroundColor: Color(0xFFEDEDED),
+        scaffoldBackgroundColor: AppUiConst.scaffoldBackgroundColorLight,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: _primaryColor,
+          seedColor: AppUiConst.primaryColor,
+          primary: AppUiConst.primaryColor,
+          onPrimary: AppUiConst.white,
           brightness: Brightness.light,
-          onPrimaryContainer: Colors.black,
-          primaryContainer: Colors.white,
-          error: Colors.red,
+          onPrimaryContainer: AppUiConst.black,
+          primaryContainer: AppUiConst.white,
+          error: AppUiConst.errorColor,
         ),
         appBarTheme: AppBarTheme(
-          backgroundColor: Color(0xFFE0E0E0),
-          iconTheme: IconThemeData(color: Colors.black),
+          backgroundColor: AppUiConst.appBarBackgroundColorLight,
+          iconTheme: IconThemeData(color: AppUiConst.black),
           titleTextStyle: TextStyle(
-            color: Colors.black,
+            color: AppUiConst.black,
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
         ),
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
-          fillColor: Colors.white,
+          fillColor: AppUiConst.inputFillColorLight,
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide.none,
             borderRadius: BorderRadius.circular(12),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: _primaryColor),
+            borderSide: BorderSide(color: AppUiConst.primaryColor),
             borderRadius: BorderRadius.circular(12),
           ),
         ),
-        cardColor: Colors.white,
-        disabledColor: Colors.grey[400],
-        hintColor: Colors.grey,
+        cardColor: AppUiConst.cardColorLight,
+        disabledColor: AppUiConst.disabledColorLight,
+        hintColor: AppUiConst.hintColor,
       ),
-      darkTheme: ThemeData(
-        primaryColorDark: Colors.white,
 
+      darkTheme: ThemeData(
         brightness: Brightness.dark,
-        primaryColor: _primaryColor,
-        scaffoldBackgroundColor: Color(0xFF121212),
+        scaffoldBackgroundColor: AppUiConst.scaffoldBackgroundColorDark,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: _primaryColor,
+          seedColor: AppUiConst.primaryColor,
+          primary: AppUiConst.primaryColor,
+          onPrimary: AppUiConst.white,
           brightness: Brightness.dark,
-          primaryContainer: Color(0xFF121212),
-          onPrimaryContainer: Colors.white,
+          primaryContainer: AppUiConst.scaffoldBackgroundColorDark,
+          onPrimaryContainer: AppUiConst.white,
         ),
 
         appBarTheme: AppBarTheme(
-          backgroundColor: Color(0xFF1E1E1E),
+          backgroundColor: AppUiConst.appBarBackgroundColorDark,
           elevation: 0,
-          iconTheme: IconThemeData(color: Colors.white),
+          iconTheme: IconThemeData(color: AppUiConst.white),
           titleTextStyle: TextStyle(
-            color: Colors.white,
+            color: AppUiConst.white,
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
@@ -76,20 +75,20 @@ class BOAccForm extends StatelessWidget {
 
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
-          fillColor: Color(0xFF1E1E1E),
+          fillColor: AppUiConst.inputFillColorDark,
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Color(0xFF343434)),
+            borderSide: BorderSide(color: AppUiConst.inputBorderColorDark),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: _primaryColor),
+            borderSide: BorderSide(color: AppUiConst.primaryColor),
             borderRadius: BorderRadius.circular(12),
           ),
         ),
 
-        cardColor: Color(0xFF1E1E1E),
-        disabledColor: Colors.grey[800],
-        hintColor: Colors.grey,
+        cardColor: AppUiConst.cardColorDark,
+        disabledColor: AppUiConst.disabledColorDark,
+        hintColor: AppUiConst.hintColor,
       ),
 
       home: MultiBlocProvider(

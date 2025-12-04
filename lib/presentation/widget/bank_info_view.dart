@@ -1,3 +1,5 @@
+import 'package:bo_acc_form/common/constants/app_sizes.dart';
+import 'package:bo_acc_form/common/constants/app_strings.dart';
 import 'package:bo_acc_form/common/widget/custom_dropdown.dart';
 import 'package:bo_acc_form/common/widget/custom_text_field.dart';
 import 'package:bo_acc_form/common/widget/section_box.dart';
@@ -35,7 +37,6 @@ class _BankInfoViewState extends State<BankInfoView> {
         : null;
     _bankDistrictName.text = entity.bankDistrict;
     _bankACNumber.text = entity.bankAccountNumber;
-    ;
   }
 
   @override
@@ -59,13 +60,13 @@ class _BankInfoViewState extends State<BankInfoView> {
                   child: Column(
                     children: [
                       Container(
-                        padding: EdgeInsets.all(16),
+                        padding: EdgeInsets.all(AppSizes.p16),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             CustomDropdown(
-                              labelText: "Bank Name",
-                              hintText: "Select Bank Name",
+                              labelText: AppStrings.bankName,
+                              hintText: AppStrings.selectBankName,
                               isRequired: true,
                               values: [
                                 "Bangladesh Commerce Bank",
@@ -84,14 +85,14 @@ class _BankInfoViewState extends State<BankInfoView> {
                               },
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Please select a bank name.';
+                                  return AppStrings.selectBankNameError;
                                 }
                                 return null;
                               },
                             ),
                             CustomDropdown(
-                              labelText: "Bank Branch",
-                              hintText: "Select an option",
+                              labelText: AppStrings.bankBranch,
+                              hintText: AppStrings.selectOption,
                               isRequired: true,
                               values: [
                                 "Bank branch 1",
@@ -110,15 +111,15 @@ class _BankInfoViewState extends State<BankInfoView> {
                               },
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Please select a bank branch.';
+                                  return AppStrings.selectBankBranchError;
                                 }
                                 return null;
                               },
                             ),
                             CustomTextField(
-                              hintText: "Enter Bank District Name",
+                              hintText: AppStrings.enterBankDistrict,
                               isRequired: true,
-                              label: "Bank District",
+                              label: AppStrings.bankDistrict,
                               controller: _bankDistrictName,
                               onChanged: (value) {
                                 context
@@ -127,15 +128,15 @@ class _BankInfoViewState extends State<BankInfoView> {
                               },
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Please enter the bank district name.';
+                                  return AppStrings.enterBankDistrictError;
                                 }
                                 return null;
                               },
                             ),
                             CustomTextField(
-                              hintText: "Enter Bank Account Number",
+                              hintText: AppStrings.enterBankAccountNumber,
                               isRequired: true,
-                              label: "Bank A/C Number",
+                              label: AppStrings.bankAccountNumber,
                               controller: _bankACNumber,
                               onChanged: (value) {
                                 context
@@ -144,19 +145,18 @@ class _BankInfoViewState extends State<BankInfoView> {
                               },
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Please enter the A/C number.';
+                                  return AppStrings.enterBankAccountNumberError;
                                 }
-
                                 return null;
                               },
                             ),
-                            SizedBox(height: 8),
+                            SizedBox(height: AppSizes.h8),
                             Text(
-                              "**Bank AC must be 13 digits",
+                              AppStrings.bankAccountHint,
                               style: TextStyle(
                                 fontStyle: FontStyle.italic,
                                 color: Colors.grey[600],
-                                fontSize: 12,
+                                fontSize: AppSizes.fs12,
                               ),
                             ),
                           ],
@@ -178,13 +178,16 @@ class _BankInfoViewState extends State<BankInfoView> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          "Bank Information",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          AppStrings.bankInfoTitle,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: AppSizes.fs16,
+          ),
         ),
         Container(
           decoration: BoxDecoration(
-            color: Theme.of(context).primaryColor,
-            borderRadius: BorderRadius.circular(6),
+            color: Theme.of(context).colorScheme.primary,
+            borderRadius: BorderRadius.circular(AppSizes.br6),
           ),
           child: InkWell(
             onTap: () {
@@ -197,10 +200,10 @@ class _BankInfoViewState extends State<BankInfoView> {
                   Icon(Icons.info, color: Colors.white, size: 16),
                   SizedBox(width: 4),
                   Text(
-                    "Get 13-Digit A/C Number",
+                    AppStrings.get13DigitAccount,
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 12,
+                      fontSize: AppSizes.fs12,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -218,8 +221,11 @@ class _BankInfoViewState extends State<BankInfoView> {
       context: context,
       builder: (context) => AlertDialog(
         title: Text(
-          "How To Get 13-Digit Bank Account Number",
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          AppStrings.howToGet13DigitAccount,
+          style: TextStyle(
+            fontSize: AppSizes.fs16,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         content: SingleChildScrollView(
           child: Column(
@@ -227,17 +233,15 @@ class _BankInfoViewState extends State<BankInfoView> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                "To find your 13-digit bank account number:",
+                AppStrings.bankAccountInstructions1,
                 style: TextStyle(fontWeight: FontWeight.w500),
               ),
               SizedBox(height: 12),
-              Text("1. Check your bank statement or passbook"),
-              Text("2. Look at the bottom of your cheque leaf"),
-              Text(
-                "3. The account number is usually printed after the transit/routing number",
-              ),
-              Text("4. Ensure it contains exactly 13 digits"),
-              SizedBox(height: 16),
+              Text(AppStrings.bankAccountInstructions2),
+              Text(AppStrings.bankAccountInstructions3),
+              Text(AppStrings.bankAccountInstructions4),
+              Text(AppStrings.bankAccountInstructions5),
+              SizedBox(height: AppSizes.p16),
               Container(
                 padding: EdgeInsets.all(12),
                 decoration: BoxDecoration(
@@ -248,19 +252,19 @@ class _BankInfoViewState extends State<BankInfoView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Example from cheque:",
+                      AppStrings.exampleFromCheque,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: 8),
+                    SizedBox(height: AppSizes.h8),
                     Text(
-                      "Routing: 123456789\nAccount: 0012345678901",
+                      AppStrings.routingAccountExample,
                       style: TextStyle(fontFamily: 'Monospace'),
                     ),
                     SizedBox(height: 4),
                     Text(
-                      "↑ 13-digit account number",
+                      AppStrings.digitAccountPointer,
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: AppSizes.fs12,
                         fontStyle: FontStyle.italic,
                         color: Colors.green,
                       ),
@@ -276,7 +280,7 @@ class _BankInfoViewState extends State<BankInfoView> {
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: Text("Close"),
+            child: Text(AppStrings.close),
           ),
         ],
       ),

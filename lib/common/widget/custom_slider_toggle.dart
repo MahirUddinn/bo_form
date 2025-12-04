@@ -63,7 +63,7 @@ class CustomSliderToggle extends StatelessWidget {
                       onChanged(value);
                     },
 
-                    activeThumbColor: Theme.of(context).primaryColor,
+                    activeThumbColor: Theme.of(context).colorScheme.primary,
                     inactiveThumbColor: Colors.grey,
                     activeTrackColor: Colors.transparent,
                     inactiveTrackColor: Colors.transparent,
@@ -72,7 +72,7 @@ class CustomSliderToggle extends StatelessWidget {
                       Set<WidgetState> states,
                     ) {
                       if (states.contains(WidgetState.selected)) {
-                        return Theme.of(context).primaryColor;
+                        return Theme.of(context).colorScheme.primary;
                       }
                       return Colors.black;
                     }),
