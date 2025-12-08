@@ -1,5 +1,7 @@
-import 'package:bo_acc_form/common/constants/app_ui_const.dart';
+import 'package:bo_acc_form/common/constants/app_sizes.dart';
 import 'package:flutter/material.dart';
+import 'package:bo_acc_form/common/constants/app_ui_widgets.dart';
+
 
 class CustomDropdown extends StatelessWidget {
   final String labelText;
@@ -35,9 +37,7 @@ class CustomDropdown extends StatelessWidget {
         AppUiWidgets.verticalSpacing6,
 
         Container(
-          padding: EdgeInsets.symmetric(vertical: 2),
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(14)),
-
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(AppSizes.br12)),
           child: DropdownButtonFormField<String>(
             initialValue: selectedValue,
             validator: validator,
@@ -48,7 +48,7 @@ class CustomDropdown extends StatelessWidget {
               filled: true,
               fillColor: Theme.of(context).cardColor,
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(14),
+                borderRadius: BorderRadius.circular(AppSizes.br12),
                 borderSide: BorderSide(
                   color: Theme.of(context).colorScheme.primaryContainer,
                   width: 0,
@@ -56,7 +56,7 @@ class CustomDropdown extends StatelessWidget {
                 ),
               ),
               errorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppSizes.br12),
                 borderSide: BorderSide(
                   color: Theme.of(context).colorScheme.error,
                   width: 1,
@@ -64,7 +64,7 @@ class CustomDropdown extends StatelessWidget {
               ),
 
               focusedErrorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(14),
+                borderRadius: BorderRadius.circular(AppSizes.br12),
                 borderSide: BorderSide(
                   color: Theme.of(context).colorScheme.error,
                   width: 0,
@@ -73,21 +73,21 @@ class CustomDropdown extends StatelessWidget {
               ),
 
               contentPadding: EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 14,
+                horizontal: AppSizes.mp16,
+                vertical: AppSizes.mp14,
               ),
             ),
 
             icon: Icon(
               Icons.keyboard_arrow_down_sharp,
               color: Theme.of(context).hintColor,
-              size: 30,
+              size: AppSizes.dateIconSize,
             ),
 
             items: values.map((value) {
               return DropdownMenuItem(
                 value: value,
-                child: Text(value, style: TextStyle(fontSize: 15)),
+                child: Text(value, style: TextStyle(fontSize: AppSizes.fs15)),
               );
             }).toList(),
 

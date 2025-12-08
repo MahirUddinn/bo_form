@@ -49,13 +49,13 @@ class TopStepperWidget extends StatelessWidget {
                           ? Icon(
                               Icons.check,
                               size: 16,
-                              color: Theme.of(context).colorScheme.onPrimary,
+                              color: Theme.of(context).colorScheme.onSecondary,
                             )
                           : Text(
                               "${index + 1}",
                               style: TextStyle(
                                 color: (isActive || isCompleted)
-                                    ? Theme.of(context).colorScheme.onPrimary
+                                    ? Theme.of(context).colorScheme.onSecondary
                                     : Theme.of(context).hintColor,
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,

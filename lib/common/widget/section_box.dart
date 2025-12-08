@@ -11,12 +11,12 @@ class SectionBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: AppSizes.mp6),
+      margin: EdgeInsets.symmetric(vertical: AppSizes.mp4),
       width: double.infinity,
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
         border: BoxBorder.all(color: Theme.of(context).disabledColor),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AppSizes.br12),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -25,7 +25,7 @@ class SectionBox extends StatelessWidget {
             width: double.infinity,
             color: Theme.of(context).disabledColor,
             child: Container(
-              margin: EdgeInsets.all(8),
+              margin: EdgeInsets.all(AppSizes.mp8),
               child: title,
             ),
           ),

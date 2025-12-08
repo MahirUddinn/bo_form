@@ -1,7 +1,7 @@
 import 'package:bo_acc_form/presentation/bloc/form_data/form_data_cubit.dart';
 import 'package:bo_acc_form/presentation/bloc/stepper_cubit/stepper_cubit.dart';
 import 'package:bo_acc_form/presentation/screen/home_page.dart';
-import 'package:bo_acc_form/common/constants/app_ui_const.dart';
+import 'package:bo_acc_form/common/constants/app_ui_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -18,7 +18,7 @@ class BOAccForm extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(
           seedColor: AppUiColors.primaryColor,
           primary: AppUiColors.primaryColor,
-          onPrimary: AppUiColors.white,
+          onPrimary: AppUiColors.black,
           brightness: Brightness.light,
           onPrimaryContainer: AppUiColors.black,
           primaryContainer: AppUiColors.white,

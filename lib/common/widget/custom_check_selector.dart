@@ -1,5 +1,6 @@
-import 'package:bo_acc_form/common/constants/app_ui_const.dart';
+import 'package:bo_acc_form/common/constants/app_sizes.dart';
 import 'package:flutter/material.dart';
+import 'package:bo_acc_form/common/constants/app_ui_widgets.dart';
 
 class CustomCheckSelector extends StatelessWidget {
   final String label;
@@ -32,14 +33,12 @@ class CustomCheckSelector extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            AppUiWidgets.verticalSpacing6,
             AppUiWidgets.fieldLabel(
               context,
               label: label,
               isRequired: isRequired,
             ),
-            AppUiWidgets.verticalSpacing12,
-
+            AppUiWidgets.verticalSpacing8,
             Wrap(
               spacing: 14,
               runSpacing: 12,
@@ -57,6 +56,7 @@ class CustomCheckSelector extends StatelessWidget {
                       Container(
                         width: 18,
                         height: 18,
+                        margin: EdgeInsets.symmetric(vertical: AppSizes.mp8),
                         decoration: BoxDecoration(
                           borderRadius: isRect
                               ? BorderRadius.circular(5)
@@ -67,11 +67,11 @@ class CustomCheckSelector extends StatelessWidget {
                         ),
 
                         child: isSelected
-                            ? Icon(Icons.check, size: 14, color: Colors.white)
+                            ? Icon(Icons.check, size: AppSizes.fs12, color: Colors.white)
                             : null,
                       ),
 
-                      SizedBox(width: 6),
+                      AppUiWidgets.horizontalSpacing6,
                       Text(
                         value,
                         style: TextStyle(
@@ -88,13 +88,12 @@ class CustomCheckSelector extends StatelessWidget {
 
             if (state.hasError)
               Padding(
-                padding: EdgeInsets.only(top: 6),
+                padding: EdgeInsets.only(top: AppSizes.mp6),
                 child: Text(
                   state.errorText!,
                   style: AppUiWidgets.errorTextStyle(context),
                 ),
               ),
-            AppUiWidgets.verticalSpacing6,
           ],
         );
       },

@@ -1,9 +1,12 @@
 import 'dart:io';
-import 'package:bo_acc_form/common/constants/app_ui_const.dart';
+import 'package:bo_acc_form/common/constants/app_sizes.dart';
+import 'package:bo_acc_form/common/constants/app_ui_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path;
+import 'package:bo_acc_form/common/constants/app_ui_widgets.dart';
+
 
 class CustomImagePicker extends StatefulWidget {
   final void Function(File? image) onImagePicked;
@@ -77,10 +80,10 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
               },
               child: Container(
                 width: double.infinity,
-                padding: EdgeInsets.all(20),
+                padding: EdgeInsets.all(AppSizes.mp20),
                 decoration: BoxDecoration(
                   color: Theme.of(context).cardColor,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(AppSizes.br12),
                 ),
                 child: _selectedImage == null
                     ? Column(
@@ -88,7 +91,7 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
                         children: [
                           Icon(
                             Icons.cloud_upload_outlined,
-                            size: 52,
+                            size: AppSizes.uploadIconSize,
                             color: Theme.of(context).hintColor,
                           ),
                           AppUiWidgets.verticalSpacing8,
@@ -96,7 +99,7 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
                             widget.title,
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              fontSize: 15,
+                              fontSize: AppSizes.fs15,
                               color: Theme.of(
                                 context,
                               ).textTheme.bodyLarge?.color,
@@ -107,7 +110,7 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
                           Text(
                             widget.subtitle,
                             style: TextStyle(
-                              fontSize: 12,
+                              fontSize: AppSizes.fs12,
                               color: Theme.of(context).hintColor,
                             ),
                           ),
@@ -116,10 +119,10 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
                     : Center(
                         child: widget.isRect
                             ? SizedBox(
-                                height: 120,
-                                width: 220,
+                                height: AppSizes.rectImageHeight,
+                                width: AppSizes.rectImageWidth,
                                 child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(5),
+                                  borderRadius: BorderRadius.circular(AppSizes.rectBR),
                                   child: Image.file(
                                     _selectedImage!,
                                     fit: BoxFit.cover,
@@ -127,10 +130,10 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
                                 ),
                               )
                             : SizedBox(
-                                height: 120,
-                                width: 120,
+                                height: AppSizes.circularImageRadius,
+                                width: AppSizes.circularImageRadius,
                                 child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(60),
+                                  borderRadius: BorderRadius.circular(AppSizes.circularBR),
                                   child: Image.file(
                                     _selectedImage!,
                                     fit: BoxFit.cover,
@@ -142,7 +145,7 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
             ),
             if (hasError)
               Padding(
-                padding: const EdgeInsets.only(left: 12, top: 4),
+                padding: const EdgeInsets.only(left: AppSizes.mp8, top: AppSizes.mp4),
                 child: Text(
                   field.errorText!,
                   style: AppUiWidgets.errorTextStyle(context),
@@ -189,7 +192,6 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
                                   ).textTheme.bodyLarge?.color,
                                 ),
                               ),
-                              AppUiWidgets.verticalSpacing2,
                               Text(
                                 "$fileSize | $formattedDate",
                                 style: TextStyle(

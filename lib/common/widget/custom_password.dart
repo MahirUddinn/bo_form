@@ -1,5 +1,7 @@
-import 'package:bo_acc_form/common/constants/app_ui_const.dart';
+import 'package:bo_acc_form/common/constants/app_sizes.dart';
 import 'package:flutter/material.dart';
+import 'package:bo_acc_form/common/constants/app_ui_widgets.dart';
+
 
 class CustomPasswordField extends StatefulWidget {
   final String label;
@@ -39,8 +41,7 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
         ),
         AppUiWidgets.verticalSpacing6,
         Container(
-          padding: EdgeInsets.symmetric(vertical: 2),
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(14)),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(AppSizes.br12)),
 
           child: TextFormField(
             controller: widget.controller,
@@ -56,12 +57,12 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
 
               border: OutlineInputBorder(
                 borderSide: BorderSide.none,
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppSizes.br12),
               ),
 
               contentPadding: EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 14,
+                horizontal: AppSizes.mp16,
+                vertical: AppSizes.mp14,
               ),
 
               suffixIcon: GestureDetector(

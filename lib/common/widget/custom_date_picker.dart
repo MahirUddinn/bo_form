@@ -1,6 +1,8 @@
-import 'package:bo_acc_form/common/constants/app_ui_const.dart';
+import 'package:bo_acc_form/common/constants/app_sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:bo_acc_form/common/constants/app_ui_widgets.dart';
+
 
 class CustomDatePicker extends StatefulWidget {
   final String hintText;
@@ -29,7 +31,6 @@ class CustomDatePicker extends StatefulWidget {
 class _CustomDatePickerState extends State<CustomDatePicker> {
   DateTime? _lastValidatedDate;
 
-  //done by ai
   @override
   void didUpdateWidget(CustomDatePicker oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -42,7 +43,6 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
   Widget build(BuildContext context) {
     return FormField<DateTime>(
       validator: (value) {
-        // also done by ai
         return widget.validator?.call(widget.selectedDate);
       },
       initialValue: widget.selectedDate,
@@ -59,13 +59,12 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
             ),
             AppUiWidgets.verticalSpacing6,
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 2),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(14),
+                borderRadius: BorderRadius.circular(AppSizes.br12),
               ),
               child: InkWell(
                 onTap: widget.onTap,
-                borderRadius: BorderRadius.circular(14),
+                borderRadius: BorderRadius.circular(AppSizes.br12),
                 child: InputDecorator(
                   isEmpty: widget.selectedDate == null,
                   decoration: InputDecoration(
@@ -75,11 +74,11 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
                     hintStyle: AppUiWidgets.hintTextStyle(context),
                     border: OutlineInputBorder(
                       borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppSizes.br12),
                     ),
                     contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 14,
+                      horizontal: AppSizes.mp16,
+                      vertical: AppSizes.mp14,
                     ),
                     suffixIcon: Icon(
                       Icons.calendar_today_outlined,
@@ -93,7 +92,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
                         : "",
                     style: TextStyle(
                       color: Theme.of(context).textTheme.bodyLarge?.color,
-                      fontSize: 15,
+                      fontSize: AppSizes.fs15,
                     ),
                   ),
                 ),
