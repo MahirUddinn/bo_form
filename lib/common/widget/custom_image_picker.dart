@@ -164,6 +164,7 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
                 height: AppSizes.mp70,
                 width: double.infinity,
                 padding: EdgeInsets.symmetric(horizontal: AppSizes.mp12),
+                margin: EdgeInsets.symmetric(vertical: AppSizes.mp8),
                 decoration: BoxDecoration(
                   color: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.circular(AppSizes.br12),
