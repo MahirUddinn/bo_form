@@ -140,7 +140,10 @@ class _AccountHolderViewState extends State<AccountHolderView> {
                 SectionBox(
                   title: Text(
                     AppStrings.accountHolder,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: AppSizes.fs15,
+                    ),
                   ),
                   child: Column(
                     children: [
@@ -150,7 +153,7 @@ class _AccountHolderViewState extends State<AccountHolderView> {
                           AppStrings.firstACHolder,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                            fontSize: AppSizes.fs15,
                           ),
                         ),
                         child: _buildFirstACHolder(state),
@@ -168,7 +171,7 @@ class _AccountHolderViewState extends State<AccountHolderView> {
 
   Widget _buildFirstACHolder(FormDataState state) {
     return Container(
-      margin: EdgeInsets.all(AppSizes.mp16),
+      margin: EdgeInsets.all(AppSizes.mp12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -193,7 +196,12 @@ class _AccountHolderViewState extends State<AccountHolderView> {
           CustomDropdown(
             labelText: AppStrings.courtesyTitle,
             hintText: AppStrings.selectOption,
-            values: [AppStrings.mr, AppStrings.mrs, AppStrings.ms, AppStrings.dr],
+            values: [
+              AppStrings.mr,
+              AppStrings.mrs,
+              AppStrings.ms,
+              AppStrings.dr,
+            ],
             selectedValue: _selectedCourtesyTitle,
             onChanged: (value) {
               _selectedCourtesyTitle = value;
@@ -408,7 +416,7 @@ class _AccountHolderViewState extends State<AccountHolderView> {
               AppStrings.canada,
               AppStrings.india,
               AppStrings.uk,
-              AppStrings.bangladesh
+              AppStrings.bangladesh,
             ],
             onChanged: (value) {
               _selectedCountry = value;
@@ -522,7 +530,7 @@ class _AccountHolderViewState extends State<AccountHolderView> {
               AppStrings.sylhet,
               AppStrings.bogura,
               AppStrings.bmsl,
-              AppStrings.tangail
+              AppStrings.tangail,
             ],
             onChanged: (value) {
               _selectedBrokerOffice = value;
@@ -542,7 +550,7 @@ class _AccountHolderViewState extends State<AccountHolderView> {
             listOfValues: [
               AppStrings.resident,
               AppStrings.nonResident,
-              AppStrings.foreigner
+              AppStrings.foreigner,
             ],
             isRequired: true,
             selectedValue: _selectedResidentialStatus,
@@ -594,7 +602,7 @@ class _AccountHolderViewState extends State<AccountHolderView> {
 
   Widget _buildAccountHolder(FormDataState state) {
     return Container(
-      margin: EdgeInsets.all(AppSizes.mp16),
+      margin: EdgeInsets.all(AppSizes.mp12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -614,8 +622,8 @@ class _AccountHolderViewState extends State<AccountHolderView> {
               return null;
             },
           ),
-          _selectedBoType == AppStrings.linkBo
-              ? CustomTextField(
+          if(_selectedBoType == AppStrings.linkBo)
+               CustomTextField(
                   hintText: AppStrings.enterBoId,
                   controller: _boIdController,
                   onChanged: (value) {
@@ -630,12 +638,8 @@ class _AccountHolderViewState extends State<AccountHolderView> {
                     }
                     return null;
                   },
-                )
-              : Container(),
-          AppUiWidgets.verticalSpacing8,
-          Text(
-            AppStrings.referralLabel,
-          ),
+                ),
+          Text(AppStrings.referralLabel),
           CustomDropdown(
             hintText: AppStrings.selectOption,
             selectedValue: _selectedReferral,

@@ -33,10 +33,10 @@ class _DocumentViewState extends State<DocumentView> {
                 SectionBox(
                   title: Text(
                     AppStrings.documentTitle,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: AppSizes.fs16),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: AppSizes.fs15),
                   ),
                   child: Container(
-                    padding: EdgeInsets.all(AppSizes.mp16),
+                    padding: EdgeInsets.all(AppSizes.mp12),
                     child: _buildDocumentsForm(documents),
                   ),
                 ),

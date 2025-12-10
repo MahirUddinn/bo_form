@@ -51,13 +51,13 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            AppUiWidgets.verticalSpacing6,
+            SizedBox(height: AppSizes.mp8,),
             AppUiWidgets.fieldLabel(
               context,
               label: widget.labelText,
               isRequired: widget.isRequired,
             ),
-            AppUiWidgets.verticalSpacing6,
+            SizedBox(height: AppSizes.mp8,),
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(AppSizes.br12),
@@ -77,8 +77,8 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
                       borderRadius: BorderRadius.circular(AppSizes.br12),
                     ),
                     contentPadding: const EdgeInsets.symmetric(
-                      horizontal: AppSizes.mp16,
-                      vertical: AppSizes.mp14,
+                      horizontal: AppSizes.mp12,
+                      vertical: AppSizes.mp16,
                     ),
                     suffixIcon: Icon(
                       Icons.calendar_today_outlined,

@@ -2,7 +2,6 @@ import 'package:bo_acc_form/common/constants/app_sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:bo_acc_form/common/constants/app_ui_widgets.dart';
 
-
 class CustomSliderToggle extends StatelessWidget {
   final String label;
   final bool? selectedValue;
@@ -27,7 +26,7 @@ class CustomSliderToggle extends StatelessWidget {
       builder: (state) {
         return Container(
           margin: EdgeInsets.symmetric(vertical: AppSizes.mp8),
-          padding: EdgeInsets.all(12),
+          padding: EdgeInsets.all(AppSizes.mp12),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppSizes.br12),
             color: Theme.of(context).disabledColor,
@@ -35,13 +34,13 @@ class CustomSliderToggle extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppUiWidgets.verticalSpacing6,
+              SizedBox(height: AppSizes.mp8),
               AppUiWidgets.fieldLabel(
                 context,
                 label: label,
                 isRequired: isRequired,
               ),
-              AppUiWidgets.verticalSpacing8,
+              SizedBox(height: AppSizes.mp8),
               Row(
                 children: [
                   Switch(
@@ -71,7 +70,7 @@ class CustomSliderToggle extends StatelessWidget {
               ),
               if (state.hasError)
                 Padding(
-                  padding: EdgeInsets.only(top: AppSizes.mp6),
+                  padding: EdgeInsets.only(top: AppSizes.mp8),
                   child: Text(
                     state.errorText!,
                     style: AppUiWidgets.errorTextStyle(context),

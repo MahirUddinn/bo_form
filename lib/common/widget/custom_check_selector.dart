@@ -30,71 +30,78 @@ class CustomCheckSelector extends StatelessWidget {
       initialValue: selectedValue,
       validator: validator,
       builder: (state) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            AppUiWidgets.fieldLabel(
-              context,
-              label: label,
-              isRequired: isRequired,
-            ),
-            AppUiWidgets.verticalSpacing8,
-            Wrap(
-              spacing: AppSizes.checkSelectorWrapSpacing,
-              runSpacing: AppSizes.checkSelectorWrapRunSpacing,
-              children: listOfValues.map((value) {
-                final bool isSelected = state.value == value;
-
-                return GestureDetector(
-                  onTap: () {
-                    state.didChange(value);
-                    onChanged(value);
-                  },
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        width: 18,
-                        height: 18,
-                        margin: EdgeInsets.symmetric(vertical: AppSizes.mp8),
-                        decoration: BoxDecoration(
-                          borderRadius: isRect
-                              ? BorderRadius.circular(5)
-                              : BorderRadius.circular(9),
-                          color: isSelected
-                              ? Theme.of(context).colorScheme.primary
-                              : Theme.of(context).disabledColor,
-                        ),
-
-                        child: isSelected
-                            ? Icon(Icons.check, size: AppSizes.fs12, color: Colors.white)
-                            : null,
-                      ),
-
-                      AppUiWidgets.horizontalSpacing6,
-                      Text(
-                        value,
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: isSelected ? textColor : Colors.grey.shade700,
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              }).toList(),
-            ),
-
-            if (state.hasError)
-              Padding(
-                padding: EdgeInsets.only(top: AppSizes.mp6),
-                child: Text(
-                  state.errorText!,
-                  style: AppUiWidgets.errorTextStyle(context),
-                ),
+        return Container(
+          padding: EdgeInsets.symmetric(vertical: AppSizes.mp8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AppUiWidgets.fieldLabel(
+                context,
+                label: label,
+                isRequired: isRequired,
               ),
-          ],
+              SizedBox(height: AppSizes.mp8,),
+              Wrap(
+                spacing: AppSizes.checkSelectorWrapSpacing,
+                runSpacing: AppSizes.checkSelectorWrapRunSpacing,
+                children: listOfValues.map((value) {
+                  final bool isSelected = state.value == value;
+
+                  return GestureDetector(
+                    onTap: () {
+                      state.didChange(value);
+                      onChanged(value);
+                    },
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          width: AppSizes.mp16,
+                          height: AppSizes.mp16,
+                          margin: EdgeInsets.symmetric(vertical: AppSizes.mp4),
+                          decoration: BoxDecoration(
+                            borderRadius: isRect
+                                ? BorderRadius.circular(AppSizes.rectBR)
+                                : BorderRadius.circular(AppSizes.circBR),
+                            color: isSelected
+                                ? Theme.of(context).colorScheme.primary
+                                : Theme.of(context).disabledColor,
+                          ),
+
+                          child: isSelected
+                              ? Icon(
+                                  Icons.check,
+                                  size: AppSizes.fs12,
+                                  color: Colors.white,
+                                )
+                              : null,
+                        ),
+
+                        SizedBox(width: AppSizes.mp8,),
+                        Text(
+                          value,
+                          style: TextStyle(
+                            fontSize: AppSizes.fs15,
+                            fontWeight: FontWeight.w500,
+                            color: isSelected ? textColor : Colors.grey.shade700,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }).toList(),
+              ),
+
+              if (state.hasError)
+                Padding(
+                  padding: EdgeInsets.only(top: AppSizes.mp8),
+                  child: Text(
+                    state.errorText!,
+                    style: AppUiWidgets.errorTextStyle(context),
+                  ),
+                ),
+            ],
+          ),
         );
       },
     );

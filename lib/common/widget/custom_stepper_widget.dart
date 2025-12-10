@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:bo_acc_form/common/constants/app_sizes.dart';
 
 class TopStepperWidget extends StatelessWidget {
   final List<String> steps;
@@ -19,7 +20,7 @@ class TopStepperWidget extends StatelessWidget {
     return SingleChildScrollView(
       controller: controller,
       scrollDirection: Axis.horizontal,
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: AppSizes.mp12),
       child: Row(
         children: List.generate(steps.length, (index) {
           final isCompleted = index < currentStep;
@@ -34,8 +35,8 @@ class TopStepperWidget extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
-                  width: 20,
-                  height: 20,
+                  width: AppSizes.mp20,
+                  height: AppSizes.mp20,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: (isActive || isCompleted)
@@ -48,7 +49,7 @@ class TopStepperWidget extends StatelessWidget {
                       child: isCompleted
                           ? Icon(
                               Icons.check,
-                              size: 16,
+                              size: AppSizes.fs15,
                               color: Theme.of(context).colorScheme.onSecondary,
                             )
                           : Text(
@@ -57,15 +58,14 @@ class TopStepperWidget extends StatelessWidget {
                                 color: (isActive || isCompleted)
                                     ? Theme.of(context).colorScheme.onSecondary
                                     : Theme.of(context).hintColor,
-                                fontSize: 12,
+                                fontSize: AppSizes.fs12,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
                     ),
                   ),
-
                 ),
-                SizedBox(width: 8),
+                SizedBox(width: AppSizes.mp8),
                 Text(
                   steps[index],
                   style: TextStyle(
@@ -75,15 +75,17 @@ class TopStepperWidget extends StatelessWidget {
                     fontWeight: (isActive || isCompleted)
                         ? FontWeight.bold
                         : FontWeight.normal,
-                    fontSize: 14,
+                    fontSize: AppSizes.fs15,
                   ),
                 ),
                 if (!isLast)
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSizes.mp4,
+                    ),
                     child: Icon(
                       Icons.arrow_forward_ios_rounded,
-                      size: 20,
+                      size: AppSizes.iconSize20,
                       color: Theme.of(context).hintColor,
                     ),
                   ),

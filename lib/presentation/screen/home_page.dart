@@ -149,7 +149,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.all(AppSizes.mp16),
+                  padding: EdgeInsets.all(AppSizes.mp12),
                   child: Row(
                     children: [
                       if (state.currentStep > 0)
@@ -165,7 +165,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                         ),
-                      if (state.currentStep > 0) AppUiWidgets.horizontalSpacing16,
+                      if (state.currentStep > 0) SizedBox(width: AppSizes.mp16,),
                       Expanded(
                         child: CustomButton(
                           onSubmit: () async {

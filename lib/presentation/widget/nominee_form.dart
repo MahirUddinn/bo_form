@@ -118,10 +118,10 @@ class _NomineeFormState extends State<NomineeForm> {
             widget.mode == 'guardian'
                 ? AppStrings.guardianDetails
                 : "${AppStrings.nomineeLabel} ${widget.index + 1}",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: AppSizes.fs16),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: AppSizes.fs15),
           ),
           child: Container(
-            padding: EdgeInsets.all(AppSizes.mp16),
+            padding: EdgeInsets.all(AppSizes.mp12),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

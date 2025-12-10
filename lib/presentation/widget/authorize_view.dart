@@ -100,7 +100,7 @@ class _AuthorizeViewState extends State<AuthorizeView> {
           child: SectionBox(
             title: Text(
               AppStrings.authorize,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: AppSizes.fs16),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: AppSizes.fs15),
             ),
             child: Form(
               key: widget.formKey,
@@ -114,7 +114,7 @@ class _AuthorizeViewState extends State<AuthorizeView> {
 
   Widget _buildFirstACHolder(FormDataState state) {
     return Container(
-      margin: EdgeInsets.all(AppSizes.mp16),
+      margin: EdgeInsets.all(AppSizes.mp12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

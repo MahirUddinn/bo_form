@@ -7,7 +7,6 @@ import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path;
 import 'package:bo_acc_form/common/constants/app_ui_widgets.dart';
 
-
 class CustomImagePicker extends StatefulWidget {
   final void Function(File? image) onImagePicked;
   final File? initialImage;
@@ -81,6 +80,7 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
               child: Container(
                 width: double.infinity,
                 padding: EdgeInsets.all(AppSizes.mp20),
+                margin: EdgeInsets.symmetric(vertical: AppSizes.mp8),
                 decoration: BoxDecoration(
                   color: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.circular(AppSizes.br12),
@@ -94,7 +94,7 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
                             size: AppSizes.uploadIconSize,
                             color: Theme.of(context).hintColor,
                           ),
-                          AppUiWidgets.verticalSpacing8,
+                          SizedBox(height: AppSizes.mp8),
                           Text(
                             widget.title,
                             textAlign: TextAlign.center,
@@ -106,7 +106,7 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-                          AppUiWidgets.verticalSpacing4,
+                          SizedBox(height: AppSizes.mp4),
                           Text(
                             widget.subtitle,
                             style: TextStyle(
@@ -122,7 +122,9 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
                                 height: AppSizes.rectImageHeight,
                                 width: AppSizes.rectImageWidth,
                                 child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(AppSizes.rectBR),
+                                  borderRadius: BorderRadius.circular(
+                                    AppSizes.rectBR,
+                                  ),
                                   child: Image.file(
                                     _selectedImage!,
                                     fit: BoxFit.cover,
@@ -133,7 +135,9 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
                                 height: AppSizes.circularImageRadius,
                                 width: AppSizes.circularImageRadius,
                                 child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(AppSizes.circularBR),
+                                  borderRadius: BorderRadius.circular(
+                                    AppSizes.circularImageBR,
+                                  ),
                                   child: Image.file(
                                     _selectedImage!,
                                     fit: BoxFit.cover,
@@ -145,89 +149,87 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
             ),
             if (hasError)
               Padding(
-                padding: const EdgeInsets.only(left: AppSizes.mp8, top: AppSizes.mp4),
+                padding: const EdgeInsets.only(
+                  left: AppSizes.mp8,
+                  top: AppSizes.mp4,
+                ),
                 child: Text(
                   field.errorText!,
                   style: AppUiWidgets.errorTextStyle(context),
                 ),
               ),
 
-            AppUiWidgets.verticalSpacing8,
-
-            _selectedImage != null
-                ? Container(
-                    height: 70,
-                    width: double.infinity,
-                    padding: EdgeInsets.symmetric(horizontal: 12),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).cardColor,
-                      borderRadius: BorderRadius.circular(12),
+            if (_selectedImage != null)
+              Container(
+                height: AppSizes.mp70,
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(horizontal: AppSizes.mp12),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  borderRadius: BorderRadius.circular(AppSizes.br12),
+                ),
+                child: Row(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(AppSizes.br6),
+                      child: Image.file(
+                        _selectedImage!,
+                        width: AppSizes.mp40,
+                        height: AppSizes.mp40,
+                        fit: BoxFit.cover,
+                      ),
                     ),
-                    child: Row(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(6),
-                          child: Image.file(
-                            _selectedImage!,
-                            width: 40,
-                            height: 40,
-                            fit: BoxFit.cover,
+
+                    SizedBox(width: AppSizes.mp8),
+
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            fileName,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: AppSizes.fs15,
+                              color: Theme.of(
+                                context,
+                              ).textTheme.bodyLarge?.color,
+                            ),
                           ),
-                        ),
-
-                        SizedBox(width: 10),
-
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                fileName,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 14,
-                                  color: Theme.of(
-                                    context,
-                                  ).textTheme.bodyLarge?.color,
-                                ),
-                              ),
-                              Text(
-                                "$fileSize | $formattedDate",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Theme.of(context).hintColor,
-                                ),
-                              ),
-                            ],
+                          Text(
+                            "$fileSize | $formattedDate",
+                            style: TextStyle(
+                              fontSize: AppSizes.fs12,
+                              color: Theme.of(context).hintColor,
+                            ),
                           ),
-                        ),
-
-                        Icon(
-                          Icons.check_circle,
-                          color: AppUiColors.successColor,
-                          size: 20,
-                        ),
-
-                        SizedBox(width: 10),
-
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _selectedImage = null;
-                            });
-                          },
-                          child: Icon(
-                            Icons.delete_outline,
-                            color: Theme.of(context).hintColor,
-                            size: 22,
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  )
-                : Container(),
-            AppUiWidgets.verticalSpacing8,
+
+                    Icon(
+                      Icons.check_circle,
+                      color: AppUiColors.successColor,
+                      size: AppSizes.iconSize20,
+                    ),
+
+                    SizedBox(width: AppSizes.mp8),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _selectedImage = null;
+                        });
+                      },
+                      child: Icon(
+                        Icons.delete_outline,
+                        color: Theme.of(context).hintColor,
+                        size: AppSizes.iconSize20,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
           ],
         );
       },

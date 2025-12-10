@@ -98,10 +98,10 @@ class _GuardianFormState extends State<GuardianForm> {
     return SectionBox(
       title: Text(
         AppStrings.guardianDetails,
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: AppSizes.fs16),
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: AppSizes.fs15),
       ),
       child: Container(
-        padding: EdgeInsets.all(AppSizes.mp16),
+        padding: EdgeInsets.all(AppSizes.mp12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

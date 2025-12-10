@@ -10,6 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BankInfoView extends StatefulWidget {
   const BankInfoView({super.key, required this.formKey});
+
   final GlobalKey<FormState> formKey;
 
   @override
@@ -61,7 +62,7 @@ class _BankInfoViewState extends State<BankInfoView> {
                   child: Column(
                     children: [
                       Container(
-                        padding: EdgeInsets.all(AppSizes.mp16),
+                        padding: EdgeInsets.all(AppSizes.mp12),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -151,7 +152,7 @@ class _BankInfoViewState extends State<BankInfoView> {
                                 return null;
                               },
                             ),
-                            AppUiWidgets.verticalSpacing8,
+                            SizedBox(height: AppSizes.mp8),
                             Text(
                               AppStrings.bankAccountHint,
                               style: TextStyle(
@@ -182,7 +183,7 @@ class _BankInfoViewState extends State<BankInfoView> {
           AppStrings.bankInfoTitle,
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: AppSizes.fs16,
+            fontSize: AppSizes.fs15,
           ),
         ),
         Container(
@@ -195,11 +196,11 @@ class _BankInfoViewState extends State<BankInfoView> {
               _showAccountNumberInfoDialog();
             },
             child: Padding(
-              padding: EdgeInsets.all(12),
+              padding: EdgeInsets.all(AppSizes.mp12),
               child: Row(
                 children: [
-                  Icon(Icons.info, color: Colors.white, size: 16),
-                  SizedBox(width: 4),
+                  Icon(Icons.info, color: Colors.white, size: AppSizes.fs15),
+                  SizedBox(width: AppSizes.mp4),
                   Text(
                     AppStrings.get13DigitAccount,
                     style: TextStyle(
@@ -224,7 +225,7 @@ class _BankInfoViewState extends State<BankInfoView> {
         title: Text(
           AppStrings.howToGet13DigitAccount,
           style: TextStyle(
-            fontSize: AppSizes.fs16,
+            fontSize: AppSizes.fs15,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -237,17 +238,17 @@ class _BankInfoViewState extends State<BankInfoView> {
                 AppStrings.bankAccountInstructions1,
                 style: TextStyle(fontWeight: FontWeight.w500),
               ),
-              SizedBox(height: 12),
+              SizedBox(height: AppSizes.mp12),
               Text(AppStrings.bankAccountInstructions2),
               Text(AppStrings.bankAccountInstructions3),
               Text(AppStrings.bankAccountInstructions4),
               Text(AppStrings.bankAccountInstructions5),
-              AppUiWidgets.verticalSpacing16,
+              SizedBox(height: AppSizes.mp16),
               Container(
-                padding: EdgeInsets.all(12),
+                padding: EdgeInsets.all(AppSizes.mp12),
                 decoration: BoxDecoration(
                   color: Colors.grey[100],
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(AppSizes.br6),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -256,12 +257,12 @@ class _BankInfoViewState extends State<BankInfoView> {
                       AppStrings.exampleFromCheque,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    AppUiWidgets.verticalSpacing8,
+                    SizedBox(height: AppSizes.mp8),
                     Text(
                       AppStrings.routingAccountExample,
                       style: TextStyle(fontFamily: 'Monospace'),
                     ),
-                    SizedBox(height: 4),
+                    SizedBox(height: AppSizes.mp4),
                     Text(
                       AppStrings.digitAccountPointer,
                       style: TextStyle(

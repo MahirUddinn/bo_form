@@ -28,13 +28,13 @@ class CustomDropdown extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        AppUiWidgets.verticalSpacing6,
+        SizedBox(height: AppSizes.mp8,),
         AppUiWidgets.fieldLabel(
           context,
           label: labelText,
           isRequired: isRequired,
         ),
-        AppUiWidgets.verticalSpacing6,
+        SizedBox(height: AppSizes.mp8,),
 
         Container(
           decoration: BoxDecoration(borderRadius: BorderRadius.circular(AppSizes.br12)),
@@ -72,8 +72,8 @@ class CustomDropdown extends StatelessWidget {
               ),
 
               contentPadding: EdgeInsets.symmetric(
-                horizontal: AppSizes.mp16,
-                vertical: AppSizes.mp14,
+                horizontal: AppSizes.mp12,
+                vertical: AppSizes.mp16,
               ),
             ),
 
