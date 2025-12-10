@@ -36,7 +36,7 @@ class _DocumentViewState extends State<DocumentView> {
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: AppSizes.fs16),
                   ),
                   child: Container(
-                    padding: EdgeInsets.all(AppSizes.p16),
+                    padding: EdgeInsets.all(AppSizes.mp16),
                     child: _buildDocumentsForm(documents),
                   ),
                 ),

@@ -9,6 +9,8 @@ class AppUiWidgets {
 
   static const SizedBox horizontalSpacing6 = SizedBox(width: 6);
   static const SizedBox horizontalSpacing10 = SizedBox(width: 10);
+  static const SizedBox horizontalSpacing16 = SizedBox(width: 16);
+
 
 
   static Widget fieldLabel(

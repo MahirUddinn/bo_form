@@ -51,7 +51,7 @@ class CustomDropdown extends StatelessWidget {
                 borderRadius: BorderRadius.circular(AppSizes.br12),
                 borderSide: BorderSide(
                   color: Theme.of(context).colorScheme.primaryContainer,
-                  width: 0,
+                  width: AppSizes.borderZeroWidth,
                   style: BorderStyle.none,
                 ),
               ),
@@ -59,7 +59,6 @@ class CustomDropdown extends StatelessWidget {
                 borderRadius: BorderRadius.circular(AppSizes.br12),
                 borderSide: BorderSide(
                   color: Theme.of(context).colorScheme.error,
-                  width: 1,
                 ),
               ),
 
@@ -67,7 +66,7 @@ class CustomDropdown extends StatelessWidget {
                 borderRadius: BorderRadius.circular(AppSizes.br12),
                 borderSide: BorderSide(
                   color: Theme.of(context).colorScheme.error,
-                  width: 0,
+                  width: AppSizes.borderZeroWidth,
                   style: BorderStyle.none,
                 ),
               ),

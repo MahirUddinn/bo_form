@@ -40,8 +40,8 @@ class CustomCheckSelector extends StatelessWidget {
             ),
             AppUiWidgets.verticalSpacing8,
             Wrap(
-              spacing: 14,
-              runSpacing: 12,
+              spacing: AppSizes.checkSelectorWrapSpacing,
+              runSpacing: AppSizes.checkSelectorWrapRunSpacing,
               children: listOfValues.map((value) {
                 final bool isSelected = state.value == value;
 

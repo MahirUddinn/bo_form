@@ -1,5 +1,6 @@
 import 'package:bo_acc_form/common/constants/app_sizes.dart';
 import 'package:bo_acc_form/common/constants/app_strings.dart';
+import 'package:bo_acc_form/common/constants/app_ui_widgets.dart';
 import 'package:bo_acc_form/common/widget/custom_button.dart';
 import 'package:bo_acc_form/common/widget/custom_stepper_widget.dart';
 import 'package:bo_acc_form/presentation/bloc/form_data/form_data_cubit.dart';
@@ -141,14 +142,14 @@ class _HomePageState extends State<HomePage> {
                 Expanded(
                   child: Padding(
                     padding: EdgeInsets.symmetric(
-                      horizontal: AppSizes.p8,
-                      vertical: AppSizes.p8,
+                      horizontal: AppSizes.mp8,
+                      vertical: AppSizes.mp8,
                     ),
                     child: _getStepWidget(state.currentStep),
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.all(AppSizes.p16),
+                  padding: EdgeInsets.all(AppSizes.mp16),
                   child: Row(
                     children: [
                       if (state.currentStep > 0)
@@ -164,7 +165,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                         ),
-                      if (state.currentStep > 0) SizedBox(width: AppSizes.w16),
+                      if (state.currentStep > 0) AppUiWidgets.horizontalSpacing16,
                       Expanded(
                         child: CustomButton(
                           onSubmit: () async {

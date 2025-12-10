@@ -1,5 +1,6 @@
 import 'package:bo_acc_form/common/constants/app_sizes.dart';
 import 'package:bo_acc_form/common/constants/app_strings.dart';
+import 'package:bo_acc_form/common/constants/app_ui_widgets.dart';
 import 'package:bo_acc_form/common/widget/custom_dropdown.dart';
 import 'package:bo_acc_form/common/widget/custom_text_field.dart';
 import 'package:bo_acc_form/common/widget/section_box.dart';
@@ -60,7 +61,7 @@ class _BankInfoViewState extends State<BankInfoView> {
                   child: Column(
                     children: [
                       Container(
-                        padding: EdgeInsets.all(AppSizes.p16),
+                        padding: EdgeInsets.all(AppSizes.mp16),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -150,7 +151,7 @@ class _BankInfoViewState extends State<BankInfoView> {
                                 return null;
                               },
                             ),
-                            SizedBox(height: AppSizes.h8),
+                            AppUiWidgets.verticalSpacing8,
                             Text(
                               AppStrings.bankAccountHint,
                               style: TextStyle(
@@ -241,7 +242,7 @@ class _BankInfoViewState extends State<BankInfoView> {
               Text(AppStrings.bankAccountInstructions3),
               Text(AppStrings.bankAccountInstructions4),
               Text(AppStrings.bankAccountInstructions5),
-              SizedBox(height: AppSizes.p16),
+              AppUiWidgets.verticalSpacing16,
               Container(
                 padding: EdgeInsets.all(12),
                 decoration: BoxDecoration(
@@ -255,7 +256,7 @@ class _BankInfoViewState extends State<BankInfoView> {
                       AppStrings.exampleFromCheque,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: AppSizes.h8),
+                    AppUiWidgets.verticalSpacing8,
                     Text(
                       AppStrings.routingAccountExample,
                       style: TextStyle(fontFamily: 'Monospace'),

@@ -114,7 +114,7 @@ class _AuthorizeViewState extends State<AuthorizeView> {
 
   Widget _buildFirstACHolder(FormDataState state) {
     return Container(
-      margin: EdgeInsets.all(AppSizes.p16),
+      margin: EdgeInsets.all(AppSizes.mp16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

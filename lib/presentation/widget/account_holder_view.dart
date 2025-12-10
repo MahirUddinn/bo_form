@@ -1,5 +1,6 @@
 import 'package:bo_acc_form/common/constants/app_sizes.dart';
 import 'package:bo_acc_form/common/constants/app_strings.dart';
+import 'package:bo_acc_form/common/constants/app_ui_widgets.dart';
 import 'package:bo_acc_form/common/widget/custom_date_picker.dart';
 import 'package:bo_acc_form/common/widget/custom_check_selector.dart';
 import 'package:bo_acc_form/common/widget/custom_dropdown.dart';
@@ -167,7 +168,7 @@ class _AccountHolderViewState extends State<AccountHolderView> {
 
   Widget _buildFirstACHolder(FormDataState state) {
     return Container(
-      margin: EdgeInsets.all(AppSizes.p16),
+      margin: EdgeInsets.all(AppSizes.mp16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -593,7 +594,7 @@ class _AccountHolderViewState extends State<AccountHolderView> {
 
   Widget _buildAccountHolder(FormDataState state) {
     return Container(
-      margin: EdgeInsets.all(AppSizes.p16),
+      margin: EdgeInsets.all(AppSizes.mp16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -631,7 +632,7 @@ class _AccountHolderViewState extends State<AccountHolderView> {
                   },
                 )
               : Container(),
-          SizedBox(height: AppSizes.h8),
+          AppUiWidgets.verticalSpacing8,
           Text(
             AppStrings.referralLabel,
           ),
