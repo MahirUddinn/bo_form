@@ -65,7 +65,7 @@ class TopStepperWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(width: AppSizes.mp8),
+                SizedBox(width: AppSizes.mp6),
                 Text(
                   steps[index],
                   style: TextStyle(

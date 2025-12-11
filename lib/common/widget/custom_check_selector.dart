@@ -31,7 +31,7 @@ class CustomCheckSelector extends StatelessWidget {
       validator: validator,
       builder: (state) {
         return Container(
-          padding: EdgeInsets.symmetric(vertical: AppSizes.mp8),
+          padding: EdgeInsets.symmetric(vertical: AppSizes.mp6),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -40,7 +40,7 @@ class CustomCheckSelector extends StatelessWidget {
                 label: label,
                 isRequired: isRequired,
               ),
-              SizedBox(height: AppSizes.mp8,),
+              SizedBox(height: AppSizes.mp6,),
               Wrap(
                 spacing: AppSizes.checkSelectorWrapSpacing,
                 runSpacing: AppSizes.checkSelectorWrapRunSpacing,
@@ -77,7 +77,7 @@ class CustomCheckSelector extends StatelessWidget {
                               : null,
                         ),
 
-                        SizedBox(width: AppSizes.mp8,),
+                        SizedBox(width: AppSizes.mp6,),
                         Text(
                           value,
                           style: TextStyle(
@@ -94,7 +94,7 @@ class CustomCheckSelector extends StatelessWidget {
 
               if (state.hasError)
                 Padding(
-                  padding: EdgeInsets.only(top: AppSizes.mp8),
+                  padding: EdgeInsets.only(top: AppSizes.mp6),
                   child: Text(
                     state.errorText!,
                     style: AppUiWidgets.errorTextStyle(context),

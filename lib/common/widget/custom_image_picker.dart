@@ -80,7 +80,7 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
               child: Container(
                 width: double.infinity,
                 padding: EdgeInsets.all(AppSizes.mp20),
-                margin: EdgeInsets.symmetric(vertical: AppSizes.mp8),
+                margin: EdgeInsets.symmetric(vertical: AppSizes.mp6),
                 decoration: BoxDecoration(
                   color: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.circular(AppSizes.br12),
@@ -94,7 +94,7 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
                             size: AppSizes.uploadIconSize,
                             color: Theme.of(context).hintColor,
                           ),
-                          SizedBox(height: AppSizes.mp8),
+                          SizedBox(height: AppSizes.mp6),
                           Text(
                             widget.title,
                             textAlign: TextAlign.center,
@@ -150,7 +150,7 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
             if (hasError)
               Padding(
                 padding: const EdgeInsets.only(
-                  left: AppSizes.mp8,
+                  left: AppSizes.mp6,
                   top: AppSizes.mp4,
                 ),
                 child: Text(
@@ -164,7 +164,7 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
                 height: AppSizes.mp70,
                 width: double.infinity,
                 padding: EdgeInsets.symmetric(horizontal: AppSizes.mp12),
-                margin: EdgeInsets.symmetric(vertical: AppSizes.mp8),
+                margin: EdgeInsets.symmetric(vertical: AppSizes.mp6),
                 decoration: BoxDecoration(
                   color: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.circular(AppSizes.br12),
@@ -181,7 +181,7 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
                       ),
                     ),
 
-                    SizedBox(width: AppSizes.mp8),
+                    SizedBox(width: AppSizes.mp6),
 
                     Expanded(
                       child: Column(
@@ -215,7 +215,7 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
                       size: AppSizes.iconSize20,
                     ),
 
-                    SizedBox(width: AppSizes.mp8),
+                    SizedBox(width: AppSizes.mp6),
                     GestureDetector(
                       onTap: () {
                         setState(() {

@@ -11,7 +11,7 @@ class SectionBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: AppSizes.mp4),
+      margin: EdgeInsets.only(top: AppSizes.mp4),
       width: double.infinity,
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
@@ -25,7 +25,7 @@ class SectionBox extends StatelessWidget {
             width: double.infinity,
             color: Theme.of(context).disabledColor,
             child: Container(
-              margin: EdgeInsets.all(AppSizes.mp8),
+              margin: EdgeInsets.all(AppSizes.mp6),
               child: title,
             ),
           ),

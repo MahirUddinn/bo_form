@@ -152,7 +152,7 @@ class _BankInfoViewState extends State<BankInfoView> {
                                 return null;
                               },
                             ),
-                            SizedBox(height: AppSizes.mp8),
+                            SizedBox(height: AppSizes.mp6),
                             Text(
                               AppStrings.bankAccountHint,
                               style: TextStyle(
@@ -257,7 +257,7 @@ class _BankInfoViewState extends State<BankInfoView> {
                       AppStrings.exampleFromCheque,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: AppSizes.mp8),
+                    SizedBox(height: AppSizes.mp6),
                     Text(
                       AppStrings.routingAccountExample,
                       style: TextStyle(fontFamily: 'Monospace'),

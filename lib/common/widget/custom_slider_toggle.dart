@@ -25,7 +25,7 @@ class CustomSliderToggle extends StatelessWidget {
       validator: validator,
       builder: (state) {
         return Container(
-          margin: EdgeInsets.symmetric(vertical: AppSizes.mp8),
+          margin: EdgeInsets.symmetric(vertical: AppSizes.mp6),
           padding: EdgeInsets.all(AppSizes.mp12),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppSizes.br12),
@@ -34,13 +34,13 @@ class CustomSliderToggle extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: AppSizes.mp8),
+              SizedBox(height: AppSizes.mp6),
               AppUiWidgets.fieldLabel(
                 context,
                 label: label,
                 isRequired: isRequired,
               ),
-              SizedBox(height: AppSizes.mp8),
+              SizedBox(height: AppSizes.mp6),
               Row(
                 children: [
                   Switch(
@@ -70,7 +70,7 @@ class CustomSliderToggle extends StatelessWidget {
               ),
               if (state.hasError)
                 Padding(
-                  padding: EdgeInsets.only(top: AppSizes.mp8),
+                  padding: EdgeInsets.only(top: AppSizes.mp6),
                   child: Text(
                     state.errorText!,
                     style: AppUiWidgets.errorTextStyle(context),

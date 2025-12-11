@@ -142,8 +142,8 @@ class _HomePageState extends State<HomePage> {
                 Expanded(
                   child: Padding(
                     padding: EdgeInsets.symmetric(
-                      horizontal: AppSizes.mp8,
-                      vertical: AppSizes.mp8,
+                      horizontal: AppSizes.mp6,
+                      vertical: AppSizes.mp6,
                     ),
                     child: _getStepWidget(state.currentStep),
                   ),

@@ -51,13 +51,13 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: AppSizes.mp8,),
+            SizedBox(height: AppSizes.mp6,),
             AppUiWidgets.fieldLabel(
               context,
               label: widget.labelText,
               isRequired: widget.isRequired,
             ),
-            SizedBox(height: AppSizes.mp8,),
+            SizedBox(height: AppSizes.mp6,),
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(AppSizes.br12),

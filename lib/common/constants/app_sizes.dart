@@ -1,7 +1,7 @@
 class AppSizes {
   static const double mp4 = 4;
-  static const double mp8 = 6;
-  static const double mp12 = 12;
+  static const double mp6 = 6;
+  static const double mp12 = 10;
   static const double mp16 = 16;
   static const double mp20 = 20;
   static const double mp28 = 28;

@@ -33,9 +33,9 @@ class CustomTextField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: AppSizes.mp8),
+        SizedBox(height: AppSizes.mp6),
         AppUiWidgets.fieldLabel(context, label: label, isRequired: isRequired),
-        SizedBox(height: AppSizes.mp8),
+        SizedBox(height: AppSizes.mp6),
 
         Container(
           padding: EdgeInsets.symmetric(vertical: AppSizes.mp4),

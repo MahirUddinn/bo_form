@@ -28,13 +28,13 @@ class CustomDropdown extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: AppSizes.mp8,),
+        SizedBox(height: AppSizes.mp6,),
         AppUiWidgets.fieldLabel(
           context,
           label: labelText,
           isRequired: isRequired,
         ),
-        SizedBox(height: AppSizes.mp8,),
+        SizedBox(height: AppSizes.mp6,),
 
         Container(
           decoration: BoxDecoration(borderRadius: BorderRadius.circular(AppSizes.br12)),

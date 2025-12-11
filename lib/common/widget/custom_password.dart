@@ -33,13 +33,13 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: AppSizes.mp8),
+        SizedBox(height: AppSizes.mp6),
         AppUiWidgets.fieldLabel(
           context,
           label: widget.label,
           isRequired: widget.isRequired,
         ),
-        SizedBox(height: AppSizes.mp8),
+        SizedBox(height: AppSizes.mp6),
         Container(
           decoration: BoxDecoration(borderRadius: BorderRadius.circular(AppSizes.br12)),
 
